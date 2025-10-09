@@ -1,0 +1,55 @@
+.validation-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background: #333;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #fff;
+  text-align: center;
+}
+
+.validation-container h1 {
+  padding-top: 30px;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: gold;
+  text-align: center;
+}
+a {
+  text-decoration: none;
+  color: gold;
+}
+.validation-container p {
+  margin-bottom: 1rem;
+}
+
+.validation-container ul {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.validation-container li {
+  margin-bottom: 0.5rem;
+}
+
+.validation-container .link {
+  color: gold;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.validation-container .link:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .validation-container h1 {
+    font-size: 1.5rem;
+  }
+}

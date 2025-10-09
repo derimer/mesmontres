@@ -1,0 +1,375 @@
+.montres-container {
+  background-color: #333;
+  text-align: center;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0; /* pas besoin de padding ici */
+  box-sizing: border-box;
+}
+
+.montres-container h1 {
+  color: gold;
+  padding-top: 5rem;
+  font-size: 2rem;
+}
+.intro-text {
+  color: #c7bfbf;
+  max-width: 600px;
+  margin: 1rem auto 2rem auto;
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 0 1rem;
+}
+.montres-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+.montres-list h2 {
+  color: white;
+  margin-bottom: 1rem;
+}
+.montre-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  transition: transform 0.3s ease;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.montre-card:hover {
+  transform: translateY(-5px);
+}
+
+.montre-image-container {
+  margin-bottom: 1rem;
+}
+
+.montre-image {
+  width: 100%; /* image prend la largeur dispo */
+  height: auto; /* garde proportions */
+  max-height: 250px; /* limite en hauteur */
+  object-fit: cover;
+  border-radius: 8px;
+  transition: opacity 0.3s ease;
+}
+
+.montre-image:hover {
+  opacity: 0.8;
+}
+
+.montre-info-link {
+  text-decoration: none;
+  color: inherit;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.montre-info-link:hover {
+  text-decoration: none;
+}
+
+.montre-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #978d8d;
+}
+
+.montre-card p {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+  color: #c7bfbf;
+  line-height: 1.4;
+}
+/* Styles pour le message d'instructions */
+.instructions-banner {
+  background: linear-gradient(90deg, #fbaf08 10%, #101357 90%);
+  color: white;
+  padding: 1rem;
+  margin: 1.5rem auto 2rem;
+  border-radius: 12px;
+  max-width: 800px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  animation: slideDown 0.5s ease-out;
+}
+
+.instructions-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.instructions-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.instructions-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.instructions-text strong {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.instructions-text span {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  line-height: 1.4;
+}
+
+.close-instructions {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.close-instructions:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+/* Overlay pour l'image */
+.montre-image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.montre-image-button:hover .image-overlay {
+  opacity: 1;
+}
+
+.zoom-hint {
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  background: rgba(102, 126, 234, 0.9);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+
+/* Indication pour les détails */
+.details-hint {
+  color: #667eea;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  opacity: 0;
+  transition: all 0.3s ease;
+  transform: translateX(-10px);
+}
+
+.montre-info-link:hover .details-hint {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Animation pour le message */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design pour les instructions */
+@media screen and (max-width: 768px) {
+  .instructions-banner {
+    margin: 1rem 0.5rem 1.5rem;
+    padding: 0.875rem;
+  }
+
+  .instructions-content {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .instructions-text {
+    font-size: 0.85rem;
+  }
+
+  .instructions-text span {
+    font-size: 0.8rem;
+  }
+
+  .close-instructions {
+    width: 25px;
+    height: 25px;
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .instructions-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .instructions-text span {
+    font-size: 0.8rem;
+  }
+
+  .zoom-hint {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+/* Tablettes */
+@media screen and (max-width: 900px) {
+  .montres-container {
+    padding-top: 80px;
+    padding-bottom: 40px;
+    /* toujours 100% */
+    /* un peu de padding horizontal */
+  }
+  .montres-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .montre-card {
+    padding: 0.8rem;
+  }
+}
+
+/* Mobiles */
+@media screen and (max-width: 600px) {
+  .montres-container {
+    margin-top: 105px;
+    max-width: 100%; /* toujours 100% */
+    padding: 0 0.5rem;
+    min-width: 420px; /* petite respiration */
+  }
+
+  .montres-container h1 {
+    font-size: 1.5rem;
+    padding-top: 0.5rem;
+  }
+
+  .montres-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0; /* pas besoin de padding interne en plus */
+  }
+
+  .montre-card {
+    padding: 0.8rem;
+    margin: 0 auto; /* centré */
+  }
+
+  .montre-image {
+    width: 100%; /* prend la largeur dispo */
+    height: auto;
+    max-width: 250px; /* mais pas plus large que 250px */
+  }
+
+  .montre-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .montre-card p {
+    font-size: 1rem;
+  }
+}
+@media screen and (max-width: 420px) {
+  .montres-container {
+    min-width: 322px; /* toujours un peu de marge */
+  }
+}
+
+/* Modal pour l'image agrandie */
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.image-modal-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.zoomed-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.close-modal {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.close-modal:hover {
+  background: #f0f0f0;
+}

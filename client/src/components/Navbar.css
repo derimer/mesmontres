@@ -1,0 +1,154 @@
+/* --- STRUCTURE PRINCIPALE --- */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: linear-gradient(90deg, #07070e 60%, #fbaf08 100%);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  transition: background 0.3s ease;
+}
+
+.navbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.6rem 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* --- LOGO --- */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  text-decoration: none;
+  color: gold;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.navbar-logo img {
+  height: 46px;
+  width: 46px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.2);
+  transition: transform 0.25s;
+}
+
+.navbar-logo:hover img {
+  transform: scale(1.07);
+}
+
+/* --- LIENS DE NAVIGATION --- */
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  transition: all 0.35s ease;
+}
+
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.05rem;
+  position: relative;
+  transition: color 0.25s;
+}
+
+.navbar-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, gold, orange);
+  transition: width 0.25s;
+}
+
+.navbar-links a:hover {
+  color: gold;
+}
+
+.navbar-links a:hover::after {
+  width: 100%;
+}
+
+/* --- ICÔNES --- */
+.navbar-icons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icon {
+  color: gold;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    color 0.3s;
+}
+
+.icon:hover {
+  color: white;
+  transform: scale(1.15);
+}
+
+/* --- BOUTON MOBILE --- */
+.navbar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: gold;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+  .navbar-links {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: rgba(10, 10, 20, 0.97);
+    padding: 1rem 0;
+    gap: 1rem;
+    transform: translateY(-200%);
+    opacity: 0;
+    pointer-events: none;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+  }
+
+  .navbar-links.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .navbar-toggle {
+    display: block;
+  }
+
+  .navbar-icons {
+    gap: 0.7rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .navbar-logo span {
+    display: none; /* cache le texte pour un rendu compact */
+  }
+  .navbar-logo img {
+    height: 42px;
+    width: 42px;
+  }
+}
