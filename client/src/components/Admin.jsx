@@ -29,12 +29,13 @@ export default function Admin() {
   const [loadingMessages, setLoadingMessages] = useState(true);
 
   // Vérification de l'authentification
-  useEffect(() => {
-    const isLoggedIn = localStorage.getItem("isAdminLoggedIn") === "true";
-    if (!isLoggedIn) {
-      navigate("/login");
-    }
-  }, [navigate]);
+ useEffect(() => {
+  const token = localStorage.getItem("adminToken");
+  if (!token) {
+    navigate("/login");
+  }
+}, [navigate]);
+
 
   // Bouton de déconnexion
   const handleLogout = () => {

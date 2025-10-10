@@ -1,5 +1,4 @@
-// index.js
-// index.js
+/// index.js
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -24,16 +23,8 @@ app.use(express.json());
 // =============================
 // Fichiers statiques
 // =============================
-// =============================
-// Fichiers statiques - CORRECTION
-// =============================
 const uploadsPath = path.join(__dirname, "/public/uploads");
 console.info("Chemin utilisé pour les uploads :", uploadsPath);
-
-// Remplacez cette ligne :
-// app.use("/uploads", express.static(uploadsPath));
-
-// Par cette ligne :
 app.use("/api/uploads", express.static(uploadsPath));
 
 // =============================
@@ -41,14 +32,18 @@ app.use("/api/uploads", express.static(uploadsPath));
 // =============================
 const imageRoutes = require("./app/routers/api/images/router");
 const montresRoutes = require("./app/routers/api/montres/router");
-const contactRouter = require("./app/routers/api/contact/router")(db); // <-- on passe bien le client MySQL
+const contactRouter = require("./app/routers/api/contact/router")(db);
 
-// <-- router login
+// Auth
+const loginRouter = require("./app/auth");
+
+// Routes publiques
+app.use("/api/login", loginRouter);
 app.use("/api/images", imageRoutes);
-app.use("/api/montres", montresRoutes);
-app.use("/api/contact", contactRouter); // <-- API contact
-// <-- API login
 
+// Routes protégées par JWT
+app.use("/api/montres", montresRoutes);
+app.use("/api/contact", contactRouter);
 // =============================
 // Routes test
 // =============================
