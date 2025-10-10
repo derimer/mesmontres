@@ -6,38 +6,34 @@ export default function Login() {
   const navigate = useNavigate();
 
   // Mot de passe "en dur"
-  
-  
-  
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleLogin = async (e) => {
-  e.preventDefault();
-  try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
-    });
+    e.preventDefault();
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) throw new Error(data.error || "Erreur login");
+      if (!res.ok) throw new Error(data.error || "Erreur login");
 
-    // Stocke le token
-    localStorage.setItem("adminToken", data.token);
-    // Indique que l'admin est connecté (pour PrivateRoute)
-    localStorage.setItem("isAdminLoggedIn", "true");
+      // Stocke le token
+      localStorage.setItem("adminToken", data.token);
+      // Indique que l'admin est connecté (pour PrivateRoute)
+      localStorage.setItem("isAdminLoggedIn", "true");
 
-    navigate("/admin");
-  } catch (err) {
-    setError(err.message);
-  }
-};
-
-
+      navigate("/admin");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   return (
     <div className="login-container">

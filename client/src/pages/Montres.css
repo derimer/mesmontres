@@ -14,10 +14,10 @@
   font-size: 2rem;
 }
 .intro-text {
-  color: #c7bfbf;
+  color: #e6dfdf;
   max-width: 600px;
   margin: 1rem auto 2rem auto;
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.5;
   padding: 0 1rem;
 }
@@ -222,9 +222,12 @@
     margin: 1rem 0.5rem 1.5rem;
     padding: 0.875rem;
   }
-
+  .montres-container {
+    grid-template-columns: 1fr 1fr;
+  }
   .instructions-content {
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     align-items: flex-start;
     gap: 0.75rem;
   }

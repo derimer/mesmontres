@@ -15,6 +15,13 @@ const categoriesData = [
       "Énergie par ressort",
       "Précision mécanique",
     ],
+    waterResistance: [
+      { atm: 3, metres: 30, usage: "Résiste aux éclaboussures et à la pluie" },
+      { atm: 5, metres: 50, usage: "Douche ou lavage des mains possible" },
+      { atm: 10, metres: 100, usage: "Convient à la natation" },
+      { atm: 20, metres: 200, usage: "Adaptée à la plongée légère" },
+      { atm: 30, metres: 300, usage: "Utilisable pour la plongée sous-marine" },
+    ],
     subcategories: [
       {
         id: "automatique",
@@ -30,22 +37,6 @@ const categoriesData = [
         description: "Fonction chronographe intégrée pour mesures de temps",
         count: "8 modèles",
       },
-      {
-        id: "calendrier-perpetuel",
-        name: "Calendrier perpétuel",
-        image: "./images/lotus.jpg",
-        description:
-          "Complication avancée avec correction automatique de la date",
-        count: "5 modèles",
-      },
-      {
-        id: "kinetic",
-        name: "Kinetic",
-        image: "./images/kinetic.jpg",
-        description:
-          "Technologie hybride convertissant le mouvement en énergie électrique",
-        count: "12 modèles",
-      },
     ],
   },
   {
@@ -54,6 +45,11 @@ const categoriesData = [
     image: "./images/quartz2.jpg",
     description: "Précision et facilité d'entretien, alimentées par pile",
     features: ["Haute précision", "Entretien simple", "Pile longue durée"],
+    waterResistance: [
+      { atm: 3, metres: 30, usage: "Éclaboussures seulement" },
+      { atm: 5, metres: 50, usage: "Douche, pluie, lavage des mains" },
+      { atm: 10, metres: 100, usage: "Natation et sports nautiques légers" },
+    ],
     subcategories: [
       {
         id: "analogique-simple",
@@ -71,37 +67,13 @@ const categoriesData = [
       },
     ],
   },
-  {
-    id: "digitale",
-    name: "Montres Digitales",
-    image: "./images/digitale.jpg",
-    description:
-      "Modernité et fonctionnalités avancées avec affichage numérique",
-    features: ["Affichage numérique", "Fonctions multiples", "Design moderne"],
-    subcategories: [
-      {
-        id: "digitale-simple",
-        name: "Digitale simple",
-        image: "./images/simple.jpg",
-        description: "Affichage digital basique et fonctionnel",
-        count: "18 modèles",
-      },
-      {
-        id: "mixte",
-        name: "Mixte digitale/analogique",
-        image: "./images/mixte.jpg",
-        description: "Combinaison d'affichage digital et aiguilles analogiques",
-        count: "7 modèles",
-      },
-    ],
-  },
 ];
 
 function Categories() {
   return (
     <div className="categories-container">
       <div className="categories-header">
-        <h1> Catégories de Montres</h1>
+        <h1>Catégories de Montres</h1>
         <p className="categories-intro">
           Découvrez la collection exclusive de montres soigneusement
           sélectionnées. Chaque catégorie représente un univers horloger unique,
@@ -119,7 +91,6 @@ function Categories() {
         stopOnHover
         useKeyboardArrows
         swipeable
-        dynamicHeight={false}
         emulateTouch
         className="custom-carousel"
         interval={5000}
@@ -152,6 +123,29 @@ function Categories() {
                     </li>
                   ))}
                 </ul>
+              </div>
+
+              {/* ✅ Tableau complet : ATM + mètres + usage */}
+              <div className="water-resistance-section">
+                <h3>Résistance à l’eau</h3>
+                <table className="water-table">
+                  <thead>
+                    <tr>
+                      <th>ATM</th>
+                      <th>Équivalent (m)</th>
+                      <th>Utilisation recommandée</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {family.waterResistance.map((item) => (
+                      <tr key={item.atm}>
+                        <td>{item.atm}</td>
+                        <td>{item.metres} m</td>
+                        <td>{item.usage}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
 
               <div className="subcategories-section">

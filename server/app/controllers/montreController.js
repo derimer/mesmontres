@@ -1,5 +1,3 @@
-
-
 const MontreRepository = require("../../database/models/montreRepository");
 const imageRepo = require("../../database/models/imagesRepository");
 
@@ -16,7 +14,7 @@ const montreController = {
         materiau_boitier: req.body.materiau_boitier || "Acier inoxydable",
         couleur_cadran: req.body.couleur_cadran || "Noir",
         bracelet: req.body.bracelet || "Bracelet acier",
-        etancheite: req.body.etancheite || "300m",
+        resistance_eau: req.body.resistance_eau || "50m",
         description: req.body.description || "",
         referenceURL: req.body.referenceURL || null,
       };

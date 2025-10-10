@@ -82,10 +82,8 @@ exports.getMessages = async (req, res) => {
     res.json(messages);
   } catch (error) {
     console.error("Erreur dans getMessages:", error);
-    res
-      .status(500)
-      .json({
-        message: "Erreur serveur : impossible de récupérer les messages.",
-      });
+    res.status(500).json({
+      message: "Erreur serveur : impossible de récupérer les messages.",
+    });
   }
 };

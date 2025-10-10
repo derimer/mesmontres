@@ -37,14 +37,9 @@ function ValidationCommande() {
         Par défaut, l’achat final se fera sur le site du{" "}
         <strong>
           {referenceURL ? (
-            <a
-              href={referenceURL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link"
-            >
+            <Link to={referenceURL} className="link">
               Bon coin
-            </a>
+            </Link>
           ) : (
             "Bon coin (lien non disponible pour le moment)"
           )}
@@ -64,10 +59,10 @@ function ValidationCommande() {
         <li>Wero (anciennement Paylib)</li>
       </ul>
       <p>
-        Pour ce faire, merci de bien vouloir utiliser le{" "}
+        Pour ce faire, merci de bien vouloir utiliser le
         <Link to="/contact" className="link">
           formulaire de contact
-        </Link>{" "}
+        </Link>
         afin d’obtenir les informations nécessaires.
       </p>
       <p>

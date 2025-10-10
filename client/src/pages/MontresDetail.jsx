@@ -127,14 +127,14 @@ export default function MontreDetail() {
                 <span className="info-value">{montre.bracelet}</span>
               </div>
               <div className="info-item">
-                <span className="info-label">Étanchéité :</span>
-                <span className="info-value">{montre.etancheite}</span>
+                <span className="info-label">Résistance à l'eau :</span>
+                <span className="info-value">{montre.resistance_eau}</span>
               </div>
             </div>
 
             <div className="description-section">
               <h3>Description</h3>
-              <p className="description-text">{montre.description}</p>
+              <p>{montre.description}</p>
             </div>
 
             {/* Bouton acheter */}

@@ -9,7 +9,6 @@ const router = express.Router();
 // Mot de passe admin en clair
 const { ADMIN_PASSWORD } = process.env;
 
-
 // Génération d'un hash au démarrage
 const ADMIN_PASSWORD_HASH = bcrypt.hashSync(ADMIN_PASSWORD, 10);
 

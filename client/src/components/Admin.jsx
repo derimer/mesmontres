@@ -15,7 +15,7 @@ export default function Admin() {
     materiau_boitier: "Acier inoxydable",
     couleur_cadran: "Noir",
     bracelet: "Bracelet acier",
-    etancheite: "300m",
+    resistance_eau: "50m",
     description: "",
     referenceURL: "",
   });
@@ -29,13 +29,12 @@ export default function Admin() {
   const [loadingMessages, setLoadingMessages] = useState(true);
 
   // Vérification de l'authentification
- useEffect(() => {
-  const token = localStorage.getItem("adminToken");
-  if (!token) {
-    navigate("/login");
-  }
-}, [navigate]);
-
+  useEffect(() => {
+    const token = localStorage.getItem("adminToken");
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   // Bouton de déconnexion
   const handleLogout = () => {
@@ -139,7 +138,7 @@ export default function Admin() {
         materiau_boitier: "Acier inoxydable",
         couleur_cadran: "Noir",
         bracelet: "Bracelet acier",
-        etancheite: "300m",
+        resistance_eau: "50m",
         description: "",
         referenceURL: "",
       });
@@ -326,12 +325,12 @@ export default function Admin() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="etancheite">Étanchéité :</label>
+            <label htmlFor="resistance_eau">Résistance à l'eau :</label>
             <input
               type="text"
-              id="etancheite"
-              name="etancheite"
-              value={formData.etancheite}
+              id="resistance_eau"
+              name="resistance_eau"
+              value={formData.resistance_eau}
               onChange={handleChange}
             />
           </div>
@@ -481,7 +480,7 @@ export default function Admin() {
                     <p>Boîtier : {montre.materiau_boitier}</p>
                     <p>Cadran : {montre.couleur_cadran}</p>
                     <p>Bracelet : {montre.bracelet}</p>
-                    <p>Étanchéité : {montre.etancheite}</p>
+                    <p>Résistance à l'eau : {montre.resistance_eau}</p>
                     <p>{montre.description}</p>
                   </div>
                   <div className="montre-actions">

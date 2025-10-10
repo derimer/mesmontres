@@ -120,7 +120,7 @@ export default function Contact() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="subject">Sujet *</label>
+                <label htmlFor="subject">référence *</label>
                 <select
                   id="subject"
                   name="subject"
@@ -160,16 +160,6 @@ export default function Contact() {
               </button>
             </form>
           </div>
-        </div>
-
-        <div className="contact-faq">
-          <h3>Questions fréquentes</h3>
-          <ul className="faq-list">
-            <li>• Livraison sous 48h en France</li>
-            <li>• Garantie 2 ans sur toutes nos montres</li>
-            <li>• Retours acceptés sous 30 jours</li>
-            <li>• Service après-vente dédié</li>
-          </ul>
         </div>
       </div>
     </div>

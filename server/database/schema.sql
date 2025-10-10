@@ -1,4 +1,4 @@
--- Table principale (montres)
+-- Table principale des montres
 CREATE TABLE IF NOT EXISTS montres (
   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   name VARCHAR(255) NOT NULL,
@@ -8,14 +8,13 @@ CREATE TABLE IF NOT EXISTS montres (
   materiau_boitier VARCHAR(100) DEFAULT 'Acier inoxydable',
   couleur_cadran VARCHAR(50) DEFAULT 'Noir',
   bracelet VARCHAR(100) DEFAULT 'Bracelet acier',
-  etancheite VARCHAR(50) DEFAULT '300m',
+  resistance_eau VARCHAR(50) DEFAULT '3 ATM', -- 🆕 renommé et converti
   description TEXT,
-  referenceURL VARCHAR(255), -- champ ajouté ici
+  referenceURL VARCHAR(255), -- lien externe (ex: annonce Bon Coin)
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
--- Table des images (lié à une montre)
+-- Table des images liées à une montre
 CREATE TABLE IF NOT EXISTS images (
   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   montre_id INT UNSIGNED NOT NULL,
@@ -23,7 +22,8 @@ CREATE TABLE IF NOT EXISTS images (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (montre_id) REFERENCES montres(id) ON DELETE CASCADE
 );
--- Table pour les messages de contact
+
+-- Table des messages du formulaire de contact
 CREATE TABLE IF NOT EXISTS contact_messages (
   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   name VARCHAR(255) NOT NULL,
@@ -35,7 +35,9 @@ CREATE TABLE IF NOT EXISTS contact_messages (
   user_agent TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
- CREATE TABLE IF NOT EXISTS users (
+
+-- Table des utilisateurs (si un jour tu veux ajouter d'autres admins)
+CREATE TABLE IF NOT EXISTS users (
   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
   name VARCHAR(100) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,

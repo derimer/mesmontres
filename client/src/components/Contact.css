@@ -120,8 +120,7 @@
   padding: 1rem 2rem;
   font-size: 1.1rem;
   font-weight: 600;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
+  background: linear-gradient(90deg, #07070e 60%, #fbaf08 100%);
   border: none;
   border-radius: 8px;
   cursor: pointer;

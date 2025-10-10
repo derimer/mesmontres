@@ -115,20 +115,20 @@
 
 .info-item {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 0.75rem;
   font-size: 26px;
-  color: white;
+  color: gold;
 }
 
 .info-label {
   font-weight: 200;
-  color: #ccc;
+  color: rgb(245, 244, 238);
 }
 
 .info-value {
-  color: white;
+  color: gold;
   font-weight: 100;
 }
 
@@ -142,6 +142,7 @@
 .description-section {
   margin-bottom: 2rem;
   background-color: black;
+  line-height: 2.2;
 }
 
 .description-section h3 {
@@ -150,11 +151,11 @@
   font-size: 1.3rem;
 }
 
-.description-text {
+.description-section p {
+  white-space: pre-wrap;
   font-size: 20px;
   font-weight: 100;
-  line-height: 1.6;
-  color: #f8f6f6;
+  color: #fafbf7;
   background: rgba(255, 255, 255, 0.05);
   padding: 1rem;
   border-radius: 6px;
@@ -220,7 +221,7 @@
   position: absolute;
   top: -20px;
   right: -20px;
-  background: #fff;
+  background: transparent;
   border: none;
   border-radius: 50%;
   width: 40px;
@@ -232,7 +233,7 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  color: #333;
+  color: transparent;
   transition: all 0.3s ease;
 }
 

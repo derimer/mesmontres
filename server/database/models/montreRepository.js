@@ -9,7 +9,7 @@ class MontreRepository extends AbstractRepository {
   async create(montre) {
     const [result] = await this.database.query(
       `INSERT INTO ${this.table} 
-      (name, brand, price, mouvement, materiau_boitier, couleur_cadran, bracelet, etancheite, description, referenceURL)
+      (name, brand, price, mouvement, materiau_boitier, couleur_cadran, bracelet, resistance_eau, description, referenceURL)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         montre.name,
@@ -19,7 +19,7 @@ class MontreRepository extends AbstractRepository {
         montre.materiau_boitier,
         montre.couleur_cadran,
         montre.bracelet,
-        montre.etancheite,
+        montre.resistance_eau,
         montre.description,
         montre.referenceURL, // Ajout du nouveau champ dans l'insertion
       ]
@@ -48,7 +48,7 @@ class MontreRepository extends AbstractRepository {
       materiau_boitier: rows[0].materiau_boitier,
       couleur_cadran: rows[0].couleur_cadran,
       bracelet: rows[0].bracelet,
-      etancheite: rows[0].etancheite,
+      resistance_eau: rows[0].resistance_eau,
       description: rows[0].description,
       referenceURL: rows[0].referenceURL,
       images: [],
@@ -95,7 +95,7 @@ class MontreRepository extends AbstractRepository {
           materiau_boitier: row.materiau_boitier,
           couleur_cadran: row.couleur_cadran,
           bracelet: row.bracelet,
-          etancheite: row.etancheite,
+          resistance_eau: row.resistance_eau,
           description: row.description,
           referenceURL: row.referenceURL,
           created_at: row.created_at,
