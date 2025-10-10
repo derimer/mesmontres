@@ -52,7 +52,7 @@ export default function Montres() {
     <div className="montres-container">
       <h1>Mes Montres</h1>
       <p className="intro-text">
-        Bienvenue dans la section Montres ! Découvrez notre collection exclusive
+        Bienvenue dans la section Montres ! Découvrez ma collection exclusive
         de garde-temps, alliant élégance et précision. Chaque montre est
         soigneusement sélectionnée pour répondre aux goûts les plus raffinés.
         Explorez nos modèles uniques et trouvez la montre parfaite qui
