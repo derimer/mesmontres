@@ -242,193 +242,192 @@ export default function Admin() {
 
       {activeTab === "upload" && (
         <form className="upload-form" onSubmit={handleSubmit}>
-  {/* Référence */}
-  <div className="form-group">
-    <label htmlFor="reference">Référence de la montre :</label>
-    <input
-      type="text"
-      id="reference"
-      name="reference"
-      value={formData.reference}
-      onChange={handleChange}
-      required
-    />
-  </div>
-
-  {/* Marque */}
-  <div className="form-group">
-    <label htmlFor="brand">Marque :</label>
-    <input
-      type="text"
-      id="brand"
-      name="brand"
-      value={formData.brand}
-      onChange={handleChange}
-      required
-    />
-  </div>
-
-  {/* Type */}
-  <div className="form-group">
-    <label htmlFor="type">Type :</label>
-    <input
-      type="text"
-      id="type"
-      name="type"
-      value={formData.type}
-      onChange={handleChange}
-      placeholder="Ex : Chronographe, Classique, Digital..."
-    />
-  </div>
-
-  {/* Type de mouvement */}
-  <div className="form-group">
-    <label htmlFor="type_de_mouvement">Type de mouvement :</label>
-    <input
-      type="text"
-      id="type_de_mouvement"
-      name="type_de_mouvement"
-      value={formData.type_de_mouvement}
-      onChange={handleChange}
-      placeholder="Ex : Automatique, Quartz..."
-    />
-  </div>
-
-  {/* Origine du mouvement */}
-  <div className="form-group">
-    <label htmlFor="origine_mouvement">Origine du mouvement :</label>
-    <input
-      type="text"
-      id="origine_mouvement"
-      name="origine_mouvement"
-      value={formData.origine_mouvement}
-      onChange={handleChange}
-      placeholder="Ex : Suisse, Japonais..."
-    />
-  </div>
-
-  {/* Résistance à l'eau */}
-  <div className="form-group">
-    <label htmlFor="resistance_eau">Résistance à l'eau :</label>
-    <input
-      type="text"
-      id="resistance_eau"
-      name="resistance_eau"
-      value={formData.resistance_eau}
-      onChange={handleChange}
-      placeholder="Ex : 3 ATM, 5 ATM, 100m..."
-    />
-  </div>
-
-  {/* Bracelet */}
-  <div className="form-group">
-    <label htmlFor="bracelet">Bracelet :</label>
-    <input
-      type="text"
-      id="bracelet"
-      name="bracelet"
-      value={formData.bracelet}
-      onChange={handleChange}
-      placeholder="Ex : Bracelet acier, cuir..."
-    />
-  </div>
-
-  {/* Prix */}
-  <div className="form-group">
-    <label htmlFor="price">Prix (€) :</label>
-    <input
-      type="number"
-      id="price"
-      name="price"
-      value={formData.price}
-      onChange={handleChange}
-      min="0"
-      step="0.01"
-      required
-    />
-  </div>
-
-  {/* URL de référence */}
-  <div className="form-group">
-    <label htmlFor="referenceURL">URL de référence (optionnel) :</label>
-    <input
-      type="url"
-      id="referenceURL"
-      name="referenceURL"
-      value={formData.referenceURL}
-      onChange={handleChange}
-      placeholder="https://exemple.com/montre"
-    />
-  </div>
-
-  {/* Description */}
-  <div className="form-group">
-    <label htmlFor="description">Description :</label>
-    <textarea
-      id="description"
-      name="description"
-      value={formData.description}
-      onChange={handleChange}
-      rows="4"
-      required
-    />
-  </div>
-
-  {/* Images */}
-  <div className="form-group">
-    <label htmlFor="images">Sélectionnez des images :</label>
-    <input
-      type="file"
-      id="images"
-      name="images"
-      onChange={handleChange}
-      multiple
-      accept="image/*"
-    />
-  </div>
-
-  {formData.images.length > 0 && (
-    <div className="image-grid">
-      {formData.images.map((img, index) => (
-        <div
-          key={`${img.name}-${img.lastModified}`}
-          className="image-preview-container"
-        >
-          <button
-            type="button"
-            className="image-button"
-            onClick={() => handleImageClick(URL.createObjectURL(img))}
-            style={{
-              padding: 0,
-              border: "none",
-              background: "none",
-              cursor: "pointer",
-            }}
-            aria-label={`Agrandir l'image ${img.name}`}
-          >
-            <img
-              src={URL.createObjectURL(img)}
-              alt={img.name}
-              className="preview-image"
+          {/* Référence */}
+          <div className="form-group">
+            <label htmlFor="reference">Référence de la montre :</label>
+            <input
+              type="text"
+              id="reference"
+              name="reference"
+              value={formData.reference}
+              onChange={handleChange}
+              required
             />
-          </button>
-          <button
-            type="button"
-            className="btn-delete"
-            onClick={() => removeImage(index)}
-          >
-            ❌
-          </button>
-        </div>
-      ))}
-    </div>
-  )}
+          </div>
 
-  <button type="submit" className="btn-primary">
-    Uploader la montre
-  </button>
-</form>
+          {/* Marque */}
+          <div className="form-group">
+            <label htmlFor="brand">Marque :</label>
+            <input
+              type="text"
+              id="brand"
+              name="brand"
+              value={formData.brand}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
+          {/* Type */}
+          <div className="form-group">
+            <label htmlFor="type">Type :</label>
+            <input
+              type="text"
+              id="type"
+              name="type"
+              value={formData.type}
+              onChange={handleChange}
+              placeholder="Ex : Chronographe, Classique, Digital..."
+            />
+          </div>
+
+          {/* Type de mouvement */}
+          <div className="form-group">
+            <label htmlFor="type_de_mouvement">Type de mouvement :</label>
+            <input
+              type="text"
+              id="type_de_mouvement"
+              name="type_de_mouvement"
+              value={formData.type_de_mouvement}
+              onChange={handleChange}
+              placeholder="Ex : Automatique, Quartz..."
+            />
+          </div>
+
+          {/* Origine du mouvement */}
+          <div className="form-group">
+            <label htmlFor="origine_mouvement">Origine du mouvement :</label>
+            <input
+              type="text"
+              id="origine_mouvement"
+              name="origine_mouvement"
+              value={formData.origine_mouvement}
+              onChange={handleChange}
+              placeholder="Ex : Suisse, Japonais..."
+            />
+          </div>
+
+          {/* Résistance à l'eau */}
+          <div className="form-group">
+            <label htmlFor="resistance_eau">Résistance à l'eau :</label>
+            <input
+              type="text"
+              id="resistance_eau"
+              name="resistance_eau"
+              value={formData.resistance_eau}
+              onChange={handleChange}
+              placeholder="Ex : 3 ATM, 5 ATM, 100m..."
+            />
+          </div>
+
+          {/* Bracelet */}
+          <div className="form-group">
+            <label htmlFor="bracelet">Bracelet :</label>
+            <input
+              type="text"
+              id="bracelet"
+              name="bracelet"
+              value={formData.bracelet}
+              onChange={handleChange}
+              placeholder="Ex : Bracelet acier, cuir..."
+            />
+          </div>
+
+          {/* Prix */}
+          <div className="form-group">
+            <label htmlFor="price">Prix (€) :</label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              min="0"
+              step="0.01"
+              required
+            />
+          </div>
+
+          {/* URL de référence */}
+          <div className="form-group">
+            <label htmlFor="referenceURL">URL de référence (optionnel) :</label>
+            <input
+              type="url"
+              id="referenceURL"
+              name="referenceURL"
+              value={formData.referenceURL}
+              onChange={handleChange}
+              placeholder="https://exemple.com/montre"
+            />
+          </div>
+
+          {/* Description */}
+          <div className="form-group">
+            <label htmlFor="description">Description :</label>
+            <textarea
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              rows="4"
+              required
+            />
+          </div>
+
+          {/* Images */}
+          <div className="form-group">
+            <label htmlFor="images">Sélectionnez des images :</label>
+            <input
+              type="file"
+              id="images"
+              name="images"
+              onChange={handleChange}
+              multiple
+              accept="image/*"
+            />
+          </div>
+
+          {formData.images.length > 0 && (
+            <div className="image-grid">
+              {formData.images.map((img, index) => (
+                <div
+                  key={`${img.name}-${img.lastModified}`}
+                  className="image-preview-container"
+                >
+                  <button
+                    type="button"
+                    className="image-button"
+                    onClick={() => handleImageClick(URL.createObjectURL(img))}
+                    style={{
+                      padding: 0,
+                      border: "none",
+                      background: "none",
+                      cursor: "pointer",
+                    }}
+                    aria-label={`Agrandir l'image ${img.name}`}
+                  >
+                    <img
+                      src={URL.createObjectURL(img)}
+                      alt={img.name}
+                      className="preview-image"
+                    />
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-delete"
+                    onClick={() => removeImage(index)}
+                  >
+                    ❌
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <button type="submit" className="btn-primary">
+            Uploader la montre
+          </button>
+        </form>
       )}
 
       {activeTab === "manage" && (

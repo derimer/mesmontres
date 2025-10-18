@@ -25,7 +25,8 @@ services:
   database:
     image: mysql/mysql-server:8.0
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uuser", "-ppassword"]
+      test:
+        ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uuser", "-ppassword"]
       interval: 5s
       timeout: 5s
       retries: 20

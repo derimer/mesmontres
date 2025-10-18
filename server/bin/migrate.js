@@ -1,7 +1,6 @@
 // Load environment variables from .env file
 require("../../node_modules/dotenv").config();
 
-
 const fs = require("node:fs");
 const path = require("node:path");
 
