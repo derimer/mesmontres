@@ -23,7 +23,7 @@ export default function MontreDetail() {
     async function fetchMontre() {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/montres/${id}`
+          `${import.meta.env.VITE_API_URL}/api/montres/${id}`
         );
         if (!res.ok) throw new Error("Montre non trouvée");
         const data = await res.json();
@@ -64,7 +64,7 @@ export default function MontreDetail() {
                     className="image-button"
                     onClick={() =>
                       handleImageClick(
-                        `${import.meta.env.VITE_API_URL}/uploads/${image.filename}`
+                        `${import.meta.env.VITE_API_URL}/api/uploads/${image.filename}`
                       )
                     }
                     style={{
@@ -77,14 +77,14 @@ export default function MontreDetail() {
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
                         handleImageClick(
-                          `${import.meta.env.VITE_API_URL}/uploads/${image.filename}`
+                          `${import.meta.env.VITE_API_URL}/api/uploads/${image.filename}`
                         );
                       }
                     }}
                     aria-label={`Agrandir l'image ${index + 1} de ${montre.name}`}
                   >
                     <img
-                      src={`${import.meta.env.VITE_API_URL}/uploads/${image.filename}`}
+                      src={`${import.meta.env.VITE_API_URL}/api/uploads/${image.filename}`}
                       alt={`${montre.name} - Vue ${index + 1}`}
                       className="preview-image"
                     />

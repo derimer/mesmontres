@@ -1,32 +1,42 @@
-#syntax=docker/dockerfile:1.4
-FROM node:20-alpine
+# ===========================
+# Étape 1 : Image de base
+# ===========================
+FROM node:20-alpine3.20
 
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-# hadolint ignore=DL3018
-RUN apk add --no-cache libc6-compat
+# Empêcher les erreurs de permissions PNPM
+RUN npm install -g pnpm@9 && pnpm config -g set store-dir /.pnpm-store
 
+# Crée un dossier de travail
 WORKDIR /usr/src/app
 
-RUN corepack enable && \
-	corepack prepare --activate pnpm@latest && \
-	pnpm config -g set store-dir /.pnpm-store
+# ===========================
+# Étape 2 : Installation des dépendances
+# ===========================
 
-COPY --link ./server/package.json ./server/
-COPY --link ./client/package.json ./client/
+# Copie des fichiers de dépendances
+COPY package*.json ./
 
-RUN cd client && \
-    pnpm fetch && \
-    pnpm install
-RUN cd server && \
-    pnpm fetch && \
-    pnpm install
+# Installation des dépendances via PNPM
+RUN pnpm install --no-frozen-lockfile
 
-COPY ./client ./client
 
-RUN cd client && \
-    pnpm run build
+# ===========================
+# Étape 3 : Copie du code source
+# ===========================
+COPY . .
 
-COPY ./server ./server
-COPY docker-entry.sh .
+# ===========================
+# Étape 4 : Variables d’environnement
+# ===========================
+ENV NODE_ENV=production
+ENV PORT=3310
 
-CMD ["sh","./docker-entry.sh"]
+# ===========================
+# Étape 5 : Exposition du port
+# ===========================
+EXPOSE 3310
+
+# ===========================
+# Étape 6 : Démarrage de l’application
+# ===========================
+CMD ["pnpm", "start"]

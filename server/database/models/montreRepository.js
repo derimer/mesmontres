@@ -6,30 +6,32 @@ class MontreRepository extends AbstractRepository {
     super({ table: "montres" });
   }
 
+  // ✅ Création d'une montre
   async create(montre) {
     const [result] = await this.database.query(
       `INSERT INTO ${this.table} 
-      (name, brand, price, mouvement, materiau_boitier, couleur_cadran, bracelet, resistance_eau, description, referenceURL)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      (reference, brand, type, type_de_mouvement, origine_mouvement, resistance_eau, bracelet, description, referenceURL, price)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        montre.name,
+        montre.reference,
         montre.brand,
-        montre.price,
-        montre.mouvement,
-        montre.materiau_boitier,
-        montre.couleur_cadran,
-        montre.bracelet,
+        montre.type,
+        montre.type_de_mouvement,
+        montre.origine_mouvement,
         montre.resistance_eau,
+        montre.bracelet,
         montre.description,
-        montre.referenceURL, // Ajout du nouveau champ dans l'insertion
+        montre.referenceURL,
+        montre.price,
       ]
     );
     return result.insertId;
   }
 
+  // ✅ Lire une montre par ID (avec images associées)
   async read(id) {
     const [rows] = await this.database.query(
-      `SELECT m.*, i.id as image_id, i.filename as image_filename
+      `SELECT m.*, i.id AS image_id, i.filename AS image_filename
        FROM ${this.table} m
        LEFT JOIN images i ON m.id = i.montre_id
        WHERE m.id = ?`,
@@ -38,23 +40,23 @@ class MontreRepository extends AbstractRepository {
 
     if (rows.length === 0) return null;
 
-    // Construire l'objet montre avec tableau d'images
     const montre = {
       id: rows[0].id,
-      name: rows[0].name,
+      reference: rows[0].reference,
       brand: rows[0].brand,
-      price: rows[0].price,
-      mouvement: rows[0].mouvement,
-      materiau_boitier: rows[0].materiau_boitier,
-      couleur_cadran: rows[0].couleur_cadran,
-      bracelet: rows[0].bracelet,
+      type: rows[0].type,
+      type_de_mouvement: rows[0].type_de_mouvement,
+      origine_mouvement: rows[0].origine_mouvement,
       resistance_eau: rows[0].resistance_eau,
+      bracelet: rows[0].bracelet,
       description: rows[0].description,
       referenceURL: rows[0].referenceURL,
+      price: rows[0].price,
+      created_at: rows[0].created_at,
       images: [],
     };
 
-    // Ajouter les images si elles existent
+    // Ajouter les images
     rows.forEach((row) => {
       if (row.image_id) {
         montre.images.push({
@@ -67,19 +69,18 @@ class MontreRepository extends AbstractRepository {
     return montre;
   }
 
+  // ✅ Lire toutes les montres (avec leurs images)
   async readAll() {
-    // Récupérer toutes les montres avec leurs images
     const [rows] = await this.database.query(`
       SELECT 
         m.*,
-        i.id as image_id,
-        i.filename as image_filename
+        i.id AS image_id,
+        i.filename AS image_filename
       FROM ${this.table} m
       LEFT JOIN images i ON m.id = i.montre_id
       ORDER BY m.created_at DESC
     `);
 
-    // Grouper les images par montre
     const montresMap = new Map();
 
     rows.forEach((row) => {
@@ -88,16 +89,16 @@ class MontreRepository extends AbstractRepository {
       if (!montresMap.has(montreId)) {
         montresMap.set(montreId, {
           id: row.id,
-          name: row.name,
+          reference: row.reference,
           brand: row.brand,
-          price: row.price,
-          mouvement: row.mouvement,
-          materiau_boitier: row.materiau_boitier,
-          couleur_cadran: row.couleur_cadran,
-          bracelet: row.bracelet,
+          type: row.type,
+          type_de_mouvement: row.type_de_mouvement,
+          origine_mouvement: row.origine_mouvement,
           resistance_eau: row.resistance_eau,
+          bracelet: row.bracelet,
           description: row.description,
           referenceURL: row.referenceURL,
+          price: row.price,
           created_at: row.created_at,
           images: [],
         });
@@ -115,11 +116,9 @@ class MontreRepository extends AbstractRepository {
     return Array.from(montresMap.values());
   }
 
+  // ✅ Supprimer une montre et ses images
   async delete(id) {
-    // Supprimer les images associées
     await this.database.query("DELETE FROM images WHERE montre_id = ?", [id]);
-
-    // Supprimer la montre
     const [result] = await this.database.query(
       `DELETE FROM ${this.table} WHERE id = ?`,
       [id]

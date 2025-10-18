@@ -1,5 +1,5 @@
 .montres-container {
-  background-color: #333;
+  background: linear-gradient(90deg, #07070e 60%, #fbaf08 100%);
   text-align: center;
   min-height: 100vh;
   width: 100%;
@@ -28,13 +28,13 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
+  background: linear-gradient(90deg, #07070e 60%, #fbaf08 100%);
 }
 .montres-list h2 {
   color: white;
   margin-bottom: 1rem;
 }
 .montre-card {
-  background: white;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   padding: 1rem;
@@ -222,7 +222,7 @@
     margin: 1rem 0.5rem 1.5rem;
     padding: 0.875rem;
   }
-  .montres-container {
+  .montres-grid {
     grid-template-columns: 1fr 1fr;
   }
   .instructions-content {
@@ -284,7 +284,7 @@
 /* Mobiles */
 @media screen and (max-width: 600px) {
   .montres-container {
-    margin-top: 105px;
+    margin-top: 80px;
     max-width: 100%; /* toujours 100% */
     padding: 0 0.5rem;
     min-width: 420px; /* petite respiration */

@@ -32,7 +32,7 @@ export default function Montres() {
   useEffect(() => {
     async function fetchMontres() {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/montres`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/montres`);
         if (!res.ok) throw new Error("Erreur lors du chargement des montres");
         const data = await res.json();
         setMontres(data);
@@ -94,7 +94,7 @@ export default function Montres() {
                   handleImageClick(
                     e,
                     montre.images && montre.images.length > 0
-                      ? `${import.meta.env.VITE_API_URL}/uploads/${montre.images[0].filename}`
+                      ? `${import.meta.env.VITE_API_URL}/api/uploads/${montre.images[0].filename}`
                       : "/placeholder.jpg"
                   )
                 }
@@ -109,7 +109,7 @@ export default function Montres() {
                 <img
                   src={
                     montre.images && montre.images.length > 0
-                      ? `${import.meta.env.VITE_API_URL}/uploads/${montre.images[0].filename}`
+                      ? `${import.meta.env.VITE_API_URL}/api/uploads/${montre.images[0].filename}`
                       : "/placeholder.jpg"
                   }
                   alt={montre.name}
