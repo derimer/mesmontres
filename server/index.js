@@ -62,7 +62,9 @@ app.use((error, req, res) => {
   res.status(500).json({ error: "Internal server error" });
 });
 
-const PORT = process.env.PORT || 3310;
+
+const PORT = process.env.PORT || 3312;
+>>>>>>> 198df3a (🚀 Déploiement complet du projet Les Garde Temps (frontend + backend))
 app.listen(PORT, () => {
   db.checkConnection(); // Vérifie la connexion DB au démarrage
   console.info(`Server listening on port ${PORT}`);
