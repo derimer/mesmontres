@@ -7,22 +7,32 @@ class MontreRepository extends AbstractRepository {
   }
 
   // ✅ Création d'une montre
+  // ✅ Création d'une montre (mise à jour pour le schéma actuel)
   async create(montre) {
     const [result] = await this.database.query(
-      `INSERT INTO ${this.table} 
-      (reference, brand, type, type_de_mouvement, origine_mouvement, resistance_eau, bracelet, description, referenceURL, price)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO ${this.table} (
+        reference,
+        brand,
+        price,
+        mouvement,
+        materiau_boitier,
+        couleur_cadran,
+        bracelet,
+        resistance_eau,
+        description,
+        referenceURL
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         montre.reference,
         montre.brand,
-        montre.type,
-        montre.type_de_mouvement,
-        montre.origine_mouvement,
-        montre.resistance_eau,
+        montre.price,
+        montre.mouvement,
+        montre.materiau_boitier,
+        montre.couleur_cadran,
         montre.bracelet,
+        montre.resistance_eau,
         montre.description,
         montre.referenceURL,
-        montre.price,
       ]
     );
     return result.insertId;

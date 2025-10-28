@@ -9,13 +9,25 @@ const app = express();
 // Import du client MySQL
 const db = require("./database/client");
 
-// Middleware CORS
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
-    credentials: true,
-  })
-);
+
+
+const allowedOrigins = [
+  "https://les-garde-temps-rieutord.com",
+  "https://www.les-garde-temps-rieutord.com",
+
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS not allowed for this origin"));
+    }
+  },
+  credentials: true,
+}));
+
 
 // Middleware JSON
 app.use(express.json());
@@ -64,10 +76,9 @@ app.use((error, req, res) => {
 
 
 const PORT = process.env.PORT || 3312;
->>>>>>> 198df3a (🚀 Déploiement complet du projet Les Garde Temps (frontend + backend))
 app.listen(PORT, () => {
   db.checkConnection(); // Vérifie la connexion DB au démarrage
-  console.info(`Server listening on port ${PORT}`);
+  console.info(`✅ Server listening on port ${PORT}`);
 });
 
 module.exports = app;

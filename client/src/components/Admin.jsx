@@ -162,7 +162,7 @@ export default function Admin() {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer cette montre ?")) {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/apimontres/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/montres/${id}`,
           {
             method: "DELETE",
           }
