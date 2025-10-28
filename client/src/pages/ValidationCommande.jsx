@@ -9,16 +9,17 @@ function ValidationCommande() {
 
   useEffect(() => {
     if (id) {
-      fetch(`${import.meta.env.VITE_API_URL}/montres/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setReferenceURL(data.referenceURL || "");
-          setLoading(false);
-        })
-        .catch(() => {
-          setReferenceURL("");
-          setLoading(false);
-        });
+      fetch(`http://localhost:3312/api/montres/${id}`)
+  .then((res) => res.json())
+  .then((data) => {
+    setReferenceURL(data.referenceURL || "");
+    setLoading(false);
+  })
+  .catch(() => {
+    setReferenceURL("");
+    setLoading(false);
+  });
+
     }
   }, [id]);
 

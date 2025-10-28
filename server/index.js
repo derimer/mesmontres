@@ -14,19 +14,23 @@ const db = require("./database/client");
 const allowedOrigins = [
   "https://les-garde-temps-rieutord.com",
   "https://www.les-garde-temps-rieutord.com",
-
+  "http://localhost:3000",
 ];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("CORS not allowed for this origin"));
-    }
-  },
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin(origin, callback) {
+      // allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS"));
+    },
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 
 // Middleware JSON

@@ -11,7 +11,7 @@ function Accueil() {
     >
       <div>
         <p className=" description">
-          montres d'occasion{" "}
+          Montres d'occasion
           <span className="highlight">restaurées ou rénovées</span> et{" "}
           <span className="highlight">en parfait état</span>.
         </p>
