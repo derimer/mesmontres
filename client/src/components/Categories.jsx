@@ -1,6 +1,5 @@
 import "./Categories.css";
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const categoriesData = [
@@ -70,6 +69,24 @@ const categoriesData = [
 ];
 
 function Categories() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % categoriesData.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide(
+      (prev) => (prev - 1 + categoriesData.length) % categoriesData.length
+    );
+  };
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+  };
+
+  const family = categoriesData[currentSlide];
+
   return (
     <div className="categories-container">
       <div className="categories-header">
@@ -81,23 +98,20 @@ function Categories() {
         </p>
       </div>
 
-      <Carousel
-        showArrows
-        showStatus
-        showIndicators
-        showThumbs={false}
-        infiniteLoop
-        autoPlay
-        stopOnHover
-        useKeyboardArrows
-        swipeable
-        emulateTouch
-        className="custom-carousel"
-        interval={5000}
-        transitionTime={600}
-      >
-        {categoriesData.map((family) => (
-          <div key={family.id} className="carousel-slide">
+      {/* CAROUSEL PERSONNALISÉ */}
+      <div className="custom-carousel-wrapper">
+        <div className="carousel-container">
+          {/* Flèches de navigation */}
+          <button
+            type="button"
+            className="carousel-arrow carousel-arrow-prev"
+            onClick={prevSlide}
+          >
+            ‹
+          </button>
+
+          {/* Slide actuelle */}
+          <div className="carousel-slide active">
             <div className="category-hero">
               <div className="category-image-container">
                 <img
@@ -125,9 +139,8 @@ function Categories() {
                 </ul>
               </div>
 
-              {/* ✅ Tableau complet : ATM + mètres + usage */}
               <div className="water-resistance-section">
-                <h3>Résistance à l’eau</h3>
+                <h3>Résistance à l'eau</h3>
                 <table className="water-table">
                   <thead>
                     <tr>
@@ -185,8 +198,31 @@ function Categories() {
               </div>
             </div>
           </div>
-        ))}
-      </Carousel>
+
+          <button
+            type="button"
+            className="carousel-arrow carousel-arrow-next"
+            onClick={nextSlide}
+          >
+            ›
+          </button>
+        </div>
+
+        {/* Indicateurs de slide */}
+        <div className="carousel-indicators">
+          {categoriesData.map((category, index) => (
+            <button
+              key={category.id}
+              type="button"
+              className={`carousel-indicator ${
+                index === currentSlide ? "active" : ""
+              }`}
+              onClick={() => goToSlide(index)}
+              aria-label={`Aller à la catégorie ${category.name}`}
+            />
+          ))}
+        </div>
+      </div>
 
       <div className="categories-footer">
         <p>

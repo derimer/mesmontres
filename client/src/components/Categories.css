@@ -1,22 +1,16 @@
 .categories-container {
-  margin-top: 30px;
+  margin: 0 auto;
   padding: 30px;
-  background: #07070e; /* Fond de secours */
+  background: #07070e;
   min-height: 100vh;
-  position: relative;
 }
 
-/* SUPPRIMER le pseudo-élément .categories-container::before */
-
-/* Appliquer le dégradé uniquement aux sections qui en ont besoin */
 .categories-header {
-  width: 100%;
   text-align: center;
   margin-bottom: 40px;
   background: linear-gradient(90deg, #07070e 60%, #fbaf08 100%);
   border-radius: 15px;
-  padding: 20px;
-  color: white;
+  padding: 40px 20px;
 }
 
 .categories-footer {
@@ -28,19 +22,102 @@
   margin-top: 20px;
 }
 
-/* Carousel reste avec fond neutre */
-.custom-carousel {
+/* CAROUSEL PERSONNALISÉ */
+.custom-carousel-wrapper {
   background: #1a1a1a;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   margin-bottom: 40px;
+  position: relative;
 }
 
-/* Le reste du CSS reste inchangé */
+.carousel-container {
+  position: relative;
+  min-height: 400px;
+}
+
 .carousel-slide {
   background: #1a1a1a;
   padding: 0;
+}
+
+/* Flèches de navigation */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid gold;
+  color: gold;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-arrow:hover {
+  background: gold;
+  color: #07070e;
+}
+
+.carousel-arrow-prev {
+  left: 20px;
+}
+
+.carousel-arrow-next {
+  right: 20px;
+}
+
+/* Indicateurs */
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  background: #1a1a1a;
+}
+
+.carousel-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid gold;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.carousel-indicator.active {
+  background: gold;
+}
+
+.carousel-indicator:hover {
+  background: gold;
+}
+
+/* Le reste de votre CSS existant */
+.categories-header h1 {
+  padding-top: 20px;
+  font-size: 2.5rem;
+  color: gold;
+  margin-bottom: 15px;
+  font-weight: 300;
+}
+
+.categories-intro {
+  font-size: 1.1rem;
+  color: #f2f7f7;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
 .category-hero {
@@ -168,6 +245,7 @@
 
 .subcategories-section {
   margin-top: 30px;
+  background: transparent;
 }
 
 .subcategories-title {
@@ -294,36 +372,10 @@
   transform: scale(1.05);
 }
 
-/* React Carousel Customization */
-.carousel .slider-wrapper {
-  border-radius: 15px;
-}
-
-.carousel .slide {
-  background: #1a1a1a;
-}
-
-.carousel .control-dots .dot {
-  background: #666;
-  box-shadow: none;
-}
-
-.carousel .control-dots .dot.selected {
-  background: gold;
-}
-
-.carousel .control-arrow {
-  background: rgba(0, 0, 0, 0.5) !important;
-}
-
-.carousel .control-arrow:hover {
-  background: rgba(251, 175, 8, 0.3) !important;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .categories-header h1 {
-    padding-top: 80px;
+    padding-top: 20px;
     font-size: 2rem;
   }
 
@@ -361,6 +413,20 @@
   .water-table td {
     padding: 0.5rem;
   }
+
+  .carousel-arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .carousel-arrow-prev {
+    left: 10px;
+  }
+
+  .carousel-arrow-next {
+    right: 10px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -373,7 +439,6 @@
   }
 
   .categories-header h1 {
-    padding-top: 60px;
     font-size: 1.8rem;
   }
 

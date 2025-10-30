@@ -16,7 +16,8 @@
   padding: 0.6rem 1.4rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  gap: 150px;
 }
 
 /* --- LOGO --- */
@@ -90,9 +91,7 @@
   color: gold;
   font-size: 1.4rem;
   cursor: pointer;
-  transition:
-    transform 0.2s,
-    color 0.3s;
+  transition: transform 0.2s, color 0.3s;
 }
 
 .icon:hover {
