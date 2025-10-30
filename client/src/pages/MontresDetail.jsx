@@ -8,15 +8,23 @@ export default function MontreDetail() {
   const [montre, setMontre] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [zoomedImage, setZoomedImage] = useState(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Fonctions pour le zoom des images
-  const handleImageClick = (imageSrc) => {
-    setZoomedImage(zoomedImage === imageSrc ? null : imageSrc);
+  // Fonctions pour le carousel
+  const nextImage = () => {
+    if (montre.images && montre.images.length > 0) {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === montre.images.length - 1 ? 0 : prevIndex + 1
+      );
+    }
   };
 
-  const closeZoom = () => {
-    setZoomedImage(null);
+  const prevImage = () => {
+    if (montre.images && montre.images.length > 0) {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === 0 ? montre.images.length - 1 : prevIndex - 1
+      );
+    }
   };
 
   useEffect(() => {
@@ -49,55 +57,45 @@ export default function MontreDetail() {
       </div>
 
       <div className="montre-detail-content">
-        {/* Section Images */}
+        {/* Section Images avec Carousel Simple */}
         <div className="montre-images-section">
           <h2>Images de la montre</h2>
           {montre.images && montre.images.length > 0 ? (
-            <div className="image-grid">
-              {montre.images.map((image, index) => (
-                <div
-                  key={image.id || index}
-                  className="image-preview-container"
+            <div className="image-carousel">
+              <div className="carousel-navigation">
+                <button 
+                  type="button"
+                  className="nav-btn prev-btn"
+                  onClick={prevImage}
+                  aria-label="Image précédente"
                 >
-                  <button
-                    type="button"
-                    className="image-button"
-                    onClick={() =>
-                      handleImageClick(
-                        `${import.meta.env.VITE_API_URL}/api/uploads/${image.filename}`
-                      )
-                    }
-                    style={{
-                      padding: 0,
-                      border: "none",
-                      background: "none",
-                      cursor: "pointer",
-                    }}
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        handleImageClick(
-                          `${import.meta.env.VITE_API_URL}/api/uploads/${image.filename}`
-                        );
-                      }
-                    }}
-                    aria-label={`Agrandir l'image ${index + 1} de ${montre.name}`}
-                  >
-                    <img
-                      src={`${import.meta.env.VITE_API_URL}/api/uploads/${image.filename}`}
-                      alt={`${montre.name} - Vue ${index + 1}`}
-                      className="preview-image"
-                    />
-                  </button>
+                  ‹
+                </button>
+                
+                <div className="main-image-wrapper">
+                  <img
+                    src={`${import.meta.env.VITE_API_URL}/api/uploads/${montre.images[currentImageIndex].filename}`}
+                    alt={`${montre.name} - Vue ${currentImageIndex + 1}`}
+                    className="carousel-image"
+                  />
                 </div>
-              ))}
+                
+                <button 
+                  type="button"
+                  className="nav-btn next-btn"
+                  onClick={nextImage}
+                  aria-label="Image suivante"
+                >
+                  ›
+                </button>
+              </div>
             </div>
           ) : (
             <p className="no-image">Aucune image disponible</p>
           )}
         </div>
 
-        {/* Section Caractéristiques */}
+        {/* Section Caractéristiques (inchangée) */}
         <div className="montre-info-section">
           <h2>Caractéristiques</h2>
           <div className="montre-info-card">
@@ -141,71 +139,13 @@ export default function MontreDetail() {
             <button
               type="button"
               className="btn-buy"
-              onClick={() => navigate(`/validation-commande/${id}`)} // ← AJOUT DE L'ID
+              onClick={() => navigate(`/validation-commande/${id}`)}
             >
               Acheter Maintenant - {montre.price} €
             </button>
           </div>
         </div>
       </div>
-
-      {/* Modal pour l'image agrandie */}
-      {zoomedImage && (
-        <div
-          className="image-modal"
-          onClick={closeZoom}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === "Escape") closeZoom();
-          }}
-        >
-          <button
-            type="button"
-            className="image-modal-content"
-            onClick={(e) => e.stopPropagation()}
-            onKeyDown={(e) => {
-              if (e.key === "Escape") closeZoom();
-            }}
-            tabIndex={0}
-            aria-label="Contenu du modal d'image agrandie"
-            style={{
-              background: "none",
-              border: "none",
-              padding: 0,
-              width: "100%",
-            }}
-          >
-            <button
-              type="button"
-              className="zoomed-image-button"
-              onClick={closeZoom}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " " || e.key === "Escape")
-                  closeZoom();
-              }}
-              tabIndex={0}
-              aria-label="Fermer l'image agrandie"
-              style={{
-                background: "none",
-                border: "none",
-                padding: 0,
-                cursor: "pointer",
-              }}
-            >
-              <img
-                src={zoomedImage}
-                alt="Montre agrandie"
-                className="zoomed-image"
-                style={{ pointerEvents: "none" }}
-              />
-              <span className="close-modal" aria-hidden="true">
-                ×
-              </span>
-            </button>
-          </button>
-        </div>
-      )}
     </div>
   );
 }
