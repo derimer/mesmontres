@@ -1,11 +1,12 @@
 /* eslint-disable camelcase */
 
+require("dotenv").config({ path: "./server/.env" });
 const nodemailer = require("nodemailer");
+const db = require("../../database/client"); // ✅ importe la connexion MySQL
 const ContactRepository = require("../../database/models/contactRepository");
 
-const contactRepository = new ContactRepository();
+const contactRepository = new ContactRepository(db); // ✅ injecte db ici
 
-// Stocker un message et envoyer un mail à l’administrateur
 exports.storeMessage = async (req, res) => {
   const { name, email, subject, message } = req.body;
   const ip_address = req.ip;
@@ -16,32 +17,32 @@ exports.storeMessage = async (req, res) => {
   }
 
   try {
-    // 💾 Enregistrer dans la base
+    // 💾 Enregistre le message dans la base
     const id = await contactRepository.create({
       name,
       email,
       subject,
       message,
-      ip_address,
-      user_agent,
+      ipAddress: ip_address,
+      userAgent: user_agent,
     });
 
-    console.info("Message saved successfully with ID:", id);
+    console.info("✅ Message enregistré dans la base avec ID:", id);
 
-    // ✉️ Envoi de mail à l’administrateur
+    // ✉️ Envoi du mail à l’administrateur
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com", // ou ton serveur SMTP
-      port: 587,
-      secure: false,
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
       auth: {
-        user: process.env.ADMIN_EMAIL, // ton adresse email admin
-        pass: process.env.ADMIN_PASSWORD, // mot de passe ou app password
+        user: process.env.ADMIN_EMAIL,
+        pass: process.env.ADMIN_PASSWORD,
       },
     });
 
     const mailOptions = {
       from: `"Formulaire Contact" <${process.env.ADMIN_EMAIL}>`,
-      to: process.env.ADMIN_EMAIL, // l’admin reçoit le message
+      to: process.env.ADMIN_EMAIL,
       subject: `📩 Nouveau message de ${name} - ${subject}`,
       text: `
 Vous avez reçu un nouveau message depuis le formulaire de contact :
