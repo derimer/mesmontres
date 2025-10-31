@@ -10,16 +10,15 @@ function ValidationCommande() {
   useEffect(() => {
     if (id) {
       fetch(`http://localhost:3312/api/montres/${id}`)
-  .then((res) => res.json())
-  .then((data) => {
-    setReferenceURL(data.referenceURL || "");
-    setLoading(false);
-  })
-  .catch(() => {
-    setReferenceURL("");
-    setLoading(false);
-  });
-
+        .then((res) => res.json())
+        .then((data) => {
+          setReferenceURL(data.referenceURL || "");
+          setLoading(false);
+        })
+        .catch(() => {
+          setReferenceURL("");
+          setLoading(false);
+        });
     }
   }, [id]);
 

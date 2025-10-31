@@ -26,5 +26,6 @@
         "assert": "either"
       }
     ]
-  }
+  },
+  "ignorePatterns": ["dist/**", "build/**", "*.min.js"]
 }

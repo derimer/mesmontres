@@ -9,8 +9,6 @@ const app = express();
 // Import du client MySQL
 const db = require("./database/client");
 
-
-
 const allowedOrigins = [
   "https://les-garde-temps-rieutord.com",
   "https://www.les-garde-temps-rieutord.com",
@@ -31,7 +29,6 @@ app.use(
     credentials: true,
   })
 );
-
 
 // Middleware JSON
 app.use(express.json());
@@ -77,7 +74,6 @@ app.use((error, req, res) => {
   console.error(error);
   res.status(500).json({ error: "Internal server error" });
 });
-
 
 const PORT = process.env.PORT || 3312;
 app.listen(PORT, () => {

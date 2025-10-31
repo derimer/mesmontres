@@ -63,7 +63,7 @@ export default function MontreDetail() {
           {montre.images && montre.images.length > 0 ? (
             <div className="image-carousel">
               <div className="carousel-navigation">
-                <button 
+                <button
                   type="button"
                   className="nav-btn prev-btn"
                   onClick={prevImage}
@@ -71,7 +71,7 @@ export default function MontreDetail() {
                 >
                   ‹
                 </button>
-                
+
                 <div className="main-image-wrapper">
                   <img
                     src={`${import.meta.env.VITE_API_URL}/api/uploads/${montre.images[currentImageIndex].filename}`}
@@ -79,8 +79,8 @@ export default function MontreDetail() {
                     className="carousel-image"
                   />
                 </div>
-                
-                <button 
+
+                <button
                   type="button"
                   className="nav-btn next-btn"
                   onClick={nextImage}

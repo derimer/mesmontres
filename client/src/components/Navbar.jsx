@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaUser, FaSignInAlt, FaBars, FaTimes } from "react-icons/fa";
+import { FaUser, FaBars, FaTimes } from "react-icons/fa";
 import { useState } from "react";
 import "./Navbar.css";
 
