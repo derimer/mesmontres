@@ -77,7 +77,7 @@ export default function Contact() {
       <div className="contact-header">
         <h1>Contactez-moi</h1>
         <p className="contact-subtitle">
-          Une question sur nos montres ? Je vous répondrai sous 24h
+          Une question sur mes montres ? Je vous répondrai sous 24h
         </p>
       </div>
 
@@ -148,7 +148,7 @@ export default function Contact() {
                   required
                   rows="6"
                   className="form-textarea"
-                  placeholder="Décrivez-nous votre demande en détail..."
+                  placeholder="Décrivez-moi votre demande en détail..."
                 />
               </div>
 
