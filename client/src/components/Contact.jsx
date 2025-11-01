@@ -5,7 +5,7 @@ export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    subject: "information", // valeur par défaut compatible avec ENUM
+    subject: "", // valeur par défaut compatible avec ENUM
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -121,20 +121,21 @@ export default function Contact() {
 
               <div className="form-group">
                 <label htmlFor="subject">référence *</label>
-                <select
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  required
-                  className="form-input"
-                >
-                  <option value="information">Demande d'information</option>
-                  <option value="achat">Achat d'une montre</option>
-                  <option value="support">Support technique</option>
-                  <option value="partenariat">Partenariat</option>
-                  <option value="autre">Autre</option>
-                </select>
+               <div className="form-group">  
+  <input
+    type="text"
+    id="subject"
+    name="subject"
+    value={formData.subject}
+    onChange={handleChange}
+    placeholder="Entrez la référence à 9 chiffres de la montre"
+    required
+    className="form-input"
+    pattern="\d{9}"
+    title="La référence doit contenir exactement 9 chiffres"
+  />
+</div>
+
               </div>
 
               <div className="form-group">

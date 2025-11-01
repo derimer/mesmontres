@@ -203,27 +203,55 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.92);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  cursor: pointer;
+  padding: 2rem;
+  backdrop-filter: blur(5px); /* Effet de flou élégant */
 }
 
 .image-modal-content {
   position: relative;
-  max-width: 90%;
-  max-height: 90%;
+  max-width: min(1200px, 90vw);
+  max-height: min(800px, 90vh);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0a0a0a;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 215, 0, 0.1);
 }
-
 .zoomed-image {
-  max-width: 70%;
-  max-height: 70%;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
   border-radius: 12px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
 }
+
+.close-modal {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: all 0.3s ease;
+}
+
 
 /* === ZOOM IMAGE MODAL === */
 .zoom-modal {
@@ -247,7 +275,11 @@
   background: transparent;
   border: none;
 }
-
+.close-modal:hover {
+  background: white;
+  color: black;
+  transform: scale(1.1);
+}
 .zoomed-image {
   width: 100%;
   height: auto;
@@ -266,17 +298,13 @@
   display: inline-block;
   letter-spacing: 0.5px;
 }
-.close-modal {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 2rem;
-  background: none;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
 
+@media (min-width: 1600px) {
+  .image-modal-content {
+    max-width: min(80%, 1400px); /* Encore plus restrictif sur très grands écrans */
+    max-height: min(80%, 900px);
+  }
+}
 /* Responsive Design */
 @media (max-width: 968px) {
   .montre-detail-content {
