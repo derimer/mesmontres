@@ -228,7 +228,16 @@
   justify-content: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
-
+.image-button {
+  width: 70%;
+  height: 70%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  /* border-radius: 8px; */
+  overflow: hidden;
+}
 .close-modal:hover {
   background: #f0f0f0;
 }

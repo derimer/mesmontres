@@ -1,18 +1,22 @@
 -- Table principale des montres
 CREATE TABLE IF NOT EXISTS montres (
   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  name VARCHAR(255) NOT NULL,
+  reference VARCHAR(255),
   brand VARCHAR(255) NOT NULL,
+  type VARCHAR(100),
+  type_de_mouvement VARCHAR(100),
+  origine_mouvement VARCHAR(100),
   price INT NOT NULL,
   mouvement VARCHAR(100) DEFAULT 'Automatique',
   materiau_boitier VARCHAR(100) DEFAULT 'Acier inoxydable',
   couleur_cadran VARCHAR(50) DEFAULT 'Noir',
   bracelet VARCHAR(100) DEFAULT 'Bracelet acier',
-  resistance_eau VARCHAR(50) DEFAULT '3 ATM', -- 🆕 renommé et converti
+  resistance_eau VARCHAR(50) DEFAULT '3 ATM',
   description TEXT,
-  referenceURL VARCHAR(255), -- lien externe (ex: annonce Bon Coin)
+  referenceURL VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
 -- Table des images liées à une montre
 CREATE TABLE IF NOT EXISTS images (

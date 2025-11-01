@@ -1,4 +1,3 @@
-// server/models/montreRepository.js
 const AbstractRepository = require("./AbstractRepository");
 
 class MontreRepository extends AbstractRepository {
@@ -6,13 +5,15 @@ class MontreRepository extends AbstractRepository {
     super({ table: "montres" });
   }
 
-  // ✅ Création d'une montre
-  // ✅ Création d'une montre (mise à jour pour le schéma actuel)
+  // ✅ Création d'une montre (mise à jour complète avec tous les champs du formulaire Admin)
   async create(montre) {
     const [result] = await this.database.query(
       `INSERT INTO ${this.table} (
         reference,
         brand,
+        type,
+        type_de_mouvement,
+        origine_mouvement,
         price,
         mouvement,
         materiau_boitier,
@@ -21,10 +22,13 @@ class MontreRepository extends AbstractRepository {
         resistance_eau,
         description,
         referenceURL
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         montre.reference,
         montre.brand,
+        montre.type,
+        montre.type_de_mouvement,
+        montre.origine_mouvement,
         montre.price,
         montre.mouvement,
         montre.materiau_boitier,
@@ -57,16 +61,19 @@ class MontreRepository extends AbstractRepository {
       type: rows[0].type,
       type_de_mouvement: rows[0].type_de_mouvement,
       origine_mouvement: rows[0].origine_mouvement,
-      resistance_eau: rows[0].resistance_eau,
+      price: rows[0].price,
+      mouvement: rows[0].mouvement,
+      materiau_boitier: rows[0].materiau_boitier,
+      couleur_cadran: rows[0].couleur_cadran,
       bracelet: rows[0].bracelet,
+      resistance_eau: rows[0].resistance_eau,
       description: rows[0].description,
       referenceURL: rows[0].referenceURL,
-      price: rows[0].price,
       created_at: rows[0].created_at,
       images: [],
     };
 
-    // Ajouter les images
+    // Ajouter les images associées
     rows.forEach((row) => {
       if (row.image_id) {
         montre.images.push({
@@ -104,11 +111,14 @@ class MontreRepository extends AbstractRepository {
           type: row.type,
           type_de_mouvement: row.type_de_mouvement,
           origine_mouvement: row.origine_mouvement,
-          resistance_eau: row.resistance_eau,
+          price: row.price,
+          mouvement: row.mouvement,
+          materiau_boitier: row.materiau_boitier,
+          couleur_cadran: row.couleur_cadran,
           bracelet: row.bracelet,
+          resistance_eau: row.resistance_eau,
           description: row.description,
           referenceURL: row.referenceURL,
-          price: row.price,
           created_at: row.created_at,
           images: [],
         });
@@ -133,6 +143,46 @@ class MontreRepository extends AbstractRepository {
       `DELETE FROM ${this.table} WHERE id = ?`,
       [id]
     );
+    return result;
+  }
+
+  // ✅ Mettre à jour une montre
+  async update(id, data) {
+    const [result] = await this.database.query(
+      `UPDATE ${this.table}
+       SET 
+         reference = ?,
+         brand = ?,
+         type = ?,
+         type_de_mouvement = ?,
+         origine_mouvement = ?,
+         price = ?,
+         mouvement = ?,
+         materiau_boitier = ?,
+         couleur_cadran = ?,
+         bracelet = ?,
+         resistance_eau = ?,
+         description = ?,
+         referenceURL = ?
+       WHERE id = ?`,
+      [
+        data.reference,
+        data.brand,
+        data.type,
+        data.type_de_mouvement,
+        data.origine_mouvement,
+        data.price,
+        data.mouvement,
+        data.materiau_boitier,
+        data.couleur_cadran,
+        data.bracelet,
+        data.resistance_eau,
+        data.description,
+        data.referenceURL,
+        id,
+      ]
+    );
+
     return result;
   }
 }

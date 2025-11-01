@@ -52,11 +52,10 @@ export default function Montres() {
     <div className="montres-container">
       <h1>Mes Montres</h1>
       <p className="intro-text">
-        Bienvenue dans la section Montres ! Découvrez ma collection exclusive de
-        garde-temps, alliant élégance et précision. Chaque montre est
-        soigneusement sélectionnée pour répondre aux goûts les plus raffinés.
-        Explorez mes modèles et trouvez la montre parfaite qui complétera votre
-        style avec sophistication.
+        Bienvenue dans la section montres. Chacune d'elles a fait- l'objet d'un
+        entretien complet et selon son état, des travaux nécessaires, afin de
+        vous proposer un garde-temps en parfait état d'aspect et de
+        fonctionnement.
       </p>
 
       {/* Message d'instructions */}
@@ -94,7 +93,9 @@ export default function Montres() {
                   handleImageClick(
                     e,
                     montre.images && montre.images.length > 0
-                      ? `${import.meta.env.VITE_API_URL}/api/uploads/${montre.images[0].filename}`
+                      ? `${import.meta.env.VITE_API_URL}/api/uploads/${
+                          montre.images[0].filename
+                        }`
                       : "/placeholder.jpg"
                   )
                 }
@@ -109,7 +110,9 @@ export default function Montres() {
                 <img
                   src={
                     montre.images && montre.images.length > 0
-                      ? `${import.meta.env.VITE_API_URL}/api/uploads/${montre.images[0].filename}`
+                      ? `${import.meta.env.VITE_API_URL}/api/uploads/${
+                          montre.images[0].filename
+                        }`
                       : "/placeholder.jpg"
                   }
                   alt={montre.name}

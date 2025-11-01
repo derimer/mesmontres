@@ -91,7 +91,9 @@
   color: gold;
   font-size: 1.4rem;
   cursor: pointer;
-  transition: transform 0.2s, color 0.3s;
+  transition:
+    transform 0.2s,
+    color 0.3s;
 }
 
 .icon:hover {

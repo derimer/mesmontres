@@ -3,6 +3,8 @@
   min-height: 100vh;
   padding: 2rem;
   color: white;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .montre-detail-header {
@@ -140,11 +142,17 @@
 
 /* Section description */
 .description-section {
+  text-align: left;
   margin-bottom: 2rem;
   background-color: black;
   line-height: 2.2;
 }
 
+.montre-infos {
+  text-align: center;
+  background: linear-gradient(90deg, #07070e 60%, #fbaf08 100%);
+  color: white;
+}
 .description-section h3 {
   color: gold;
   margin-bottom: 1rem;
@@ -153,7 +161,7 @@
 
 .description-section p {
   white-space: pre-wrap;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 100;
   color: #fafbf7;
   background: rgba(255, 255, 255, 0.05);
@@ -210,36 +218,63 @@
 }
 
 .zoomed-image {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 70%;
+  max-height: 70%;
   object-fit: contain;
   border-radius: 12px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
 }
 
-.close-modal {
-  position: absolute;
-  top: -20px;
-  right: -20px;
-  background: transparent;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
+/* === ZOOM IMAGE MODAL === */
+.zoom-modal {
+  position: fixed; /* <-- pour que le modal soit indépendant du flux */
+  inset: 0; /* équivaut à top:0; left:0; right:0; bottom:0 */
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  color: transparent;
-  transition: all 0.3s ease;
+  align-items: center; /* centre verticalement */
+  justify-content: center; /* centre horizontalement */
+  z-index: 2000; /* au-dessus du reste */
+  cursor: zoom-out; /* indique qu’un clic referme */
 }
 
-.close-modal:hover {
-  background: #f0f0f0;
-  transform: scale(1.1);
+.zoom-modal-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  border: none;
+}
+
+.zoomed-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+}
+.carousel-indicator {
+  text-align: center;
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.7); /* Blanc transparent au lieu d'or */
+  font-size: 0.8rem;
+  font-weight: 300;
+  padding: 0.3rem 0.6rem;
+  background: rgba(0, 0, 0, 0.3); /* Fond sombre discret */
+  border-radius: 12px;
+  display: inline-block;
+  letter-spacing: 0.5px;
+}
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 2rem;
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
 /* Responsive Design */
@@ -336,6 +371,7 @@
 }
 
 .carousel-navigation {
+  margin-top: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -412,7 +448,7 @@
 
 @media (max-width: 480px) {
   .main-image-wrapper {
-    max-width: 300px;
+    max-width: 200px;
     padding: 0.75rem;
   }
 

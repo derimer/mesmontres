@@ -7,15 +7,18 @@ export default function Admin() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: "",
+    reference: "",
     brand: "",
+    type: "Classique",
+    type_de_mouvement: "Automatique",
+    origine_mouvement: "Suisse",
     price: "",
     images: [],
     mouvement: "Automatique",
     materiau_boitier: "Acier inoxydable",
     couleur_cadran: "Noir",
     bracelet: "Bracelet acier",
-    resistance_eau: "50m",
+    resistance_eau: "3 ATM",
     description: "",
     referenceURL: "",
   });
@@ -27,6 +30,8 @@ export default function Admin() {
   const [zoomedImage, setZoomedImage] = useState(null);
   const [contactMessages, setContactMessages] = useState([]);
   const [loadingMessages, setLoadingMessages] = useState(true);
+  const [editingMontre, setEditingMontre] = useState(null); // Nouvel état pour la montre en cours d'édition
+  const [existingImages, setExistingImages] = useState([]); // Pour gérer les images existantes lors de l'édition
 
   // Vérification de l'authentification
   useEffect(() => {
@@ -59,6 +64,7 @@ export default function Admin() {
       setLoading(false);
     }
   };
+
   const fetchMessages = async () => {
     setLoadingMessages(true);
     try {
@@ -75,6 +81,7 @@ export default function Admin() {
       setLoadingMessages(false);
     }
   };
+
   useEffect(() => {
     fetchMontres();
     fetchMessages();
@@ -98,12 +105,69 @@ export default function Admin() {
     setFormData({ ...formData, images: newImages });
   };
 
+  const removeExistingImage = (index) => {
+    const newExistingImages = [...existingImages];
+    newExistingImages.splice(index, 1);
+    setExistingImages(newExistingImages);
+  };
+
   const handleImageClick = (imageSrc) => {
     setZoomedImage(zoomedImage === imageSrc ? null : imageSrc);
   };
 
   const closeZoom = () => {
     setZoomedImage(null);
+  };
+
+  // Fonction pour initialiser l'édition d'une montre
+  const startEditing = (montre) => {
+    setEditingMontre(montre);
+    setExistingImages(montre.images || []);
+
+    setFormData({
+      reference: montre.reference || "",
+      brand: montre.brand || "",
+      type: montre.type || "Classique",
+      type_de_mouvement: montre.type_de_mouvement || "Automatique",
+      origine_mouvement: montre.origine_mouvement || "Suisse",
+      price: montre.price || "",
+      images: [],
+      mouvement: montre.mouvement || "Automatique",
+      materiau_boitier: montre.materiau_boitier || "Acier inoxydable",
+      couleur_cadran: montre.couleur_cadran || "Noir",
+      bracelet: montre.bracelet || "Bracelet acier",
+      resistance_eau: montre.resistance_eau || "3 ATM",
+      description: montre.description || "",
+      referenceURL: montre.referenceURL || "",
+    });
+
+    setActiveTab("upload");
+    setFeedbackMessage(
+      `Édition de la montre: ${montre.reference || montre.name}`
+    );
+  };
+
+  // Fonction pour annuler l'édition
+  const cancelEditing = () => {
+    setEditingMontre(null);
+    setExistingImages([]);
+    setFormData({
+      reference: "",
+      brand: "",
+      type: "Classique",
+      type_de_mouvement: "Automatique",
+      origine_mouvement: "Suisse",
+      price: "",
+      images: [],
+      mouvement: "Automatique",
+      materiau_boitier: "Acier inoxydable",
+      couleur_cadran: "Noir",
+      bracelet: "Bracelet acier",
+      resistance_eau: "3 ATM",
+      description: "",
+      referenceURL: "",
+    });
+    setFeedbackMessage("Édition annulée.");
   };
 
   const handleSubmit = async (e) => {
@@ -119,29 +183,60 @@ export default function Admin() {
       }
     });
 
+    // Ajouter les images existantes qui n'ont pas été supprimées
+    existingImages.forEach((img) => {
+      formDataToSend.append("existingImages", JSON.stringify(img));
+    });
+
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/montres`, {
-        method: "POST",
-        body: formDataToSend,
-      });
+      let res;
+
+      if (editingMontre) {
+        // Mode édition - PUT
+        res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/montres/${editingMontre.id}`,
+          {
+            method: "PUT",
+            body: formDataToSend,
+          }
+        );
+      } else {
+        // Mode création - POST
+        res = await fetch(`${import.meta.env.VITE_API_URL}/api/montres`, {
+          method: "POST",
+          body: formDataToSend,
+        });
+      }
 
       if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
 
       await res.json();
-      setFeedbackMessage("Montre ajoutée avec succès !");
+      setFeedbackMessage(
+        editingMontre
+          ? "Montre modifiée avec succès !"
+          : "Montre ajoutée avec succès !"
+      );
+
+      // Réinitialisation
       setFormData({
-        name: "",
+        reference: "",
         brand: "",
+        type: "Classique",
+        type_de_mouvement: "Automatique",
+        origine_mouvement: "Suisse",
         price: "",
         images: [],
         mouvement: "Automatique",
         materiau_boitier: "Acier inoxydable",
         couleur_cadran: "Noir",
         bracelet: "Bracelet acier",
-        resistance_eau: "50m",
+        resistance_eau: "3 ATM",
         description: "",
         referenceURL: "",
       });
+      setEditingMontre(null);
+      setExistingImages([]);
+
       setActiveTab("manage");
       await fetchMontres();
     } catch (error) {
@@ -178,6 +273,7 @@ export default function Admin() {
       }
     }
   };
+
   const deleteMessage = async (id) => {
     if (window.confirm("Voulez-vous vraiment supprimer ce message ?")) {
       try {
@@ -189,7 +285,7 @@ export default function Admin() {
         );
         if (res.ok) {
           setFeedbackMessage("Message supprimé avec succès !");
-          await fetchMessages(); // recharge la liste
+          await fetchMessages();
         } else {
           setFeedbackMessage("Erreur lors de la suppression du message.");
         }
@@ -202,7 +298,9 @@ export default function Admin() {
   return (
     <div className="admin-container">
       <div className="admin-header">
-        <h1 className="admin-title">Administration des Montres</h1>
+        <h1 className="admin-title">
+          {editingMontre ? "Modifier une montre" : "Administration des Montres"}
+        </h1>
         <button type="button" onClick={handleLogout} className="btn-logout">
           Déconnexion
         </button>
@@ -214,19 +312,45 @@ export default function Admin() {
           className={`admin-tab ${activeTab === "upload" ? "active" : ""}`}
           onClick={() => setActiveTab("upload")}
         >
-          Ajouter une montre
+          {editingMontre ? "Modifier la montre" : "Ajouter une montre"}
         </button>
         <button
           type="button"
           className={`admin-tab ${activeTab === "manage" ? "active" : ""}`}
-          onClick={() => setActiveTab("manage")}
+          onClick={() => {
+            if (editingMontre) {
+              if (
+                window.confirm(
+                  "Voulez-vous annuler les modifications en cours ?"
+                )
+              ) {
+                cancelEditing();
+                setActiveTab("manage");
+              }
+            } else {
+              setActiveTab("manage");
+            }
+          }}
         >
           Gérer les montres ({montres.length})
         </button>
         <button
           type="button"
           className={`admin-tab ${activeTab === "messages" ? "active" : ""}`}
-          onClick={() => setActiveTab("messages")}
+          onClick={() => {
+            if (editingMontre) {
+              if (
+                window.confirm(
+                  "Voulez-vous annuler les modifications en cours ?"
+                )
+              ) {
+                cancelEditing();
+                setActiveTab("messages");
+              }
+            } else {
+              setActiveTab("messages");
+            }
+          }}
         >
           Messages ({contactMessages.length})
         </button>
@@ -242,6 +366,22 @@ export default function Admin() {
 
       {activeTab === "upload" && (
         <form className="upload-form" onSubmit={handleSubmit}>
+          {editingMontre && (
+            <div className="editing-notice">
+              <p>
+                ✏️ Vous êtes en train de modifier la montre:{" "}
+                <strong>{editingMontre.reference || editingMontre.name}</strong>
+              </p>
+              <button
+                type="button"
+                onClick={cancelEditing}
+                className="btn-cancel"
+              >
+                Annuler l'édition
+              </button>
+            </div>
+          )}
+
           {/* Référence */}
           <div className="form-group">
             <label htmlFor="reference">Référence de la montre :</label>
@@ -374,9 +514,49 @@ export default function Admin() {
             />
           </div>
 
-          {/* Images */}
+          {/* Images existantes (uniquement en mode édition) */}
+          {editingMontre && existingImages.length > 0 && (
+            <div className="form-group">
+              <label htmlFor="images">Images existantes :</label>
+              <div className="image-grid">
+                {existingImages.map((img, index) => (
+                  <div key={img.id} className="image-preview-container">
+                    <button
+                      type="button"
+                      className="image-button"
+                      onClick={() =>
+                        handleImageClick(
+                          `${import.meta.env.VITE_API_URL}/api/uploads/${img.filename}`
+                        )
+                      }
+                      aria-label={`Agrandir l'image ${img.filename}`}
+                    >
+                      <img
+                        src={`${import.meta.env.VITE_API_URL}/api/uploads/${img.filename}`}
+                        alt={`Existante ${index + 1}`}
+                        className="preview-image"
+                      />
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-delete"
+                      onClick={() => removeExistingImage(index)}
+                    >
+                      ❌
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Ajout de nouvelles images */}
           <div className="form-group">
-            <label htmlFor="images">Sélectionnez des images :</label>
+            <label htmlFor="images">
+              {editingMontre
+                ? "Ajouter de nouvelles images :"
+                : "Sélectionnez des images :"}
+            </label>
             <input
               type="file"
               id="images"
@@ -387,46 +567,54 @@ export default function Admin() {
             />
           </div>
 
+          {/* Prévisualisation des nouvelles images */}
           {formData.images.length > 0 && (
-            <div className="image-grid">
-              {formData.images.map((img, index) => (
-                <div
-                  key={`${img.name}-${img.lastModified}`}
-                  className="image-preview-container"
-                >
-                  <button
-                    type="button"
-                    className="image-button"
-                    onClick={() => handleImageClick(URL.createObjectURL(img))}
-                    style={{
-                      padding: 0,
-                      border: "none",
-                      background: "none",
-                      cursor: "pointer",
-                    }}
-                    aria-label={`Agrandir l'image ${img.name}`}
+            <div className="form-group">
+              <label htmlFor="images">Nouvelles images :</label>
+              <div className="image-grid">
+                {formData.images.map((img, index) => (
+                  <div
+                    key={`${img.name}-${img.lastModified}`}
+                    className="image-preview-container"
                   >
-                    <img
-                      src={URL.createObjectURL(img)}
-                      alt={img.name}
-                      className="preview-image"
-                    />
-                  </button>
-                  <button
-                    type="button"
-                    className="btn-delete"
-                    onClick={() => removeImage(index)}
-                  >
-                    ❌
-                  </button>
-                </div>
-              ))}
+                    <button
+                      type="button"
+                      className="image-button"
+                      onClick={() => handleImageClick(URL.createObjectURL(img))}
+                      aria-label={`Agrandir l'image ${img.name}`}
+                    >
+                      <img
+                        src={URL.createObjectURL(img)}
+                        alt={img.name}
+                        className="preview-image"
+                      />
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-delete"
+                      onClick={() => removeImage(index)}
+                    >
+                      ❌
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
           <button type="submit" className="btn-primary">
-            Uploader la montre
+            {editingMontre ? "Modifier la montre" : "Uploader la montre"}
           </button>
+
+          {editingMontre && (
+            <button
+              type="button"
+              onClick={cancelEditing}
+              className="btn-cancel"
+            >
+              Annuler
+            </button>
+          )}
         </form>
       )}
 
@@ -491,8 +679,12 @@ export default function Admin() {
                     <p className="name1" style={{ color: "gold" }}>
                       Marque : {montre.brand}
                     </p>
+                    <p>Référence : {montre.reference}</p>
                     <p>Prix : {montre.price} €</p>
+                    <p>Type : {montre.type}</p>
                     <p>Mouvement : {montre.mouvement}</p>
+                    <p>Type mouvement : {montre.type_de_mouvement}</p>
+                    <p>Origine mouvement : {montre.origine_mouvement}</p>
                     <p>Boîtier : {montre.materiau_boitier}</p>
                     <p>Cadran : {montre.couleur_cadran}</p>
                     <p>Bracelet : {montre.bracelet}</p>
@@ -500,6 +692,13 @@ export default function Admin() {
                     <p>{montre.description}</p>
                   </div>
                   <div className="montre-actions">
+                    <button
+                      type="button"
+                      className="btn-edit"
+                      onClick={() => startEditing(montre)}
+                    >
+                      Modifier
+                    </button>
                     <button
                       type="button"
                       className="btn-delete"

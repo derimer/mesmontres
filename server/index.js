@@ -45,7 +45,7 @@ app.use("/api/uploads", express.static(uploadsPath));
 // =============================
 const imageRoutes = require("./app/routers/api/images/router");
 const montresRoutes = require("./app/routers/api/montres/router");
-const contactRouter = require("./app/routers/api/contact/router")(db);
+const contactRouter = require("./app/routers/api/contact/router");
 
 // Auth
 const loginRouter = require("./app/auth");

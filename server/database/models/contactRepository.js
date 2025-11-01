@@ -1,9 +1,8 @@
 const AbstractRepository = require("./AbstractRepository");
 
 class ContactRepository extends AbstractRepository {
-  constructor(db) {
-    super({ table: "contact_messages" });
-    this.database = db; // ⚠️ Important pour que create() fonctionne
+  constructor() {
+    super({ table: "contact_messages" }); // ou "contact" selon ton schéma exact
   }
 
   async create({ name, email, subject, message, ipAddress, userAgent }) {
@@ -23,12 +22,13 @@ class ContactRepository extends AbstractRepository {
     return rows;
   }
 
-  async deleteMessage(id) {
+  // ✅ Supprimer un message par ID (nouvelle méthode)
+  async delete(id) {
     const [result] = await this.database.query(
       `DELETE FROM ${this.table} WHERE id = ?`,
       [id]
     );
-    return result.affectedRows;
+    return result;
   }
 }
 

@@ -29,7 +29,7 @@ router.get("/:id", montreController.getMontreById);
 
 // GET -> récupérer toutes les montres avec images
 router.get("/", montreController.getAllMontres);
-
+router.put("/:id", upload.array("images"), montreController.update);
 // DELETE -> supprimer une montre et ses images
 router.delete("/:id", montreController.deleteMontre);
 
