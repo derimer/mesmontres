@@ -10,10 +10,8 @@ function ValidationCommande() {
 
   useEffect(() => {
     if (id) {
-<<<<<<< Updated upstream
-     fetch(`${import.meta.env.VITE_API_URL}/montres/${id}`)
-        .then((res) => res.json())
-=======
+
+
       fetch(`${import.meta.env.VITE_API_URL}/api/montres/${id}`)
         .then((res) => {
           if (!res.ok) {
@@ -21,7 +19,7 @@ function ValidationCommande() {
           }
           return res.json();
         })
->>>>>>> Stashed changes
+
         .then((data) => {
           console.log("✅ Réponse API :", data); // <--- vérifie dans la console du navigateur
           setReferenceURL(data.referenceURL || "");
