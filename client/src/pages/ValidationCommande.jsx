@@ -5,7 +5,7 @@ import "./ValidationCommande.css";
 function ValidationCommande() {
   const { id } = useParams();
   const [referenceURL, setReferenceURL] = useState("");
-  const [reference, setReference] = useState(""); // <-- ajoute cette ligne
+  const [reference, setReference] = useState(""); // <-- référence à 9 chiffres
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ function ValidationCommande() {
         .then((res) => res.json())
         .then((data) => {
           setReferenceURL(data.referenceURL || "");
-          setReference(data.reference || ""); // <-- récupère la référence à 9 chiffres
+          setReference(data.reference || ""); // <-- récupère la référence
           setLoading(false);
         })
         .catch(() => {
@@ -80,7 +80,7 @@ function ValidationCommande() {
                 <strong>référence à 9 chiffres</strong> :
               </p>
 
-              {/* ✅ Affichage de la référence */}
+              {/* ✅ Message d’aide avec la référence */}
               {reference ? (
                 <p className="reference-hint">
                   🔍 <strong>Référence à rechercher : {reference}</strong>
@@ -117,12 +117,14 @@ function ValidationCommande() {
                 <p>Option "paiement entre amis"</p>
               </div>
             </div>
+
             <div className="contact-section">
               <p>
                 Pour ces options, contactez-moi en précisant la{" "}
                 <strong>référence de la montre</strong> et votre{" "}
                 <strong>choix de paiement</strong>.
               </p>
+
               <div className="button-group">
                 <Link to="/contact" className="btn outline">
                   Formulaire de contact
