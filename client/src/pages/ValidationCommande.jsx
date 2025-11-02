@@ -10,7 +10,7 @@ function ValidationCommande() {
 
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:3312/api/montres/${id}`)
+     fetch(`${import.meta.env.VITE_API_URL}/montres/${id}`)
         .then((res) => res.json())
         .then((data) => {
           setReferenceURL(data.referenceURL || "");

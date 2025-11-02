@@ -37,6 +37,7 @@ export default function MontreDetail() {
         );
         if (!res.ok) throw new Error("Montre non trouvée");
         const data = await res.json();
+        console.log("📦 Données reçues de l'API:", data);
         setMontre(data);
       } catch (err) {
         setError(err.message);
@@ -65,6 +66,11 @@ export default function MontreDetail() {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
   if (!montre) return null;
 
+  // Fonction utilitaire pour afficher les valeurs avec fallback
+  const displayValue = (value, defaultValue = "Non spécifié") => {
+    return value && value !== "" ? value : defaultValue;
+  };
+
   const currentImageSrc = montre.images?.[currentImageIndex]
     ? `${import.meta.env.VITE_API_URL}/api/uploads/${montre.images[currentImageIndex].filename}`
     : null;
@@ -72,8 +78,8 @@ export default function MontreDetail() {
   return (
     <div className="montre-detail">
       <div className="montre-detail-header">
-        <h1>{montre.name}</h1>
-        <p className="montre-brand">{montre.brand}</p>
+        <h1>{displayValue(montre.name, "Nom non disponible")}</h1>
+        <p className="montre-brand">{displayValue(montre.brand)}</p>
       </div>
 
       <div className="montre-detail-content">
@@ -142,22 +148,22 @@ export default function MontreDetail() {
           <h2>Caractéristiques</h2>
           <div className="montre-info-card">
             <div className="montre-infos">
-              <p>Référence : {montre.reference}</p>
-              <p>Marque : {montre.brand}</p>
-              <p>Type : {montre.type}</p>
-              <p>Type de mouvement : {montre.type_de_mouvement}</p>
-              <p>Origine du mouvement : {montre.origine_mouvement}</p>
-              <p>Mouvement : {montre.mouvement}</p>
-              <p>Matériau boîtier : {montre.materiau_boitier}</p>
-              <p>Couleur cadran : {montre.couleur_cadran}</p>
-              <p>Bracelet : {montre.bracelet}</p>
-              <p>Résistance à l'eau : {montre.resistance_eau}</p>
-              <p>Prix : {montre.price} €</p>
+              <p><strong>Référence :</strong> {displayValue(montre.reference)}</p>
+              <p><strong>Marque :</strong> {displayValue(montre.brand)}</p>
+              <p><strong>Type :</strong> {displayValue(montre.type)}</p>
+              <p><strong>Type de mouvement :</strong> {displayValue(montre.type_de_mouvement)}</p>
+              <p><strong>Origine du mouvement :</strong> {displayValue(montre.origine_mouvement)}</p>
+              <p><strong>Mouvement :</strong> {displayValue(montre.mouvement)}</p>
+              <p><strong>Matériau boîtier :</strong> {displayValue(montre.materiau_boitier)}</p>
+              <p><strong>Couleur cadran :</strong> {displayValue(montre.couleur_cadran)}</p>
+              <p><strong>Bracelet :</strong> {displayValue(montre.bracelet)}</p>
+              <p><strong>Résistance à l'eau :</strong> {displayValue(montre.resistance_eau)}</p>
+              <p><strong>Prix :</strong> {displayValue(montre.price)} €</p>
             </div>
 
             <div className="description-section">
               <h3>Description</h3>
-              <p>{montre.description}</p>
+              <p>{displayValue(montre.description, "Aucune description disponible.")}</p>
             </div>
 
             {/* 🛒 Bouton Acheter */}
@@ -166,13 +172,12 @@ export default function MontreDetail() {
               className="btn-buy"
               onClick={() => navigate(`/validation-commande/${id}`)}
             >
-              Acheter Maintenant - {montre.price} €
+              Acheter Maintenant - {displayValue(montre.price, "0")} €
             </button>
           </div>
         </div>
       </div>
 
-      {/* Modal plein écran pour le zoom */}
       {/* Modal plein écran pour le zoom */}
       {zoomedImage && (
         <div
