@@ -6,6 +6,13 @@ const montreRepo = new MontreRepository();
 const montreController = {
   // ✅ Création d'une montre complète
   create: async (req, res) => {
+console.log("=== 🎯 DONNÉES REÇUES POUR CRÉATION ===");
+    console.log("Body complet:", req.body);
+    console.log("Mouvement:", req.body.mouvement);
+    console.log("Materiau_boitier:", req.body.materiau_boitier);
+    console.log("Couleur_cadran:", req.body.couleur_cadran);
+    console.log("Fichiers:", req.files);
+
     try {
       const montreData = {
         reference: req.body.reference || "Référence inconnue",
@@ -22,6 +29,11 @@ const montreController = {
         description: req.body.description || "",
         referenceURL: req.body.referenceURL || null,
       };
+ console.log("=== 📦 DONNÉES POUR LA BASE ===");
+    console.log("Mouvement pour DB:", montreData.mouvement);
+    console.log("Materiau_boitier pour DB:", montreData.materiau_boitier);
+    console.log("Couleur_cadran pour DB:", montreData.couleur_cadran);
+
 
       // ✅ Insertion dans la base
       const montreId = await montreRepo.create(montreData);

@@ -5,19 +5,31 @@ import "./ValidationCommande.css";
 function ValidationCommande() {
   const { id } = useParams();
   const [referenceURL, setReferenceURL] = useState("");
-  const [reference, setReference] = useState(""); // <-- référence à 9 chiffres
+  const [reference, setReference] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (id) {
+<<<<<<< Updated upstream
      fetch(`${import.meta.env.VITE_API_URL}/montres/${id}`)
         .then((res) => res.json())
+=======
+      fetch(`${import.meta.env.VITE_API_URL}/api/montres/${id}`)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Erreur serveur");
+          }
+          return res.json();
+        })
+>>>>>>> Stashed changes
         .then((data) => {
+          console.log("✅ Réponse API :", data); // <--- vérifie dans la console du navigateur
           setReferenceURL(data.referenceURL || "");
-          setReference(data.reference || ""); // <-- récupère la référence
+          setReference(data.reference || "");
           setLoading(false);
         })
-        .catch(() => {
+        .catch((err) => {
+          console.error("Erreur API :", err);
           setReferenceURL("");
           setReference("");
           setLoading(false);
@@ -62,7 +74,12 @@ function ValidationCommande() {
                 <li>Paiement sécurisé après réception</li>
               </ul>
               {referenceURL ? (
-                <Link to={referenceURL} className="btn primary">
+                <Link
+                  to={referenceURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn primary"
+                >
                   Voir sur Le Bon Coin →
                 </Link>
               ) : (
@@ -80,7 +97,6 @@ function ValidationCommande() {
                 <strong>référence à 9 chiffres</strong> :
               </p>
 
-              {/* ✅ Message d’aide avec la référence */}
               {reference ? (
                 <p className="reference-hint">
                   🔍 <strong>Référence à rechercher : {reference}</strong>
@@ -129,9 +145,18 @@ function ValidationCommande() {
                 <Link to="/contact" className="btn outline">
                   Formulaire de contact
                 </Link>
-                <Link to={referenceURL || "#"} className="btn outline">
-                  Le Bon Coin
-                </Link>
+                {referenceURL ? (
+                  <Link
+                    to={referenceURL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn outline"
+                  >
+                    Le Bon Coin
+                  </Link>
+                ) : (
+                  <span className="btn outline disabled">Le Bon Coin</span>
+                )}
                 <Link
                   to="https://www.vinted.fr"
                   target="_blank"
