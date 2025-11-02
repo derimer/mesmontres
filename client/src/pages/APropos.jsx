@@ -185,19 +185,19 @@ function APropos() {
           <ul className="modern-list">
             <li>
               <span className="list-icon">✔</span>
-              <span>Authentification par 3 experts minimum</span>
+              <span>Pas de contrefaçon</span>
             </li>
             <li>
               <span className="list-icon">✔</span>
-              <span>État décrit avec une précision d'horloger</span>
+              <span>État conforme à la description</span>
             </li>
             <li>
               <span className="list-icon">✔</span>
-              <span>Service client dédié 7j/7</span>
+              <span>Envoi soigné</span>
             </li>
             <li>
               <span className="list-icon">✔</span>
-              <span>Satisfait ou échangé</span>
+              <span>Garantie 3 mois</span>
             </li>
           </ul>
           <Link to="/montres" className="cta-button">
