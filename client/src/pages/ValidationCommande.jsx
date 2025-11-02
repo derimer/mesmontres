@@ -5,22 +5,23 @@ import "./ValidationCommande.css";
 function ValidationCommande() {
   const { id } = useParams();
   const [referenceURL, setReferenceURL] = useState("");
+  const [reference, setReference] = useState(""); // <-- référence à 9 chiffres
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (id) {
-      fetch(`/api/montres/${id}`)
-  .then((res) => res.json())
-  .then((data) => {
-    setReferenceURL(data.referenceURL || "");
-    setLoading(false);
-  })
-  .catch(() => {
-    setReferenceURL("");
-    setLoading(false);
-  });
-
-
+      fetch(`http://localhost:3312/api/montres/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setReferenceURL(data.referenceURL || "");
+          setReference(data.reference || ""); // <-- récupère la référence
+          setLoading(false);
+        })
+        .catch(() => {
+          setReferenceURL("");
+          setReference("");
+          setLoading(false);
+        });
     }
   }, [id]);
 
@@ -76,8 +77,18 @@ function ValidationCommande() {
             <div className="card-content">
               <p>
                 Mêmes avantages que Le Bon Coin. Recherchez la montre avec sa{" "}
-                <strong>référence à 9 chiffres de sa description</strong>.
+                <strong>référence à 9 chiffres</strong> :
               </p>
+
+              {/* ✅ Message d’aide avec la référence */}
+              {reference ? (
+                <p className="reference-hint">
+                  🔍 <strong>Référence à rechercher : {reference}</strong>
+                </p>
+              ) : (
+                <p className="no-link">Référence indisponible</p>
+              )}
+
               <Link
                 to="https://www.vinted.fr"
                 target="_blank"
@@ -106,12 +117,14 @@ function ValidationCommande() {
                 <p>Option "paiement entre amis"</p>
               </div>
             </div>
+
             <div className="contact-section">
               <p>
                 Pour ces options, contactez-moi en précisant la{" "}
                 <strong>référence de la montre</strong> et votre{" "}
                 <strong>choix de paiement</strong>.
               </p>
+
               <div className="button-group">
                 <Link to="/contact" className="btn outline">
                   Formulaire de contact
