@@ -67,9 +67,8 @@ export default function MontreDetail() {
   if (!montre) return null;
 
   // Fonction utilitaire pour afficher les valeurs avec fallback
-  const displayValue = (value, defaultValue = "Non spécifié") => {
-    return value && value !== "" ? value : defaultValue;
-  };
+  const displayValue = (value, defaultValue = "Non spécifié") =>
+    value && value !== "" ? value : defaultValue;
 
   const currentImageSrc = montre.images?.[currentImageIndex]
     ? `${import.meta.env.VITE_API_URL}/api/uploads/${montre.images[currentImageIndex].filename}`
@@ -78,7 +77,7 @@ export default function MontreDetail() {
   return (
     <div className="montre-detail">
       <div className="montre-detail-header">
-        <h1>{displayValue(montre.name, "Nom non disponible")}</h1>
+       
         <p className="montre-brand">{displayValue(montre.brand)}</p>
       </div>
 
