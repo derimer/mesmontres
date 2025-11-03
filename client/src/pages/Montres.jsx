@@ -127,7 +127,7 @@ export default function Montres() {
             </div>
             <Link to={`/montres/${montre.id}`} className="montre-info-link">
               <div className="montre-info">
-                <h3>{montre.name}</h3>
+                <h3>MES montres</h3>
                 <p>Marque : {montre.brand}</p>
                 <p>Prix : {montre.price} €</p>
                 <div className="details-hint">Voir les détails →</div>
