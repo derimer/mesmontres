@@ -83,58 +83,55 @@ export default function Montres() {
       )}
 
       <div className="montres-grid">
-        {montres.map((montre) => (
-          <div key={montre.id} className="montre-card">
-            <div className="montre-image-container">
-              <button
-                type="button"
-                className="montre-image-button"
-                onClick={(e) =>
-                  handleImageClick(
-                    e,
-                    montre.images && montre.images.length > 0
-                      ? `${import.meta.env.VITE_API_URL}/api/uploads/${
-                          montre.images[0].filename
-                        }`
-                      : "/placeholder.jpg"
-                  )
-                }
-                style={{
-                  padding: 0,
-                  border: "none",
-                  background: "none",
-                  cursor: "pointer",
-                }}
-                aria-label={`Agrandir l'image de ${montre.name}`}
-              >
-                <img
-                  src={
-                    montre.images && montre.images.length > 0
-                      ? `${import.meta.env.VITE_API_URL}/api/uploads/${
-                          montre.images[0].filename
-                        }`
-                      : "/placeholder.jpg"
-                  }
-                  alt={montre.name}
-                  className="montre-image"
-                  draggable={false}
-                />
-                {/* Overlay d'information au survol */}
-                <div className="image-overlay">
-                  <span className="zoom-hint">📸 Cliquez pour agrandir</span>
-                </div>
-              </button>
+  {montres.map((montre) => {
+    // 🔍 On cherche l’image principale : celle qui finit par "1.jpg"
+    const mainImage =
+      montre.images?.find((img) =>
+        img.filename.toLowerCase().match(/1\.jpg$/)
+      ) || montre.images?.[0]; // fallback sur la première image
+
+    // URL de l’image complète
+    const imageUrl = mainImage
+      ? `${import.meta.env.VITE_API_URL}/api/uploads/${mainImage.filename}`
+      : "/placeholder.jpg";
+
+    return (
+      <div key={montre.id} className="montre-card">
+        <div className="montre-image-container">
+          <button
+            type="button"
+            className="montre-image-button"
+            onClick={(e) => handleImageClick(e, imageUrl)}
+            style={{
+              padding: 0,
+              border: "none",
+              background: "none",
+              cursor: "pointer",
+            }}
+            aria-label={`Agrandir l'image de ${montre.brand}`}
+          >
+            <img
+              src={imageUrl}
+              alt={montre.brand}
+              className="montre-image"
+              draggable={false}
+            />
+            {/* Overlay d'information au survol */}
+            <div className="image-overlay">
+              <span className="zoom-hint">📸 Cliquez pour agrandir</span>
             </div>
-            <Link to={`/montres/${montre.id}`} className="montre-info-link">
-              <div className="montre-info">
-                
-                <p>Marque : {montre.brand}</p>
-                <p>Prix : {montre.price} €</p>
+          </button>
+        </div>
+        <Link to={`/montres/${montre.id}`} className="montre-info-link">
+          <div className="montre-info">
+            <p>Marque : {montre.brand}</p>
+            <p>Prix : {montre.price} €</p>
                 <div className="details-hint">Voir les détails →</div>
               </div>
             </Link>
           </div>
-        ))}
+      );
+    })}
       </div>
 
       {/* Modal pour l'image agrandie */}

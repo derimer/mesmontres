@@ -5,7 +5,7 @@ class MontreRepository extends AbstractRepository {
     super({ table: "montres" });
   }
 
-  // ✅ Création d'une montre (mise à jour complète avec tous les champs du formulaire Admin)
+  // ✅ Création
   async create(montre) {
     const [result] = await this.database.query(
       `INSERT INTO ${this.table} (
@@ -42,10 +42,14 @@ class MontreRepository extends AbstractRepository {
     return result.insertId;
   }
 
-  // ✅ Lire une montre par ID (avec images associées TRIÉES PAR POSITION)
+  // ✅ Lire une montre avec toutes ses images triées
   async read(id) {
     const [rows] = await this.database.query(
-      `SELECT m.*, i.id AS image_id, i.filename AS image_filename, i.position
+      `SELECT 
+         m.*, 
+         i.id AS image_id, 
+         i.filename AS image_filename, 
+         i.position
        FROM ${this.table} m
        LEFT JOIN images i ON m.id = i.montre_id
        WHERE m.id = ?
@@ -74,13 +78,12 @@ class MontreRepository extends AbstractRepository {
       images: [],
     };
 
-    // Ajouter les images associées TRIÉES PAR POSITION
     rows.forEach((row) => {
       if (row.image_id) {
         montre.images.push({
           id: row.image_id,
           filename: row.image_filename,
-          position: row.position
+          position: row.position,
         });
       }
     });
@@ -88,94 +91,81 @@ class MontreRepository extends AbstractRepository {
     return montre;
   }
 
-  // ✅ Lire toutes les montres (avec leurs images TRIÉES PAR POSITION)
+  // ✅ Lire toutes les montres avec UNE image principale (position = 0)
   async readAll() {
+   console.info("🔥 readAll() version simplifiée en cours d’exécution");
     const [rows] = await this.database.query(`
       SELECT 
-        m.*,
-        i.id AS image_id,
-        i.filename AS image_filename,
-        i.position
-      FROM ${this.table} m
-      LEFT JOIN images i ON m.id = i.montre_id
-      ORDER BY m.created_at DESC, i.position ASC, i.id ASC
+        m.id,
+        m.reference,
+        m.brand,
+        m.price,
+        m.type,
+        m.type_de_mouvement,
+        m.origine_mouvement,
+        m.mouvement,
+        m.materiau_boitier,
+        m.couleur_cadran,
+        m.bracelet,
+        m.resistance_eau,
+        m.description,
+        m.referenceURL,
+        m.created_at,
+        i.filename AS image_filename
+      FROM montres m
+      LEFT JOIN images i 
+        ON m.id = i.montre_id 
+        AND i.position = 0
+      ORDER BY m.created_at DESC;
     `);
 
-    const montresMap = new Map();
-
-    rows.forEach((row) => {
-      const montreId = row.id;
-
-      if (!montresMap.has(montreId)) {
-        montresMap.set(montreId, {
-          id: row.id,
-          reference: row.reference,
-          brand: row.brand,
-          type: row.type,
-          type_de_mouvement: row.type_de_mouvement,
-          origine_mouvement: row.origine_mouvement,
-          price: row.price,
-          mouvement: row.mouvement,
-          materiau_boitier: row.materiau_boitier,
-          couleur_cadran: row.couleur_cadran,
-          bracelet: row.bracelet,
-          resistance_eau: row.resistance_eau,
-          description: row.description,
-          referenceURL: row.referenceURL,
-          created_at: row.created_at,
-          images: [],
-        });
-      }
-
-      // Ajouter l'image si elle existe, TRIÉE PAR POSITION
-      if (row.image_id) {
-        montresMap.get(montreId).images.push({
+    return rows.map((row) => ({
+    id: row.id,
+    reference: row.reference,
+    brand: row.brand,
+    type: row.type,
+    type_de_mouvement: row.type_de_mouvement,
+    origine_mouvement: row.origine_mouvement,
+    price: row.price,
+    mouvement: row.mouvement,
+    materiau_boitier: row.materiau_boitier,
+    couleur_cadran: row.couleur_cadran,
+    bracelet: row.bracelet,
+    resistance_eau: row.resistance_eau,
+    description: row.description,
+    referenceURL: row.referenceURL,
+    created_at: row.created_at,
+    mainImage: row.image_filename
+      ? {
           id: row.image_id,
           filename: row.image_filename,
-          position: row.position
-        });
-      }
-    });
+          position: row.position,
+        }
+      : null,
+  }));
+}
 
-    return Array.from(montresMap.values());
+  // ✅ Lire une montre + toutes ses images (alternative claire pour `getMontreById`)
+  async readWithImages(id) {
+    const [montreRows] = await this.database.query(
+      "SELECT * FROM montres WHERE id = ?",
+      [id]
+    );
+
+    if (montreRows.length === 0) return null;
+
+    const montre = montreRows[0];
+
+    const [imagesRows] = await this.database.query(
+      "SELECT id, filename, position FROM images WHERE montre_id = ? ORDER BY position ASC, id ASC",
+      [id]
+    );
+
+    montre.images = imagesRows;
+    return montre;
   }
 
-  // ✅ Lire seulement les montres avec leur image principale (position 0)
-  async readAllWithMainImage() {
-    const [rows] = await this.database.query(`
-      SELECT 
-        m.*,
-        i.id AS image_id,
-        i.filename AS image_filename
-      FROM ${this.table} m
-      LEFT JOIN images i ON m.id = i.montre_id AND i.position = 0
-      ORDER BY m.created_at DESC
-    `);
-
-    return rows.map(row => ({
-      id: row.id,
-      reference: row.reference,
-      brand: row.brand,
-      type: row.type,
-      type_de_mouvement: row.type_de_mouvement,
-      origine_mouvement: row.origine_mouvement,
-      price: row.price,
-      mouvement: row.mouvement,
-      materiau_boitier: row.materiau_boitier,
-      couleur_cadran: row.couleur_cadran,
-      bracelet: row.bracelet,
-      resistance_eau: row.resistance_eau,
-      description: row.description,
-      referenceURL: row.referenceURL,
-      created_at: row.created_at,
-      mainImage: row.image_id ? {
-        id: row.image_id,
-        filename: row.image_filename
-      } : null
-    }));
-  }
-
-  // ✅ Supprimer une montre et ses images
+  // ✅ Supprimer une montre + ses images
   async delete(id) {
     await this.database.query("DELETE FROM images WHERE montre_id = ?", [id]);
     const [result] = await this.database.query(
@@ -185,7 +175,7 @@ class MontreRepository extends AbstractRepository {
     return result;
   }
 
-  // ✅ Mettre à jour une montre
+  // ✅ Mettre à jour
   async update(id, data) {
     const [result] = await this.database.query(
       `UPDATE ${this.table}

@@ -58,8 +58,11 @@ export default function MontreDetail() {
 
     if (zoomedImage) {
       document.addEventListener("keydown", handleEscape);
-      return () => document.removeEventListener("keydown", handleEscape);
     }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
   }, [zoomedImage]);
 
   if (loading) return <p>Chargement...</p>;
@@ -69,10 +72,20 @@ export default function MontreDetail() {
   // Fonction utilitaire pour afficher les valeurs avec fallback
   const displayValue = (value, defaultValue = "Non spécifié") =>
     value && value !== "" ? value : defaultValue;
+// 🔄 Réorganiser les images pour que celle finissant par "1.jpg" soit en premier
+const orderedImages = montre.images
+  ? [
+      // image principale d'abord (celle qui finit par 1.jpg)
+      ...(montre.images.filter((img) => img.filename.toLowerCase().match(/1\.jpg$/)) || []),
+      // puis les autres images
+      ...(montre.images.filter((img) => !img.filename.toLowerCase().match(/1\.jpg$/)) || []),
+    ]
+  : [];
 
-  const currentImageSrc = montre.images?.[currentImageIndex]
-    ? `${import.meta.env.VITE_API_URL}/api/uploads/${montre.images[currentImageIndex].filename}`
-    : null;
+  const currentImageSrc = orderedImages?.[currentImageIndex]
+  ? `${import.meta.env.VITE_API_URL}/api/uploads/${orderedImages[currentImageIndex].filename}`
+  : null;
+
 
   return (
     <div className="montre-detail">
