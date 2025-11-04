@@ -165,8 +165,7 @@ const currentImageSrc = orderedImages?.[currentImageIndex]
               <p><strong>Marque :</strong> {displayValue(montre.brand)}</p>
               <p><strong>Type :</strong> {displayValue(montre.type)}</p>
               <p><strong>Type de mouvement :</strong> {displayValue(montre.type_de_mouvement)}</p>
-              <p><strong>Origine du mouvement :</strong> {displayValue(montre.origine_mouvement)}</p>
-              <p><strong>Mouvement :</strong> {displayValue(montre.mouvement)}</p>
+              <p><strong>Origine du mouvement :</strong> {displayValue(montre.origine_mouvement)}</p>              
               <p><strong>Matériau boîtier :</strong> {displayValue(montre.materiau_boitier)}</p>
               <p><strong>Couleur cadran :</strong> {displayValue(montre.couleur_cadran)}</p>
               <p><strong>Bracelet :</strong> {displayValue(montre.bracelet)}</p>

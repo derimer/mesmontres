@@ -1,18 +1,24 @@
-// montres/router.js
-// server/app/routers/api/montres/router.js
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs"); // ✅ pour vérifier/créer le dossier automatiquement
 
-// 👉 il manquait cette ligne
+// 👉 Controller
 const montreController = require("../../../controllers/montreController");
 
 const router = express.Router();
 
-// Config stockage multer
+// ✅ Création automatique du dossier "uploads" s’il n’existe pas
+const uploadDir = path.join(__dirname, "../../../public/uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+  console.info(`📂 Dossier créé automatiquement : ${uploadDir}`);
+}
+
+// ✅ Configuration de Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../../../../public/uploads"));
+    cb(null, uploadDir); // le chemin est maintenant sûr et existant
   },
   filename: (req, file, cb) => {
     cb(
@@ -21,16 +27,14 @@ const storage = multer.diskStorage({
     );
   },
 });
+
 const upload = multer({ storage });
 
-// POST -> créer montre + images
+// ✅ Routes
 router.post("/", upload.array("images"), montreController.create);
-router.get("/:id", montreController.getMontreById);
-
-// GET -> récupérer toutes les montres avec images
 router.get("/", montreController.getAllMontres);
+router.get("/:id", montreController.getMontreById);
 router.put("/:id", upload.array("images"), montreController.update);
-// DELETE -> supprimer une montre et ses images
 router.delete("/:id", montreController.deleteMontre);
 
 module.exports = router;

@@ -354,6 +354,8 @@
   list-style-type: none;
   padding: 0;
 }
+
+
 /* Responsive design */
 @media (max-width: 768px) {
   .admin-container {

@@ -36,9 +36,10 @@ app.use(express.json());
 // =============================
 // Fichiers statiques
 // =============================
-const uploadsPath = path.join(__dirname, "/public/uploads");
-console.info("Chemin utilisé pour les uploads :", uploadsPath);
+const uploadsPath = path.join(__dirname, "public/uploads");
 app.use("/api/uploads", express.static(uploadsPath));
+
+
 
 // =============================
 // Routers

@@ -1,4 +1,4 @@
-// server/models/imageRepository.js
+// server/database/models/imageRepository.js
 const AbstractRepository = require("./AbstractRepository");
 
 class ImageRepository extends AbstractRepository {
@@ -6,49 +6,58 @@ class ImageRepository extends AbstractRepository {
     super({ table: "images" });
   }
 
+  // ✅ Création d'une image avec position auto
   async create(image) {
-  // Solution robuste : compter le nombre total d'images existantes
-  const [countRows] = await this.database.query(
-    "SELECT COUNT(*) as count FROM images WHERE montre_id = ?",
-    [image.montre_id]
-  );
-  
-  const position = countRows[0].count;
+    // On récupère le nombre d’images déjà associées à cette montre
+    const [countRows] = await this.database.query(
+      "SELECT COUNT(*) AS count FROM images WHERE montre_id = ?",
+      [image.montre_id]
+    );
 
-  const [result] = await this.database.query(
-    `INSERT INTO ${this.table} (montre_id, filename, position)
-     VALUES (?, ?, ?)`,
-    [image.montre_id, image.filename, position]
-  );
+    // La position = nombre d’images déjà présentes (donc dernière place)
+    const position =
+      typeof image.position === "number" ? image.position : countRows[0].count;
 
-  return result.insertId;
-}
+    const [result] = await this.database.query(
+      `INSERT INTO ${this.table} (montre_id, filename, position)
+       VALUES (?, ?, ?)`,
+      [image.montre_id, image.filename, position]
+    );
 
+    return result.insertId;
+  }
 
+  // ✅ Supprimer toutes les images d'une montre
   async deleteByMontreId(montreId) {
     await this.database.query(`DELETE FROM ${this.table} WHERE montre_id = ?`, [
       montreId,
     ]);
   }
 
+  // ✅ Lire toutes les images
   async readAll() {
     const [rows] = await this.database.query(`SELECT * FROM ${this.table}`);
     return rows;
   }
 
+  // ✅ Lire toutes les images avec infos montre
   async readAllWithMontres() {
     const [rows] = await this.database.query(
-      `SELECT i.*, m.name AS montre_name, m.brand, m.price
+      `SELECT i.*, m.reference AS montre_reference, m.brand, m.price
        FROM ${this.table} i
-       JOIN montres m ON i.montre_id = m.id`
+       JOIN montres m ON i.montre_id = m.id
+       ORDER BY i.created_at DESC`
     );
     return rows;
   }
 
-  // ✅ Lire les images d'une montre triées par position
+  // ✅ Lire les images d'une montre, triées par position puis date
   async readByMontreId(montreId) {
     const [rows] = await this.database.query(
-      `SELECT * FROM ${this.table} WHERE montre_id = ? ORDER BY position ASC, created_at ASC`,
+      `SELECT id, filename, position 
+       FROM ${this.table} 
+       WHERE montre_id = ? 
+       ORDER BY position ASC, created_at ASC`,
       [montreId]
     );
     return rows;
@@ -72,14 +81,14 @@ class ImageRepository extends AbstractRepository {
     return result;
   }
 
-  // ✅ Réorganiser toutes les images d'une montre
+  // ✅ Réordonner toutes les images d'une montre
   async reorderImages(montreId, imagesOrder) {
     try {
-      // Mettre à jour la position de chaque image
+      // imagesOrder = [imageId1, imageId2, imageId3, ...]
       await Promise.all(
-        imagesOrder.map(async (imageId, index) => {
-          await this.updatePosition(imageId, index);
-        })
+        imagesOrder.map((imageId, index) =>
+          this.updatePosition(imageId, index)
+        )
       );
       return true;
     } catch (error) {
@@ -88,10 +97,14 @@ class ImageRepository extends AbstractRepository {
     }
   }
 
-  // ✅ Récupérer l'image principale (position 0) d'une montre
+  // ✅ Récupérer l’image principale (position = 0)
   async getMainImage(montreId) {
     const [rows] = await this.database.query(
-      "SELECT * FROM images WHERE montre_id = ? AND position = 0 ORDER BY created_at ASC LIMIT 1",
+      `SELECT id, filename, position
+       FROM ${this.table}
+       WHERE montre_id = ?
+       ORDER BY position ASC, created_at ASC
+       LIMIT 1`,
       [montreId]
     );
     return rows[0] || null;
