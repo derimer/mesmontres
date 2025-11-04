@@ -7,20 +7,23 @@ class ImageRepository extends AbstractRepository {
   }
 
   async create(image) {
-    // Récupérer le nombre d'images existantes pour cette montre pour déterminer la position
-    const [countResult] = await this.database.query(
-      "SELECT COUNT(*) as count FROM images WHERE montre_id = ?",
-      [image.montre_id]
-    );
-    
-    const position = countResult[0].count;
+  // Solution robuste : compter le nombre total d'images existantes
+  const [countRows] = await this.database.query(
+    "SELECT COUNT(*) as count FROM images WHERE montre_id = ?",
+    [image.montre_id]
+  );
+  
+  const position = countRows[0].count;
 
-    const [result] = await this.database.query(
-      `INSERT INTO ${this.table} (montre_id, filename, position) VALUES (?, ?, ?)`,
-      [image.montre_id, image.filename, position]
-    );
-    return result.insertId;
-  }
+  const [result] = await this.database.query(
+    `INSERT INTO ${this.table} (montre_id, filename, position)
+     VALUES (?, ?, ?)`,
+    [image.montre_id, image.filename, position]
+  );
+
+  return result.insertId;
+}
+
 
   async deleteByMontreId(montreId) {
     await this.database.query(`DELETE FROM ${this.table} WHERE montre_id = ?`, [

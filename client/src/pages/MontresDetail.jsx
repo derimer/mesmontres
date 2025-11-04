@@ -37,7 +37,7 @@ export default function MontreDetail() {
         );
         if (!res.ok) throw new Error("Montre non trouvée");
         const data = await res.json();
-        console.log("📦 Données reçues de l'API:", data);
+        console.info("📦 Données reçues de l'API:", data);
         setMontre(data);
       } catch (err) {
         setError(err.message);
@@ -73,18 +73,19 @@ export default function MontreDetail() {
   const displayValue = (value, defaultValue = "Non spécifié") =>
     value && value !== "" ? value : defaultValue;
 // 🔄 Réorganiser les images pour que celle finissant par "1.jpg" soit en premier
+// 🖼️ Sélectionner uniquement la première image (position = 0)
+// 🔄 Réorganiser les images dans l’ordre voulu
 const orderedImages = montre.images
-  ? [
-      // image principale d'abord (celle qui finit par 1.jpg)
-      ...(montre.images.filter((img) => img.filename.toLowerCase().match(/1\.jpg$/)) || []),
-      // puis les autres images
-      ...(montre.images.filter((img) => !img.filename.toLowerCase().match(/1\.jpg$/)) || []),
-    ]
+  ? [...montre.images].sort((a, b) => a.position - b.position)
   : [];
 
-  const currentImageSrc = orderedImages?.[currentImageIndex]
+// 🖼️ Sélectionner l’image actuelle dans le carousel
+const currentImageSrc = orderedImages?.[currentImageIndex]
   ? `${import.meta.env.VITE_API_URL}/api/uploads/${orderedImages[currentImageIndex].filename}`
-  : null;
+  : "/placeholder.jpg";
+
+
+
 
 
   return (

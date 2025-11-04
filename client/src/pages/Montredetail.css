@@ -1,8 +1,9 @@
+/* === STRUCTURE GÉNÉRALE === */
 .montre-detail {
   background-color: #080707;
   min-height: 100vh;
   padding: 2rem;
-  color: white;
+  color: #fafbf7;
   margin: 0;
   box-sizing: border-box;
 }
@@ -18,7 +19,7 @@
   padding-top: 80px;
   color: gold;
   font-size: 2.5rem;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.5rem;
   font-weight: 700;
 }
 
@@ -26,11 +27,11 @@
   padding-top: 50px;
   color: #f2eded;
   font-size: 2rem;
-  font-weight: 500;
-  margin: 0;
   font-style: italic;
+  font-weight: 400;
 }
 
+/* === CONTENU PRINCIPAL === */
 .montre-detail-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -48,364 +49,12 @@
   padding-bottom: 0.5rem;
 }
 
-/* Styles pour la grille d'images (identique à Admin) */
-.image-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.image-preview-container {
-  position: relative;
-  display: inline-block;
-  transition: transform 0.3s ease;
-}
-
-.image-preview-container:hover {
-  transform: scale(1.05);
-}
-
-.preview-image {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 2px solid #555;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.preview-image:hover {
-  border-color: gold;
-  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-}
-
-.image-button {
-  width: 100%;
-  height: 100%;
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 0;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.no-image {
-  text-align: center;
-  color: #999;
-  font-style: italic;
-  padding: 2rem;
-  background: #444;
-  border-radius: 8px;
-}
-
-/* Carte d'information de la montre */
-.montre-info-card {
-  background: #0d0202;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  border: 1px solid #555;
-}
-
-.info-grid {
-  display: grid;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.info-item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.75rem;
-  font-size: 26px;
-  color: gold;
-}
-
-.info-label {
-  font-weight: 200;
-  color: rgb(245, 244, 238);
-}
-
-.info-value {
-  color: gold;
-  font-weight: 100;
-}
-
-.info-value.price {
-  color: gold;
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-/* Section description */
-.description-section {
-  text-align: left;
-  margin-bottom: 2rem;
-  background-color: black;
-  line-height: 2.2;
-}
-
-.montre-infos {
-  text-align: center;
-  background: linear-gradient(90deg, #07070e 60%, #fbaf08 100%);
-  color: white;
-}
-.description-section h3 {
-  color: gold;
-  margin-bottom: 1rem;
-  font-size: 1.3rem;
-}
-
-.description-section p {
-  white-space: pre-wrap;
-  font-size: 16px;
-  font-weight: 100;
-  color: #fafbf7;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 1rem;
-  border-radius: 6px;
-  border-left: 3px solid #666;
-}
-
-/* Bouton d'achat */
-.btn-buy {
-  width: 100%;
-  padding: 1.25rem 2rem;
-  font-size: 1.2rem;
-  font-weight: 700;
-  background: linear-gradient(90deg, #fbaf08 10%, #101357 90%);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.btn-buy:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
-  background: linear-gradient(135deg, #218838, #1e9e8a);
-}
-
-.btn-buy:active {
-  transform: translateY(0);
-}
-
-/* Modal pour l'image agrandie (identique à Admin) */
-.image-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.92);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  padding: 2rem;
-  backdrop-filter: blur(5px); /* Effet de flou élégant */
-}
-
-.image-modal-content {
-  position: relative;
-  max-width: min(1200px, 90vw);
-  max-height: min(800px, 90vh);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #0a0a0a;
-  border-radius: 16px;
-  padding: 1rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-  border: 1px solid rgba(255, 215, 0, 0.1);
-}
-.zoomed-image {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-}
-
-.close-modal {
-  position: absolute;
-  top: -20px;
-  right: -20px;
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid white;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 1.5rem;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  transition: all 0.3s ease;
-}
-
-
-/* === ZOOM IMAGE MODAL === */
-.zoom-modal {
-  position: fixed; /* <-- pour que le modal soit indépendant du flux */
-  inset: 0; /* équivaut à top:0; left:0; right:0; bottom:0 */
-  background: rgba(0, 0, 0, 0.85);
-  display: flex;
-  align-items: center; /* centre verticalement */
-  justify-content: center; /* centre horizontalement */
-  z-index: 2000; /* au-dessus du reste */
-  cursor: zoom-out; /* indique qu’un clic referme */
-}
-
-.zoom-modal-content {
-  position: relative;
-  max-width: 90%;
-  max-height: 90%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: transparent;
-  border: none;
-}
-.close-modal:hover {
-  background: white;
-  color: black;
-  transform: scale(1.1);
-}
-.zoomed-image {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
-}
-.carousel-indicator {
-  text-align: center;
-  margin-top: 1rem;
-  color: rgba(255, 255, 255, 0.7); /* Blanc transparent au lieu d'or */
-  font-size: 0.8rem;
-  font-weight: 300;
-  padding: 0.3rem 0.6rem;
-  background: rgba(0, 0, 0, 0.3); /* Fond sombre discret */
-  border-radius: 12px;
-  display: inline-block;
-  letter-spacing: 0.5px;
-}
-
-@media (min-width: 1600px) {
-  .image-modal-content {
-    max-width: min(80%, 1400px); /* Encore plus restrictif sur très grands écrans */
-    max-height: min(80%, 900px);
-  }
-}
-/* Responsive Design */
-@media (max-width: 968px) {
-  .montre-detail-content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .montre-detail {
-    padding: 1rem;
-  }
-
-  .montre-detail-header h1 {
-    font-size: 2rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .montre-detail-header {
-    margin-bottom: 2rem;
-  }
-
-  .montre-info-card {
-    padding: 1.5rem;
-  }
-
-  .info-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-
-  .image-grid {
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 0.75rem;
-  }
-
-  .preview-image {
-    height: 100px;
-  }
-
-  .btn-buy {
-    padding: 1rem 1.5rem;
-    font-size: 1.1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .montre-detail-header h1 {
-    font-size: 1.75rem;
-  }
-
-  .montre-info-card {
-    padding: 1rem;
-  }
-
-  .image-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .info-grid {
-    gap: 0.75rem;
-  }
-}
-
-/* Animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.montre-images-section,
-.montre-info-section {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.montre-info-section {
-  animation-delay: 0.1s;
-}
-
-/* Styles pour le carousel simple */
+/* === CAROUSEL D’IMAGES === */
 .image-carousel {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-}
-
-.carousel-navigation {
-  margin-top: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  width: 100%;
 }
 
 .main-image-wrapper {
@@ -424,6 +73,15 @@
   max-height: 400px;
   object-fit: contain;
   border-radius: 8px;
+}
+
+.carousel-navigation {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
 }
 
 .nav-btn {
@@ -448,13 +106,209 @@
   transform: scale(1.1);
 }
 
-/* Cacher l'ancienne grille d'images */
-.image-grid {
-  display: none;
+/* === INDICATEUR CAROUSEL === */
+.carousel-indicator {
+  text-align: center;
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.8rem;
+  font-weight: 300;
+  padding: 0.3rem 0.6rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  display: inline-block;
+  letter-spacing: 0.5px;
 }
 
-/* Responsive pour le carousel */
+/* === MODAL D’IMAGE === */
+.zoom-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  cursor: zoom-out;
+  backdrop-filter: blur(5px);
+}
+
+.zoom-modal-content {
+  max-width: 80%;
+  max-height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.zoomed-image {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid white;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.close-modal:hover {
+  background: white;
+  color: black;
+  transform: scale(1.1);
+}
+
+/* === INFO MONTRE === */
+.montre-info-card {
+  background: #0d0202;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  border: 1px solid #555;
+}
+
+.info-grid {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.info-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem;
+  font-size: 1.2rem;
+}
+
+.info-label {
+  font-weight: 300;
+  color: #f5f4ee;
+}
+
+.info-value {
+  color: gold;
+  font-weight: 400;
+}
+
+.info-value.price {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* === DESCRIPTION === */
+.description-section {
+  text-align: left;
+  margin-bottom: 2rem;
+  background-color: black;
+  line-height: 2;
+}
+
+.description-section h3 {
+  color: gold;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.description-section p {
+  white-space: pre-wrap;
+  font-size: 16px;
+  font-weight: 300;
+  color: #fffbe8;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: 3px solid #666;
+}
+
+/* === BOUTON D’ACHAT === */
+.btn-buy {
+  width: 100%;
+  padding: 1.25rem 2rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #fbaf08 10%, #101357 90%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-buy:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+  background: linear-gradient(135deg, #218838, #1e9e8a);
+}
+
+/* === ANIMATIONS === */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.montre-images-section,
+.montre-info-section {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* === RESPONSIVE === */
+@media (min-width: 1600px) {
+  .zoom-modal-content {
+    max-width: 80%;
+    max-height: 80%;
+  }
+}
+
+@media (max-width: 968px) {
+  .montre-detail-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .montre-detail {
+    padding: 1rem;
+  }
+
+  .montre-detail-header h1 {
+    font-size: 2rem;
+  }
+}
+
 @media (max-width: 768px) {
+  .montre-info-card {
+    padding: 1.5rem;
+  }
+
+  .info-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
   .carousel-navigation {
     gap: 0.5rem;
   }
@@ -473,11 +327,16 @@
     height: 40px;
     font-size: 1.2rem;
   }
+
+  .btn-buy {
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+  }
 }
 
 @media (max-width: 480px) {
   .main-image-wrapper {
-    max-width: 200px;
+    max-width: 240px;
     padding: 0.75rem;
   }
 
@@ -489,5 +348,13 @@
     width: 35px;
     height: 35px;
     font-size: 1rem;
+  }
+
+  .montre-detail-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .montre-info-card {
+    padding: 1rem;
   }
 }
