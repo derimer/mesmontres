@@ -177,6 +177,11 @@ const currentImageSrc = orderedImages?.[currentImageIndex]
               <h3>Description</h3>
               <p>{displayValue(montre.description, "Aucune description disponible.")}</p>
             </div>
+<div className="call-to-action-section">
+  <p className="cta-text">
+    Intéressé par cette montre ? <span className="cta-highlight">Cliquez sur "ACHETER MAINTENANT"</span> pour finaliser votre achat ou obtenir plus d'informations 
+  </p>
+</div>
 
             {/* 🛒 Bouton Acheter */}
             <button
