@@ -255,7 +255,10 @@ const handleDragEnd = async (result) => {
       let res;
 
       if (editingMontre) {
-        // Mode édition - PUT
+        for (let pair of formDataToSend.entries()) {
+  console.log("➡️", pair[0], pair[1]);
+}
+// Mode édition - PUT
         res = await fetch(
           `${import.meta.env.VITE_API_URL}/api/montres/${editingMontre.id}`,
           {
@@ -430,7 +433,7 @@ const handleDragEnd = async (result) => {
       )}
 
       {activeTab === "upload" && (
-        <form className="upload-form" onSubmit={handleSubmit}>
+        <form className="upload-form" onSubmit={handleSubmit}  encType="multipart/form-data" >
           {editingMontre && (
             <div className="editing-notice">
               <p>
@@ -649,21 +652,26 @@ const handleDragEnd = async (result) => {
     )}
 
           {/* Ajout de nouvelles images */}
-          <div className="form-group">
-            <label htmlFor="images">
-              {editingMontre
-                ? "Ajouter de nouvelles images :"
-                : "Sélectionnez des images :"}
-            </label>
-            <input
-              type="file"
-              id="images"
-              name="images"
-              onChange={handleChange}
-              multiple
-              accept="image/*"
-            />
-          </div>
+    <div className="form-group">
+      <label htmlFor="images">
+        {editingMontre
+          ? "Ajouter de nouvelles images :"
+          : "Sélectionnez des images :"}
+      </label>
+      <input
+        type="file"
+        id="images"
+        name="images"        
+        onChange={(e) =>
+          setFormData((prev) => ({
+            ...prev,
+            images: Array.from(e.target.files),
+          }))
+        }
+        multiple
+        accept="image/*"
+      />
+    </div>
 
           {/* Prévisualisation des nouvelles images */}
           {formData.images.length > 0 && (

@@ -5,11 +5,17 @@ const imageRepo = require("../../database/models/imagesRepository");
 const montreRepo = new MontreRepository();
 
 const montreController = {
+
   // ✅ Création d'une montre complète
   create: async (req, res) => {
     console.info("=== 🎯 Création d'une montre ===");
     console.info("Body:", req.body);
     console.info("Fichiers:", req.files);
+    // eslint-disable-next-line no-console
+console.log("🖼️ Fichiers reçus par Multer :", req.files);
+
+    
+
 
     try {
       const montreData = {
@@ -39,27 +45,34 @@ const montreController = {
         montreId = existing[0].id;
         console.info(`⚠️ Montre déjà existante (id: ${montreId})`);
       } else {
-        const [result] = await montreRepo.create(montreData);
-        montreId = result.insertId;
+        montreId = await montreRepo.create(montreData);
         console.info(`✅ Nouvelle montre créée (id: ${montreId})`);
       }
 
-      // ✅ Ajout des images dans l'ordre d'upload
-      let savedImages = [];
+      // ✅ Ajout des images uploadées
       if (req.files && req.files.length > 0) {
-        savedImages = await Promise.all(
-          req.files.map(async (file, index) => {
-            const id = await imageRepo.create({
+        console.info("🖼️ Images reçues :", req.files.map((f) => f.filename));
+
+        await Promise.all(
+          req.files.map((file, index) =>
+            imageRepo.create({
               montre_id: montreId,
               filename: file.filename,
-              position: index, // 🧩 conserve l’ordre d’ajout
-            });
-            return { id, filename: file.filename, position: index };
-          })
+              position: index,
+            })
+          )
         );
+
+        console.info(`📸 ${req.files.length} image(s) ajoutée(s) pour la montre ${montreId}`);
+      } else {
+        console.warn("⚠️ Aucune image reçue lors de la création de la montre.");
       }
 
-      res.status(201).json({ montreId, images: savedImages });
+      // 🧩 Relit la montre complète avec ses images
+      const newMontre = await montreRepo.read(montreId);
+
+      // ✅ Retourne la montre complète (avec images)
+      res.status(201).json(newMontre);
     } catch (err) {
       console.error("❌ Erreur création montre :", err);
       res.status(500).json({ error: "Erreur lors de la création de la montre" });

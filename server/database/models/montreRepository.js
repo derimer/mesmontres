@@ -239,6 +239,21 @@ class MontreRepository extends AbstractRepository {
 
     return result;
   }
+  
+  // ✅ Suppression d’une montre par ID
+async delete(id) {
+  try {
+    const [result] = await this.database.query(
+      `DELETE FROM ${this.table} WHERE id = ?`,
+      [id]
+    );
+    return result;
+  } catch (error) {
+    console.error("❌ Erreur suppression montre :", error);
+    throw error;
+  }
+}
+
 }
 
 module.exports = MontreRepository;

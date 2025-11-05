@@ -1,30 +1,30 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
-const fs = require("fs"); // ✅ pour vérifier/créer le dossier automatiquement
+const fs = require("fs");
 
-// 👉 Controller
 const montreController = require("../../../controllers/montreController");
 
 const router = express.Router();
 
-// ✅ Création automatique du dossier "uploads" s’il n’existe pas
-const uploadDir = path.join(__dirname, "../../../public/uploads");
+// ✅ Chemin correct vers le dossier uploads
+const uploadDir = path.join(__dirname, "../../../../public/uploads");
+
+// ✅ Création automatique du dossier s’il n’existe pas
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
   console.info(`📂 Dossier créé automatiquement : ${uploadDir}`);
 }
 
-// ✅ Configuration de Multer
+// ✅ Configuration Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, uploadDir); // le chemin est maintenant sûr et existant
+    cb(null, uploadDir); // Le chemin est maintenant sûr
   },
   filename: (req, file, cb) => {
-    cb(
-      null,
-      `${Date.now()}-${Math.round(Math.random() * 1e9)}-${file.originalname}`
-    );
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+    const cleanName = file.originalname.toLowerCase().replace(/\s+/g, "_");
+    cb(null, `${uniqueSuffix}-${cleanName}`);
   },
 });
 
@@ -37,4 +37,5 @@ router.get("/:id", montreController.getMontreById);
 router.put("/:id", upload.array("images"), montreController.update);
 router.delete("/:id", montreController.deleteMontre);
 
+// ✅ Export du router
 module.exports = router;
