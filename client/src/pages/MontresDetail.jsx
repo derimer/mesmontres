@@ -49,10 +49,14 @@ export default function MontreDetail() {
   }, [id]);
 
   // Gestion de la fermeture avec la touche Escape
+  const closeZoom = () => {
+    setZoomedImage(null);
+  };
+
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === "Escape") {
-        setZoomedImage(null);
+        closeZoom();
       }
     };
 
@@ -121,7 +125,7 @@ const currentImageSrc = orderedImages?.[currentImageIndex]
                       border: "none",
                       padding: 0,
                       cursor: "zoom-in",
-                      width: "100%",
+                      width: "60%",
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
@@ -199,42 +203,51 @@ const currentImageSrc = orderedImages?.[currentImageIndex]
       </div>
 
       {/* Modal plein écran pour le zoom */}
-      {zoomedImage && (
+           {zoomedImage && (
         <div
           className="image-modal"
-          onClick={() => setZoomedImage(null)}
+          onClick={closeZoom}
           role="button"
           tabIndex={0}
-          aria-label="Fermer la vue agrandie"
           onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              setZoomedImage(null);
-            }
+            if (e.key === "Escape") closeZoom();
           }}
         >
-          <button
-            type="button"
+          <div
             className="image-modal-content"
+            role="button"
+            tabIndex={0}
             onClick={(e) => e.stopPropagation()}
             onKeyDown={(e) => {
-              if (e.key === "Escape") setZoomedImage(null);
+              e.stopPropagation();
             }}
-            style={{ background: "none", border: "none", padding: 0 }}
           >
-            <img
-              src={zoomedImage}
-              alt={`${montre.name} - Vue agrandie`}
-              className="zoomed-image"
-            />
             <button
               type="button"
-              className="close-modal"
-              onClick={() => setZoomedImage(null)}
-              aria-label="Fermer"
+              className="zoomed-image-button"
+              onClick={closeZoom}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") closeZoom();
+              }}
+              style={{
+                padding: 0,
+                border: "none",
+                background: "none",
+                cursor: "pointer",
+              }}
+              aria-label="Fermer l'image agrandie"
             >
+              <img
+                src={zoomedImage}
+                alt="Montre agrandie"
+                className="zoomed-image"
+                draggable={false}
+              />
+            </button>
+            <button type="button" className="close-modal" onClick={closeZoom}>
               ×
             </button>
-          </button>
+          </div>
         </div>
       )}
     </div>
