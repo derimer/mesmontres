@@ -2,7 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const imagesController = require("../../../controllers/imagesController");
-
+const imageRepo = require("../../../../database/models/imagesRepository");
 const router = express.Router();
 
 // Configuration de multer pour l'upload d'images
@@ -37,5 +37,29 @@ router.get("/:id", imagesController.readOne);
 router.post("/", upload.array("images", 10), imagesController.create);
 
 router.delete("/:id", imagesController.delete);
+// ✅ Réordonner les images
+router.put("/reorder", async (req, res, next) => {
+  try {
+    const { imagesOrder } = req.body;
+
+    if (!imagesOrder || !Array.isArray(imagesOrder)) {
+      return res.status(400).json({ error: "Format invalide pour imagesOrder" });
+    }
+
+    // Mise à jour des positions via le repository
+    await Promise.all(
+      imagesOrder.map(({ id, position }) =>
+        imageRepo.updatePosition(id, position)
+      )
+    );
+
+    console.info("✅ Ordre des images mis à jour !");
+    return res.status(200).json({ message: "Ordre mis à jour avec succès" });
+  } catch (err) {
+    console.error("❌ Erreur dans PUT /api/images/reorder :", err);
+    return next(err);
+  }
+});
+
 
 module.exports = router;

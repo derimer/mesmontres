@@ -1,4 +1,7 @@
 // server/app/controllers/imagesController.js
+
+const fs = require("fs");
+const path = require("path");
 const imageRepo = require("../../database/models/imagesRepository");
 
 const imagesController = {
@@ -14,7 +17,7 @@ const imagesController = {
   async readOne(req, res, next) {
     try {
       const id = parseInt(req.params.id, 10);
-      const [image] = await imageRepo.read(id);
+      const image = await imageRepo.read(id);
       if (!image) {
         return res.status(404).json({ message: "Image not found" });
       }
@@ -49,15 +52,32 @@ const imagesController = {
     }
   },
 
-  async delete(req, res, next) {
+ async delete(req, res, next) {
     try {
       const id = parseInt(req.params.id, 10);
+      const image = await imageRepo.read(id);
+
+      if (!image) {
+        return res.status(404).json({ message: "Image non trouvée" });
+      }
+
+      // Supprime dans la base de données
       await imageRepo.delete(id);
-      res.sendStatus(204);
+
+      // Supprime aussi le fichier physique si présent
+      const imagePath = path.join(__dirname, "../public/uploads", image.filename);
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+        console.info(`🗑️ Fichier supprimé : ${image.filename}`);
+      }
+
+      return res.sendStatus(204);
     } catch (err) {
-      next(err);
+      console.error("Erreur lors de la suppression de l’image :", err);
+      return next(err);
     }
   },
 };
+;
 
 module.exports = imagesController;

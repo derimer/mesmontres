@@ -1,6 +1,9 @@
 /* eslint-disable no-alert */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { motion } from "framer-motion";
+
 import "./Admin.css";
 
 export default function Admin() {
@@ -105,11 +108,71 @@ export default function Admin() {
     setFormData({ ...formData, images: newImages });
   };
 
-  const removeExistingImage = (index) => {
-    const newExistingImages = [...existingImages];
-    newExistingImages.splice(index, 1);
-    setExistingImages(newExistingImages);
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+  return result;
+};
+
+// Fonction qui envoie la mise à jour au backend
+const updateImageOrder = async (newOrder) => {
+  try {
+    await fetch(`${import.meta.env.VITE_API_URL}/api/images/reorder`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ imagesOrder: newOrder }),
+    });
+    console.info("✅ Ordre mis à jour sur le serveur !");
+  } catch (err) {
+    console.error("❌ Erreur mise à jour ordre :", err);
+  }
+};
+  const handleDeleteImage = async (imageId, index) => {
+    try {
+      // 🗑️ Supprimer dans la base via API
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/images/${imageId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        console.info(`✅ Image ${imageId} supprimée du serveur`);
+        // 🧹 Supprimer aussi du state React local
+        const newExistingImages = [...existingImages];
+        newExistingImages.splice(index, 1);
+        setExistingImages(newExistingImages);
+      } else {
+        console.error("Erreur lors de la suppression :", response.status);
+      }
+    } catch (err) {
+      console.error("Erreur réseau lors de la suppression :", err);
+    }
   };
+const handleDragEnd = async (result) => {
+  if (!result.destination) return;
+
+  // Utilise la fonction utilitaire reorder pour éviter la duplication
+  const reordered = reorder(existingImages, result.source.index, result.destination.index);
+
+  // 🔁 Met à jour localement l’ordre des images
+  setExistingImages(reordered);
+
+  // 🧩 Crée la payload à envoyer au backend
+  const imagesOrder = reordered.map((img, index) => ({
+    id: img.id,
+    position: index,
+  }));
+
+  try {
+    // Utilise la fonction réutilisable pour envoyer la mise à jour au serveur
+    await updateImageOrder(imagesOrder);
+  } catch (err) {
+    console.error("❌ Erreur lors de la mise à jour de l’ordre :", err);
+  }
+};
 
   const handleImageClick = (imageSrc) => {
     setZoomedImage(zoomedImage === imageSrc ? null : imageSrc);
@@ -358,7 +421,9 @@ export default function Admin() {
 
       {feedbackMessage && (
         <div
-          className={`alert ${feedbackMessage.includes("succès") ? "alert-success" : "alert-error"}`}
+          className={`alert ${
+            feedbackMessage.includes("succès") ? "alert-success" : "alert-error"
+          }`}
         >
           {feedbackMessage}
         </div>
@@ -514,41 +579,74 @@ export default function Admin() {
             />
           </div>
 
-          {/* Images existantes (uniquement en mode édition) */}
-          {editingMontre && existingImages.length > 0 && (
-            <div className="form-group">
-              <label htmlFor="images">Images existantes :</label>
-              <div className="image-grid">
-                {existingImages.map((img, index) => (
-                  <div key={img.id} className="image-preview-container">
-                    <button
-                      type="button"
-                      className="image-button"
-                      onClick={() =>
-                        handleImageClick(
-                          `${import.meta.env.VITE_API_URL}/api/uploads/${img.filename}`
-                        )
-                      }
-                      aria-label={`Agrandir l'image ${img.filename}`}
-                    >
-                      <img
-                        src={`${import.meta.env.VITE_API_URL}/api/uploads/${img.filename}`}
-                        alt={`Existante ${index + 1}`}
-                        className="preview-image"
-                      />
-                    </button>
-                    <button
-                      type="button"
-                      className="btn-delete"
-                      onClick={() => removeExistingImage(index)}
-                    >
-                      ❌
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+    {/* Images existantes (uniquement en mode édition) */}
+    {editingMontre && existingImages.length > 0 && (
+      <div className="form-group">
+        <label htmlFor="images">Images existantes :</label>
+   
+<DragDropContext onDragEnd={handleDragEnd}>
+  <Droppable droppableId="images">
+    {(provided) => (
+      <div
+        className="image-grid"
+        ref={provided.innerRef}
+        {...provided.droppableProps} // ✅ ceci est nécessaire !
+      >
+        {existingImages.map((img, index) => (
+<Draggable
+  key={img.id}
+  draggableId={String(img.id)}
+  index={index}
+>
+  {(dragProvided, snapshot) => (
+    <motion.div
+      ref={dragProvided.innerRef}
+      {...dragProvided.draggableProps}
+      {...dragProvided.dragHandleProps}
+      className="image-preview-container"
+      layout
+      animate={{
+        scale: snapshot.isDragging ? 1.05 : 1,
+        boxShadow: snapshot.isDragging
+          ? "0 8px 20px rgba(0,0,0,0.25)"
+          : "none",
+      }}
+      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+      style={{
+        userSelect: "none",
+        cursor: "grab",
+        position: "relative", // ✅ important pour le positionnement du numéro
+        ...dragProvided.draggableProps.style,
+      }}
+    >
+      {/* 🏷️ Numéro d'ordre */}
+      <span className="image-order-number">{index + 1}</span>
+
+      <img
+        src={`${import.meta.env.VITE_API_URL}/api/uploads/${img.filename}`}
+        alt={`Vue ${index + 1}`}
+        className="preview-image"
+        style={{ pointerEvents: "none" }}
+      />
+      <button
+        type="button"
+        className="btn-delete"
+        onClick={() => handleDeleteImage(img.id, index)}
+      >
+        ❌
+      </button>
+    </motion.div>
+  )}
+</Draggable>
+        ))}
+        {provided.placeholder}
+      </div>
+    )}
+  </Droppable>
+</DragDropContext>
+
+      </div>
+    )}
 
           {/* Ajout de nouvelles images */}
           <div className="form-group">
@@ -650,7 +748,9 @@ export default function Admin() {
                               className="image-button"
                               onClick={() =>
                                 handleImageClick(
-                                  `${import.meta.env.VITE_API_URL}/api/uploads/${img.filename}`
+                                  `${
+                                    import.meta.env.VITE_API_URL
+                                  }/api/uploads/${img.filename}`
                                 )
                               }
                               style={{
@@ -662,7 +762,9 @@ export default function Admin() {
                               aria-label={`Agrandir l'image de la montre ${montre.name}`}
                             >
                               <img
-                                src={`${import.meta.env.VITE_API_URL}/api/uploads/${img.filename}`}
+                                src={`${
+                                  import.meta.env.VITE_API_URL
+                                }/api/uploads/${img.filename}`}
                                 alt={`Vue de la montre ${montre.name}`}
                                 className="preview-image"
                               />

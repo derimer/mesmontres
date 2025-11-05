@@ -71,6 +71,15 @@ class ImageRepository extends AbstractRepository {
     );
     return result;
   }
+// ✅ Lire une image spécifique par son ID
+
+async read(imageId) {
+  const [rows] = await this.database.query(
+    "SELECT * FROM images WHERE id = ?",
+    [imageId]
+  );
+  return rows[0] || null;
+}
 
   // ✅ Supprimer une image spécifique
   async delete(imageId) {
