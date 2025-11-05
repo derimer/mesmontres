@@ -464,20 +464,6 @@
 
 
 @media (max-width: 480px) {
-  .call-to-action-section {
-    padding: 1rem;
-  }
-  
-  .cta-text {
-    font-size: 0.9rem;
-  }
-  
-  .btn-buy {
-    color:white;
-    padding: 1rem 1.2rem;
-    
-}
-@media (max-width: 480px) {
   .main-image-wrapper {
     max-width: 240px;
     padding: 0.75rem;
@@ -500,4 +486,17 @@
   .montre-info-card {
     padding: 1rem;
   }
+  .call-to-action-section {
+    padding: 1rem;
+  }
+  
+  .cta-text {
+    font-size: 0.9rem;
+  }
+  
+  .btn-buy {
+    color:white;
+    padding: 1rem 1.2rem;
+    
 }
+}/* === BOUTON D’ACHAT AMÉLIORÉ === */
