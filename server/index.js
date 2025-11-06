@@ -36,7 +36,7 @@ app.use(express.json());
 // =============================
 // Fichiers statiques
 // =============================
-const uploadsPath = path.join(__dirname, "app/public/uploads");
+const uploadsPath = path.join(__dirname, "/public/uploads");
 console.log("📁 Static files served from:", uploadsPath);
 
 app.use("/api/uploads", express.static(uploadsPath));
