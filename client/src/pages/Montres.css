@@ -215,6 +215,19 @@
     transform: translateY(0);
   }
 }
+.brand-section {
+  margin-bottom: 3rem;
+}
+
+.brand-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: rgb(61, 60, 60);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #f3eeee;
+  padding-bottom: 0.5rem;
+}
 
 /* Responsive design pour les instructions */
 @media screen and (max-width: 768px) {
