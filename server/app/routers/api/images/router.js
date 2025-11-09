@@ -9,15 +9,16 @@ const router = express.Router();
 // Configuration de multer pour l'upload d'images
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    // Enregistrer dans server/public/uploads
-    cb(null, path.join(__dirname, "../../../public/uploads"));
+    // 📁 Correction du chemin : on enregistre dans app/public/uploads
+    cb(null, path.join(__dirname, "../../../app/public/uploads"));
   },
   filename(req, file, cb) {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    const cleanName = file.originalname.toLowerCase().replace(/\s+/g, "_"); // remplacer espaces par underscore
+    const cleanName = file.originalname.toLowerCase().replace(/\s+/g, "_");
     cb(null, `${uniqueSuffix}-${cleanName}`);
   },
 });
+
 
 const upload = multer({
   storage,
