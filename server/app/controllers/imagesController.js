@@ -14,6 +14,7 @@ const imagesController = {
     }
   },
 
+
   async readOne(req, res, next) {
     try {
       const id = parseInt(req.params.id, 10);

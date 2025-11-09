@@ -254,18 +254,15 @@ const handleDragEnd = async (result) => {
     try {
       let res;
 
-      if (editingMontre) {
-        for (let pair of formDataToSend.entries()) {
-  console.log("➡️", pair[0], pair[1]);
-}
-// Mode édition - PUT
-        res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/montres/${editingMontre.id}`,
-          {
-            method: "PUT",
-            body: formDataToSend,
-          }
-        );
+if (editingMontre) {
+  // Mode édition - PUT
+  res = await fetch(
+    `${import.meta.env.VITE_API_URL}/api/montres/${editingMontre.id}`,
+    {
+      method: "PUT",
+      body: formDataToSend,
+    }
+  );
       } else {
         // Mode création - POST
         res = await fetch(`${import.meta.env.VITE_API_URL}/api/montres`, {

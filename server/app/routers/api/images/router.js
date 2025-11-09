@@ -21,6 +21,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5 Mo par image
   fileFilter: (req, file, cb) => {
     if (file.mimetype.startsWith("image/")) {
       cb(null, true);
@@ -35,7 +36,8 @@ router.get("/", imagesController.readAll);
 router.get("/:id", imagesController.readOne);
 
 // Gestion de plusieurs images
-router.post("/", upload.array("images", 10), imagesController.create);
+router.post("/upload", upload.array("images", 50), imagesController.create);
+
 
 router.delete("/:id", imagesController.delete);
 // ✅ Réordonner les images
