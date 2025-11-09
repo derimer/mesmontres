@@ -17,18 +17,29 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 // ✅ Configuration Multer
+// ✅ Configuration Multer
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir); // Le chemin est maintenant sûr
+  destination(req, file, cb) {
+    // ✅ Corrigé : on enregistre dans app/public/uploads
+    cb(null, path.join(__dirname, "../../../public/uploads"));
   },
-  filename: (req, file, cb) => {
+  filename(req, file, cb) {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
     const cleanName = file.originalname.toLowerCase().replace(/\s+/g, "_");
     cb(null, `${uniqueSuffix}-${cleanName}`);
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Seules les images sont autorisées"), false);
+    }
+  },
+});
 
 // ✅ Routes
 router.post("/", upload.array("images"), montreController.create);

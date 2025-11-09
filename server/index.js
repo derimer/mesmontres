@@ -36,9 +36,12 @@ app.use(express.json());
 // =============================
 // Fichiers statiques
 // =============================
-const uploadsPath = path.join(__dirname, "/public/uploads");
-console.log("📁 Static files served from:", uploadsPath);
+const uploadsPath =
+  process.env.NODE_ENV === "production"
+    ? path.join(__dirname, "app/public/uploads") // VPS
+    : path.join(__dirname, "public/uploads");    // local
 
+console.log("📁 Static files served from:", uploadsPath);
 app.use("/api/uploads", express.static(uploadsPath));
 
 
