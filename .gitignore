@@ -1,6 +1,60 @@
+# ============================================
+# 📦 DEPENDANCES & BUILD
+# ============================================
 node_modules/
-.DS_Store
-.idea
-.vscode
-.yarn
+client/node_modules/
+server/node_modules/
+
+# Build / cache (React + Vite)
+client/dist/
+client/.vite/
+.cache/
+.tmp/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ============================================
+# ⚙️ CONFIGURATION & ENVIRONNEMENT
+# ============================================
+.env
+server/.env
+client/.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ============================================
+# 🖼️ FICHIERS D’UPLOAD / PUBLIC
+# ============================================
+# Empêche les milliers d’images dans Git
+server/app/public/uploads/
 server/public/uploads/
+uploads/
+public/uploads/
+*.webp
+*.jpg
+*.jpeg
+*.png
+*.gif
+
+# ============================================
+# 🔧 DIVERS
+# ============================================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# ============================================
+# 🚀 DOCKER & DEPLOIEMENT
+# ============================================
+docker-compose.override.yml
+.docker/
+*.pid
