@@ -25,7 +25,6 @@ export default function Montres() {
     const timer = setTimeout(() => {
       setShowInstructions(false);
     }, 8000);
-
     return () => clearTimeout(timer);
   }, []);
 
@@ -45,6 +44,19 @@ export default function Montres() {
     fetchMontres();
   }, []);
 
+  // Regrouper les montres par marque
+  const montresParMarque = montres.reduce((acc, montre) => {
+    const marque = montre.brand || "Autre";
+    if (!acc[marque]) {
+      acc[marque] = [];
+    }
+    acc[marque].push(montre);
+    return acc;
+  }, {});
+
+  // Trier les marques par ordre alphabétique
+  const marquesTriees = Object.keys(montresParMarque).sort();
+
   if (loading) return <p>Chargement des montres...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
@@ -52,7 +64,7 @@ export default function Montres() {
     <div className="montres-container">
       <h1>Mes Montres</h1>
       <p className="intro-text">
-        Bienvenue dans la section montres. Chacune d'elles a fait- l'objet d'un
+        Bienvenue dans la section montres. Chacune d'elles a fait l'objet d'un
         entretien complet et selon son état, des travaux nécessaires, afin de
         vous proposer un garde-temps en parfait état d'aspect et de
         fonctionnement.
@@ -82,71 +94,62 @@ export default function Montres() {
         </div>
       )}
 
-     <div className="montres-grid">
-  {/* Regroupement des montres par marque */}
-{Object.entries(
-  montres.reduce((acc, montre) => {
-    const brand = montre.brand || "Autres";
-    if (!acc[brand]) acc[brand] = [];
-    acc[brand].push(montre);
-    return acc;
-  }, {})
-).map(([brand, montresDeLaMarque]) => (
-  <div key={brand} className="brand-section">
-    <h2 className="brand-title">{brand}</h2>
-    <div className="montres-grid">
-      {montresDeLaMarque.map((montre) => {
-        // 🖼️ Sélection de la première image
-        const mainImage =
-          montre.images?.find((img) => img.position === 0) ||
-          montre.images?.[0];
+      {/* Affichage par marque */}
+      {marquesTriees.map((marque) => (
+        <div key={marque} className="marque-section">
+          <h2 className="marque-title">{marque}</h2>
+          <div className="montres-grid">
+            {montresParMarque[marque].map((montre) => {
+              // 🖼️ Sélectionner la première image (position = 0 ou la première du tableau)
+              const mainImage =
+                montre.images?.find((img) => img.position === 0) ||
+                montre.images?.[0];
+              const imageSrc = mainImage
+                ? `${import.meta.env.VITE_API_URL}/api/uploads/${mainImage.filename}`
+                : "/placeholder.jpg";
 
-        const imageSrc = mainImage
-          ? `${import.meta.env.VITE_API_URL}/api/uploads/${mainImage.filename}`
-          : "/placeholder.jpg";
-
-        return (
-          <div key={montre.id} className="montre-card">
-            <div className="montre-image-container">
-              <button
-                type="button"
-                className="montre-image-button"
-                onClick={(e) => handleImageClick(e, imageSrc)}
-                style={{
-                  padding: 0,
-                  border: "none",
-                  background: "none",
-                  cursor: "pointer",
-                }}
-                aria-label={`Agrandir l'image de ${montre.brand}`}
-              >
-                <img
-                  src={imageSrc}
-                  alt={montre.brand}
-                  className="montre-image"
-                  draggable={false}
-                />
-                <div className="image-overlay">
-                  <span className="zoom-hint">📸 Cliquez pour agrandir</span>
+              return (
+                <div key={montre.id} className="montre-card">
+                  <div className="montre-image-container">
+                    <button
+                      type="button"
+                      className="montre-image-button"
+                      onClick={(e) => handleImageClick(e, imageSrc)}
+                      style={{
+                        padding: 0,
+                        border: "none",
+                        background: "none",
+                        cursor: "pointer",
+                      }}
+                      aria-label={`Agrandir l'image de ${montre.brand}`}
+                    >
+                      <img
+                        src={imageSrc}
+                        alt={montre.brand}
+                        className="montre-image"
+                        draggable={false}
+                      />
+                      <div className="image-overlay">
+                        <span className="zoom-hint">📸 Cliquez pour agrandir</span>
+                      </div>
+                    </button>
+                  </div>
+                  <Link
+                    to={`/montres/${montre.id}`}
+                    className="montre-info-link"
+                  >
+                    <div className="montre-info">
+                      <p>Référence : {montre.reference || "N/A"}</p>
+                      <p>Prix : {montre.price} €</p>
+                      <div className="details-hint">Voir les détails →</div>
+                    </div>
+                  </Link>
                 </div>
-              </button>
-            </div>
-
-            <Link to={`/montres/${montre.id}`} className="montre-info-link">
-              <div className="montre-info">
-                <p>Marque : {montre.brand}</p>
-                <p>Prix : {montre.price} €</p>
-                <div className="details-hint">Voir les détails →</div>
-              </div>
-            </Link>
+              );
+            })}
           </div>
-        );
-      })}
-    </div>
-  </div>
-))}
-
-</div>
+        </div>
+      ))}
 
       {/* Modal pour l'image agrandie */}
       {zoomedImage && (
