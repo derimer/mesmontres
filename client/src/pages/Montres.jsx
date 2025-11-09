@@ -44,7 +44,7 @@ export default function Montres() {
     fetchMontres();
   }, []);
 
-  // Regrouper les montres par marque
+  // Regrouper les montres par marque et trier par nombre décroissant
   const montresParMarque = montres.reduce((acc, montre) => {
     const marque = montre.brand || "Autre";
     if (!acc[marque]) {
@@ -54,8 +54,14 @@ export default function Montres() {
     return acc;
   }, {});
 
-  // Trier les marques par ordre alphabétique
-  const marquesTriees = Object.keys(montresParMarque).sort();
+  // Trier les marques par nombre de montres décroissant
+  const marquesTriees = Object.entries(montresParMarque)
+    .sort(([, montresA], [, montresB]) => montresB.length - montresA.length)
+    .map(([marque, montres]) => ({
+      marque,
+      montres,
+      count: montres.length
+    }));
 
   if (loading) return <p>Chargement des montres...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
@@ -94,59 +100,63 @@ export default function Montres() {
         </div>
       )}
 
-      {/* Affichage par marque */}
-      {marquesTriees.map((marque) => (
+      {/* Affichage par marque triée par nombre décroissant */}
+      {marquesTriees.map(({ marque, montres, count }) => (
         <div key={marque} className="marque-section">
-          <h2 className="marque-title">{marque}</h2>
-          <div className="montres-grid">
-            {montresParMarque[marque].map((montre) => {
-              // 🖼️ Sélectionner la première image (position = 0 ou la première du tableau)
-              const mainImage =
-                montre.images?.find((img) => img.position === 0) ||
-                montre.images?.[0];
-              const imageSrc = mainImage
-                ? `${import.meta.env.VITE_API_URL}/api/uploads/${mainImage.filename}`
-                : "/placeholder.jpg";
+          <div className="marque-wrapper">
+            <h2 className="marque-title">
+              {marque} <span className="montre-count">({count} modèle{count > 1 ? 's' : ''})</span>
+            </h2>
+            <div className="montres-grid">
+              {montres.map((montre) => {
+                // 🖼️ Sélectionner la première image
+                const mainImage =
+                  montre.images?.find((img) => img.position === 0) ||
+                  montre.images?.[0];
+                const imageSrc = mainImage
+                  ? `${import.meta.env.VITE_API_URL}/api/uploads/${mainImage.filename}`
+                  : "/placeholder.jpg";
 
-              return (
-                <div key={montre.id} className="montre-card">
-                  <div className="montre-image-container">
-                    <button
-                      type="button"
-                      className="montre-image-button"
-                      onClick={(e) => handleImageClick(e, imageSrc)}
-                      style={{
-                        padding: 0,
-                        border: "none",
-                        background: "none",
-                        cursor: "pointer",
-                      }}
-                      aria-label={`Agrandir l'image de ${montre.brand}`}
-                    >
-                      <img
-                        src={imageSrc}
-                        alt={montre.brand}
-                        className="montre-image"
-                        draggable={false}
-                      />
-                      <div className="image-overlay">
-                        <span className="zoom-hint">📸 Cliquez pour agrandir</span>
-                      </div>
-                    </button>
-                  </div>
-                  <Link
-                    to={`/montres/${montre.id}`}
-                    className="montre-info-link"
-                  >
-                    <div className="montre-info">
-                      <p>Référence : {montre.reference || "N/A"}</p>
-                      <p>Prix : {montre.price} €</p>
-                      <div className="details-hint">Voir les détails →</div>
+                return (
+                  <div key={montre.id} className="montre-card">
+                    <div className="montre-image-container">
+                      <button
+                        type="button"
+                        className="montre-image-button"
+                        onClick={(e) => handleImageClick(e, imageSrc)}
+                        style={{
+                          padding: 0,
+                          border: "none",
+                          background: "none",
+                          cursor: "pointer",
+                        }}
+                        aria-label={`Agrandir l'image de ${montre.brand}`}
+                      >
+                        <img
+                          src={imageSrc}
+                          alt={montre.brand}
+                          className="montre-image"
+                          draggable={false}
+                        />
+                        <div className="image-overlay">
+                          <span className="zoom-hint">📸 Cliquez pour agrandir</span>
+                        </div>
+                      </button>
                     </div>
-                  </Link>
-                </div>
-              );
-            })}
+                    <Link
+                      to={`/montres/${montre.id}`}
+                      className="montre-info-link"
+                    >
+                      <div className="montre-info">
+                        <p>Référence : {montre.reference || "N/A"}</p>
+                        <p>Prix : {montre.price} €</p>
+                        <div className="details-hint">Voir les détails →</div>
+                      </div>
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       ))}

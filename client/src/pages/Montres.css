@@ -320,7 +320,39 @@
   background: #ffcc00;
   transform: scale(1.1);
 }
+/* Style pour le compteur de modèles */
+.montre-count {
+  font-size: 1rem;
+  color: #fbaf08;
+  background: rgba(251, 175, 8, 0.1);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  margin-left: 0.5rem;
+  font-weight: 400;
+  border: 1px solid rgba(251, 175, 8, 0.3);
+}
 
+/* Adaptation responsive du compteur */
+@media screen and (max-width: 768px) {
+  .montre-count {
+    font-size: 0.9rem;
+    padding: 0.2rem 0.6rem;
+    margin-left: 0.3rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .marque-title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  .montre-count {
+    margin-left: 0;
+  }
+}
 /* Responsive design */
 @media screen and (max-width: 1200px) {
   .montres-grid {
