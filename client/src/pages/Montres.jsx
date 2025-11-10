@@ -57,10 +57,10 @@ export default function Montres() {
   // Trier les marques par nombre de montres décroissant
   const marquesTriees = Object.entries(montresParMarque)
     .sort(([, montresA], [, montresB]) => montresB.length - montresA.length)
-    .map(([marque, montres]) => ({
+    .map(([marque, montresList]) => ({
       marque,
-      montres,
-      count: montres.length
+      montres: montresList,
+      count: montresList.length
     }));
 
   if (loading) return <p>Chargement des montres...</p>;
@@ -84,7 +84,7 @@ export default function Montres() {
             <div className="instructions-text">
               <strong>Comment naviguer :</strong>
               <span>
-                Cliquez sur l'image pour l'agrandir • Cliquez sur le nom pour
+                Cliquez sur l'image pour l'agrandir • Cliquez sur le prix pour
                 voir les détails
               </span>
             </div>
@@ -101,14 +101,14 @@ export default function Montres() {
       )}
 
       {/* Affichage par marque triée par nombre décroissant */}
-      {marquesTriees.map(({ marque, montres, count }) => (
+      {marquesTriees.map(({ marque, montres: montresList, count }) => (
         <div key={marque} className="marque-section">
           <div className="marque-wrapper">
             <h2 className="marque-title">
               {marque} <span className="montre-count">({count} modèle{count > 1 ? 's' : ''})</span>
             </h2>
             <div className="montres-grid">
-              {montres.map((montre) => {
+              {montresList.map((montre) => {
                 // 🖼️ Sélectionner la première image
                 const mainImage =
                   montre.images?.find((img) => img.position === 0) ||
