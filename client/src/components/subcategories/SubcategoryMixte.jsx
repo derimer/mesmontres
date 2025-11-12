@@ -32,22 +32,22 @@ function SubcategoryMixte() {
   const advantages = [
     {
       id: "avantage1",
-      title: "✅ Élégance intemporelle",
+      title: " Élégance intemporelle",
       description: "Un équilibre parfait entre raffinement et sobriété",
     },
     {
       id: "avantage2",
-      title: "✅ Confort universel",
+      title: " Confort universel",
       description: "Une montre pensée pour s’adapter à chaque morphologie",
     },
     {
       id: "avantage3",
-      title: "✅ Choix esthétique",
+      title: " Choix esthétique",
       description: "Disponible en plusieurs finitions, bracelets et couleurs",
     },
     {
       id: "avantage4",
-      title: "✅ Polyvalence quotidienne",
+      title: " Polyvalence quotidienne",
       description: "Convient aussi bien au bureau qu’aux sorties du week-end",
     },
   ];

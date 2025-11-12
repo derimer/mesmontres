@@ -7,11 +7,15 @@
 
 /* Hero Section */
 .chrono-quartz-hero {
-  background: linear-gradient(135deg, #1a1a1a 0%, #07070e 100%);
+  background-image: url(/images/montreChronographeSimple.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   padding: 80px 30px;
   text-align: center;
   border-bottom: 2px solid gold;
 }
+
 
 .hero-content h1 {
   color: gold;

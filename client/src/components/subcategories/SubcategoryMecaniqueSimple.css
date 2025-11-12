@@ -7,7 +7,7 @@
 
 /* Hero Section */
 .mecanique-hero {
-  background-image:url(../../assets/images/montreMecaniqueSimple.jpg);
+  background-image:url(images/montreMecaniqueSimple.jpg);
   background-size: cover;
   background-position: center;
   background-repeat:no-repeat ;

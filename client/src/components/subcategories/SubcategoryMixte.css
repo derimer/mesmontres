@@ -1,6 +1,6 @@
 /* SubcategoryMixte.css */
 .mixte-hero {
-  background-image: url(../../assets/images/montreMixte.jpg);
+  background-image: url(/images/mixte.jpg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -24,7 +24,7 @@
 }
 
 .hero-description {
-  color: #0e0f0f;
+  color: gold !important;
   font-size: 1.1rem;
   max-width: 700px;
   margin: 0 auto;
@@ -32,7 +32,7 @@
 }
 
 .hero-description p {
-  color: black !important;
+  color: gold !important;
 }
 
 /* Réutilisation intégrale du style mécanique */

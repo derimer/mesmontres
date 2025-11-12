@@ -8,7 +8,7 @@
 /* Hero Section */
 /* SubcategoryKinetic.css (adapter la profondeur ../ selon l’emplacement du .css) */
 .kinetic-hero {
-  background-image: url(../../assets/images/montreKineticSimple.webp);
+  background-image: url(/images/montreKineticSimple.webp);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

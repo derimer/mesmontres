@@ -7,7 +7,7 @@
 
 /* Hero Section */
 .analogique-hero {
-  background-image: url(../../assets/images/montreAnalogiqueSimple.jpg);
+  background-image: url(/images/montreAnalogiqueSimple.jpg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
