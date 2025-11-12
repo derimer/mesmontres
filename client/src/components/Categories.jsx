@@ -18,7 +18,7 @@ const categoriesData = [
       {
         id: "mecanique-simple",
         name: "Mécanique simple",
-        image: "/images/montreMecaniqueSimple.jpg",
+        image: "./images/montreMecaniqueSimple.jpg",
         description: "En général, deux aiguilles, ou deux aiguilles + trotteuse",
          // AJOUTÉ
       },
@@ -66,7 +66,7 @@ const categoriesData = [
       {
         id: "analogique-simple",
         name: "Analogique simple",
-        image: "/images/quartz.jpg",
+        image: "./images/quartz.jpg",
         description: "Deux aiguilles + trotteuse",
          // AJOUTÉ
       },
