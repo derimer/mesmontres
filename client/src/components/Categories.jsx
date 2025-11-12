@@ -5,7 +5,7 @@ const categoriesData = [
   {
     id: "mecaniques",
     name: "Montres Mécaniques",
-    image: "./images/mecaniques.jpg",
+    image: "/images/mecaniques.jpg",
     description: "L'art de l'horlogerie traditionnelle, des mouvements complexes sans pile",
     waterResistance: [
       { atm: 3, metres: 30, usage: "Résiste aux éclaboussures et à la pluie" },
@@ -18,35 +18,35 @@ const categoriesData = [
       {
         id: "mecanique-simple",
         name: "Mécanique simple",
-        image: "./images/montreMecaniqueSimple.jpg",
+        image: "/images/montreMecaniqueSimple.jpg",
         description: "En général, deux aiguilles, ou deux aiguilles + trotteuse",
          // AJOUTÉ
       },
       {
         id: "automatique",
         name: "Automatique",
-        image: "./images/automatiques.jpg",
+        image: "/images/automatiques.jpg",
         description: "En général deux aiguilles + trotteuse",
         // AJOUTÉ
       },
       {
         id: "chronographe-mecanique",
         name: "Chronographe",
-        image: "./images/pulsar.jpg",
+        image: "/images/pulsar.jpg",
         description: "Avec cadrans minutes, secondes et heures sur 24h",
        
       },
       {
         id: "calendrier-perpetuel",
         name: "Calendrier perpétuel",
-        image: "./images/montreCalendrierPerpetuel.jpg",
+        image: "/images/montreCalendrierPerpetuel.jpg",
         description: "Avec cadrans jour et date",
          // AJOUTÉ
       },
       {
         id: "kinetic",
         name: "Kinetic",
-        image: "./images/kinetic.jpg",
+        image: "/images/kinetic.jpg",
         description: "Automatique avec batterie de réserve de marche",
          // AJOUTÉ
       }
@@ -55,7 +55,7 @@ const categoriesData = [
   {
     id: "quartz",
     name: "Montres à Quartz",
-    image: "./images/quartz2.jpg",
+    image: "/images/quartz2.jpg",
     description: "Précision et facilité d'entretien, alimentées par pile",
     waterResistance: [
       { atm: 3, metres: 30, usage: "Éclaboussures seulement" },
@@ -66,14 +66,14 @@ const categoriesData = [
       {
         id: "analogique-simple",
         name: "Analogique simple",
-        image: "./images/quartz.jpg",
+        image: "/images/quartz.jpg",
         description: "Deux aiguilles + trotteuse",
          // AJOUTÉ
       },
       {
         id: "chronographe-quartz",
         name: "Chronographe",
-        image: "./images/chronographe2.jpg",
+        image: "/images/chronographe2.jpg",
         description: "Avec cadrans minutes, secondes et heures sur 24h",
         // AJOUTÉ
       }
@@ -82,7 +82,7 @@ const categoriesData = [
   {
     id: "digitale",
     name: "Montres Digitales",
-    image: "./images/digitale.jpg",
+    image: "/images/digitale.jpg",
     description: "Affichage numérique moderne et fonctionnel",
     waterResistance: [
       { atm: 3, metres: 30, usage: "Résiste aux éclaboussures" },
@@ -93,14 +93,14 @@ const categoriesData = [
       {
         id: "digitale-simple",
         name: "Digitale simple",
-        image: "./images/montreDigitaleSimple.jpg",
+        image: "/images/montreDigitaleSimple.jpg",
         description: "Écran simple ou multi-écrans",
          // AJOUTÉ
       },
       {
         id: "mixte",
         name: "Mixte digitale/analogique",
-        image: "./images/mixte.jpg",
+        image: "/images/mixte.jpg",
         description: "Digitale avec en plus aiguilles et trotteuse",
          // AJOUTÉ
       }
