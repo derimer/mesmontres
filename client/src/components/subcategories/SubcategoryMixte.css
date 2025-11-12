@@ -1,0 +1,39 @@
+/* SubcategoryMixte.css */
+.mixte-hero {
+  background-image: url(../../assets/images/montreMixte.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 80px 30px;
+  text-align: center;
+  border-bottom: 2px solid gold;
+}
+
+.hero-content h1 {
+  color: gold;
+  font-size: 2.8rem;
+  margin-bottom: 15px;
+  font-weight: 300;
+}
+
+.hero-subtitle {
+  color: #fbaf08;
+  font-size: 1.4rem;
+  margin-bottom: 25px;
+  font-weight: 500;
+}
+
+.hero-description {
+  color: #0e0f0f;
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.hero-description p {
+  color: black !important;
+}
+
+/* Réutilisation intégrale du style mécanique */
+

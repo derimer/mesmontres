@@ -1,7 +1,7 @@
 .categories-container {
   margin: 0 auto;
   padding: 30px;
-  background: #07070e;
+  background: linear-gradient(90deg, #07070e 60%, #fbaf08 100%);
   min-height: 100vh;
 }
 
@@ -22,107 +22,25 @@
   margin-top: 20px;
 }
 
-/* CAROUSEL PERSONNALISÉ */
-.custom-carousel-wrapper {
+/* GRID DES CATÉGORIES */
+.categories-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.category-card {
   background: #1a1a1a;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  margin-bottom: 40px;
+  border: 1px solid rgba(251, 175, 8, 0.1);
+}
+
+.category-header {
   position: relative;
-}
-
-.carousel-container {
-  position: relative;
-  min-height: 400px;
-}
-
-.carousel-slide {
-  background: #1a1a1a;
-  padding: 0;
-}
-
-/* Flèches de navigation */
-.carousel-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.7);
-  border: 2px solid gold;
-  color: gold;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-  z-index: 10;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.carousel-arrow:hover {
-  background: gold;
-  color: #07070e;
-}
-
-.carousel-arrow-prev {
-  left: 20px;
-}
-
-.carousel-arrow-next {
-  right: 20px;
-}
-
-/* Indicateurs */
-.carousel-indicators {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  padding: 20px;
-  background: #1a1a1a;
-}
-
-.carousel-indicator {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid gold;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.carousel-indicator.active {
-  background: gold;
-}
-
-.carousel-indicator:hover {
-  background: gold;
-}
-
-/* Le reste de votre CSS existant */
-.categories-header h1 {
-  padding-top: 20px;
-  font-size: 2.5rem;
-  color: gold;
-  margin-bottom: 15px;
-  font-weight: 300;
-}
-
-.categories-intro {
-  font-size: 1.1rem;
-  color: #f2f7f7;
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
-}
-
-.category-hero {
-  position: relative;
-  height: 300px;
+  height: 250px;
   overflow: hidden;
 }
 
@@ -164,88 +82,13 @@
 }
 
 .category-content {
-  padding: 40px;
-  background: #1a1a1a;
+  background: linear-gradient(90deg, #07070e 60%, #fbaf08 100%);
+  padding: 30px;
 }
 
-.category-features {
-  margin-bottom: 30px;
-}
-
-.category-features h3 {
-  color: gold;
-  margin-bottom: 15px;
-  font-size: 1.3rem;
-}
-
-.features-list {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 15px;
-  text-align: center;
-}
-
-.feature-item {
-  background: rgba(251, 175, 8, 0.1);
-  color: #f5f8f6;
-  padding: 10px 20px;
-  border-radius: 25px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  text-align: center;
-  border: 1px solid rgba(251, 175, 8, 0.3);
-}
-
-.feature-icon {
-  color: gold;
-  font-weight: bold;
-}
-
-.water-resistance-section {
-  margin-top: 2rem;
-  text-align: center;
-  background: transparent;
-  color: white;
-}
-
-.water-resistance-section h3 {
-  color: gold;
-  margin-bottom: 20px;
-  font-size: 1.3rem;
-}
-
-.water-table {
-  width: 100%;
-  max-width: 600px;
-  margin: 1rem auto;
-  border-collapse: collapse;
-  border: 1px solid gold;
-  background: rgba(0, 0, 0, 0.7);
-}
-
-.water-table th,
-.water-table td {
-  border: 1px solid #444;
-  padding: 0.75rem;
-  text-align: center;
-  color: white;
-}
-
-.water-table th {
-  background: rgba(0, 0, 0, 0.9);
-  font-weight: bold;
-  color: gold;
-}
-
+/* SOUS-CATÉGORIES */
 .subcategories-section {
-  margin-top: 30px;
-  background: transparent;
+  margin-top: 20px;
 }
 
 .subcategories-title {
@@ -253,81 +96,41 @@
   margin-bottom: 25px;
   font-size: 1.5rem;
   text-align: center;
+  border-bottom: 2px solid rgba(251, 175, 8, 0.3);
+  padding-bottom: 10px;
 }
 
-.subcategories-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
+.subcategories-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.subcategory-card {
-  background: rgba(0, 0, 0, 0.6);
-  border-radius: 15px;
+.subcategory-item {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(251, 175, 8, 0.2);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.subcategory-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(251, 175, 8, 0.3);
-  border: 1px solid rgba(251, 175, 8, 0.5);
+.subcategory-item:hover {
+  border-color: rgba(251, 175, 8, 0.5);
+  transform: translateX(5px);
 }
 
 .subcategory-link {
   text-decoration: none;
   color: inherit;
-  display: block;
-  height: 100%;
-}
-
-.subcategory-image-container {
-  position: relative;
-  height: 200px;
-  overflow: hidden;
-}
-
-.subcategory-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.subcategory-card:hover .subcategory-image {
-  transform: scale(1.05);
-}
-
-.subcategory-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(7, 7, 14, 0.8);
   display: flex;
   align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.subcategory-card:hover .subcategory-overlay {
-  opacity: 1;
-}
-
-.discover-text {
-  color: gold;
-  font-weight: 600;
-  font-size: 1.1rem;
+  justify-content: space-between;
+  padding: 20px;
+  gap: 20px;
 }
 
 .subcategory-info {
-  padding: 20px;
+  flex: 1;
 }
 
 .subcategory-name {
@@ -345,9 +148,235 @@
 }
 
 .models-count {
-  color: #f9f5f2;
+  color: #fbaf08;
   font-size: 0.8rem;
   font-weight: 600;
+  background: rgba(251, 175, 8, 0.1);
+  padding: 4px 8px;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.subcategory-image-container {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.subcategory-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.subcategory-item:hover .subcategory-image {
+  transform: scale(1.1);
+}
+
+.subcategory-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(7, 7, 14, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.subcategory-item:hover .subcategory-overlay {
+  opacity: 1;
+}
+
+.discover-text {
+  color: gold;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Le reste de votre CSS existant */
+.categories-header h1 {
+  padding-top: 20px;
+  font-size: 2.5rem;
+  color: gold;
+  margin-bottom: 15px;
+  font-weight: 300;
+}
+/* TABLEAU DE RÉSISTANCE À L'EAU GLOBAL */
+.water-resistance-global {
+  background: #1a1a1a;
+  border-radius: 15px;
+  padding: 30px;
+  margin-bottom: 40px;
+  border: 1px solid rgba(251, 175, 8, 0.2);
+}
+
+.water-resistance-global h2 {
+  color: gold;
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 1.8rem;
+}
+
+.water-resistance-intro {
+  color: #f4f7f7;
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.water-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid gold;
+  background: rgba(0, 0, 0, 0.7);
+  margin: 1rem 0;
+}
+
+.water-table th,
+.water-table td {
+  border: 1px solid #444;
+  padding: 0.75rem;
+  text-align: center;
+  color: white;
+}
+
+.water-table th {
+  background: rgba(0, 0, 0, 0.9);
+  font-weight: bold;
+  color: gold;
+}
+
+.water-note {
+  color: #f4f7f7;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(251, 175, 8, 0.1);
+  border-radius: 8px;
+  border-left: 4px solid gold;
+}
+
+/* RÉSISTANCE À L'EAU PAR CATÉGORIE */
+.category-water-resistance {
+  margin-bottom: 25px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  border-left: 4px solid gold;
+}
+
+.category-water-resistance h3 {
+  color: gold;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.water-resistance-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.water-badge {
+  background: rgba(251, 175, 8, 0.1);
+  border: 1px solid rgba(251, 175, 8, 0.3);
+  border-radius: 8px;
+  padding: 10px 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+  transition: all 0.3s ease;
+}
+
+.water-badge:hover {
+  background: rgba(251, 175, 8, 0.2);
+  border-color: rgba(251, 175, 8, 0.5);
+  transform: translateY(-2px);
+}
+
+.water-atm {
+  color: gold;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+
+.water-meters {
+  color: #f4f7f7;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+.water-usage {
+  color: #ccc;
+  font-size: 0.8rem;
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* Responsive Design pour le tableau */
+@media (max-width: 768px) {
+  .water-resistance-global {
+    padding: 20px;
+  }
+  
+  .water-table {
+    font-size: 0.9rem;
+  }
+  
+  .water-table th,
+  .water-table td {
+    padding: 0.5rem;
+  }
+  
+  .water-resistance-badges {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .water-badge {
+    width: 100%;
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .water-resistance-global {
+    padding: 15px;
+  }
+  
+  .water-resistance-global h2 {
+    font-size: 1.5rem;
+  }
+  
+  .water-table {
+    font-size: 0.8rem;
+  }
+  
+  .water-table th,
+  .water-table td {
+    padding: 0.4rem;
+  }
+}
+.categories-intro {
+  font-size: 1.1rem;
+  color: #f2f7f7;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
 .categories-footer p {
@@ -385,7 +414,7 @@
     padding: 20px;
   }
 
-  .category-hero {
+  .category-header {
     height: 200px;
   }
 
@@ -397,37 +426,19 @@
     font-size: 1.5rem;
   }
 
-  .features-list {
-    flex-direction: column;
-    gap: 10px;
+  .subcategory-link {
+    flex-direction: column-reverse;
+    text-align: center;
+    gap: 15px;
   }
 
-  .subcategories-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
+  .subcategory-image-container {
+    width: 100%;
+    height: 120px;
   }
 
-  .water-table {
-    font-size: 0.9rem;
-  }
-
-  .water-table th,
-  .water-table td {
-    padding: 0.5rem;
-  }
-
-  .carousel-arrow {
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
-  }
-
-  .carousel-arrow-prev {
-    left: 10px;
-  }
-
-  .carousel-arrow-next {
-    right: 10px;
+  .subcategories-title {
+    font-size: 1.3rem;
   }
 }
 
@@ -436,7 +447,7 @@
     padding: 15px;
   }
 
-  .category-hero {
+  .category-header {
     height: 150px;
   }
 
@@ -447,5 +458,9 @@
   .categories-intro {
     font-size: 1rem;
     padding: 0 10px;
+  }
+
+  .category-content {
+    padding: 15px;
   }
 }

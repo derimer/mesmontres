@@ -1,0 +1,81 @@
+.subcategories-container {
+  background: #07070e;
+  min-height: 100vh;
+  color: white;
+}
+
+/* Styles pour les sous-catégories génériques */
+.generic-subcategory {
+  min-height: 100vh;
+}
+
+.generic-hero {
+  background: linear-gradient(135deg, #1a1a1a 0%, #07070e 100%);
+  padding: 80px 30px;
+  text-align: center;
+  border-bottom: 2px solid gold;
+}
+
+.hero-content h1 {
+  color: gold;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  font-weight: 300;
+}
+
+.hero-description {
+  color: #f4f7f7;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.coming-soon {
+  color: #fbaf08;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.generic-content {
+  padding: 60px 30px;
+  text-align: center;
+}
+
+.placeholder-section {
+  background: #1a1a1a;
+  padding: 50px;
+  border-radius: 15px;
+  border: 1px solid rgba(251, 175, 8, 0.2);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.placeholder-section h2 {
+  color: gold;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+
+.placeholder-section p {
+  color: #ccc;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .generic-hero {
+    padding: 60px 20px;
+  }
+  
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .generic-content {
+    padding: 40px 20px;
+  }
+  
+  .placeholder-section {
+    padding: 30px 20px;
+  }
+}
