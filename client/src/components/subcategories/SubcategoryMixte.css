@@ -24,7 +24,7 @@
 }
 
 .hero-description {
-  color: gold !important;
+  color: gold ;
   font-size: 1.1rem;
   max-width: 700px;
   margin: 0 auto;
@@ -32,7 +32,7 @@
 }
 
 .hero-description p {
-  color: gold !important;
+  color: gold ;
 }
 
 /* Réutilisation intégrale du style mécanique */

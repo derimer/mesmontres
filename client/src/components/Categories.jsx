@@ -6,7 +6,8 @@ const categoriesData = [
     id: "mecaniques",
     name: "Montres Mécaniques",
     image: "/images/mecaniques.jpg",
-    description: "L'art de l'horlogerie traditionnelle, des mouvements complexes sans pile",
+    description:
+      "L'art de l'horlogerie traditionnelle, des mouvements complexes sans pile",
     waterResistance: [
       { atm: 3, metres: 30, usage: "Résiste aux éclaboussures et à la pluie" },
       { atm: 5, metres: 50, usage: "Douche ou lavage des mains possible" },
@@ -19,8 +20,9 @@ const categoriesData = [
         id: "mecanique-simple",
         name: "Mécanique simple",
         image: "/images/montreMecaniqueSimple.jpg",
-        description: "En général, deux aiguilles, ou deux aiguilles + trotteuse",
-         // AJOUTÉ
+        description:
+          "En général, deux aiguilles, ou deux aiguilles + trotteuse",
+        // AJOUTÉ
       },
       {
         id: "automatique",
@@ -34,23 +36,22 @@ const categoriesData = [
         name: "Chronographe",
         image: "/images/pulsar.jpg",
         description: "Avec cadrans minutes, secondes et heures sur 24h",
-       
       },
       {
         id: "calendrier-perpetuel",
         name: "Calendrier perpétuel",
         image: "/images/montreCalendrierPerpetuel.jpg",
         description: "Avec cadrans jour et date",
-         // AJOUTÉ
+        // AJOUTÉ
       },
       {
         id: "kinetic",
         name: "Kinetic",
         image: "/images/kinetic.jpg",
         description: "Automatique avec batterie de réserve de marche",
-         // AJOUTÉ
-      }
-    ]
+        // AJOUTÉ
+      },
+    ],
   },
   {
     id: "quartz",
@@ -68,7 +69,7 @@ const categoriesData = [
         name: "Analogique simple",
         image: "/images/quartz.jpg",
         description: "Deux aiguilles + trotteuse",
-         // AJOUTÉ
+        // AJOUTÉ
       },
       {
         id: "chronographe-quartz",
@@ -76,8 +77,8 @@ const categoriesData = [
         image: "/images/chronographe2.jpg",
         description: "Avec cadrans minutes, secondes et heures sur 24h",
         // AJOUTÉ
-      }
-    ]
+      },
+    ],
   },
   {
     id: "digitale",
@@ -95,17 +96,17 @@ const categoriesData = [
         name: "Digitale simple",
         image: "/images/montreDigitaleSimple.jpg",
         description: "Écran simple ou multi-écrans",
-         // AJOUTÉ
+        // AJOUTÉ
       },
       {
         id: "mixte",
         name: "Mixte digitale/analogique",
         image: "/images/mixte.jpg",
         description: "Digitale avec en plus aiguilles et trotteuse",
-         // AJOUTÉ
-      }
-    ]
-  }
+        // AJOUTÉ
+      },
+    ],
+  },
 ];
 
 // Tableau de résistance à l'eau général
@@ -125,8 +126,12 @@ function Categories() {
       <div className="categories-header">
         <h1>Typologie de Montres</h1>
         <p className="categories-intro">
-          Découvrez notre classification complète selon les types de mouvement et d'affichage. 
-          Chaque catégorie représente une approche unique de la mesure du temps.
+          Le choix d'une montre peut s'avérer complexe.Aussi j ai créé cette
+          page de categories, afin de vous guider dans le choix d'une montre
+          adaptée à vos besoins.Chaque catégorie a une sous-catégorie N'hésitez
+          pas à cliquer sur les images de sous-catégories, car leur
+          definition,vous permettra de vous orienter vers la montre qui
+          correspond le mieux à votre personnalité et style de vie.
         </p>
       </div>
 
@@ -134,7 +139,8 @@ function Categories() {
       <div className="water-resistance-global">
         <h2>Guide de Résistance à l'Eau</h2>
         <p className="water-resistance-intro">
-          Comprenez les niveaux de résistance à l'eau pour choisir la montre adaptée à vos activités.
+          Comprenez les niveaux de résistance à l'eau pour choisir la montre
+          adaptée à vos activités.
         </p>
         <table className="water-table">
           <thead>
@@ -155,8 +161,8 @@ function Categories() {
           </tbody>
         </table>
         <p className="water-note">
-          💡 <strong>Note :</strong> La résistance à l'eau n'est pas permanente et peut diminuer avec le temps. 
-          Un entretien régulier est recommandé.
+          💡 <strong>Note :</strong> La résistance à l'eau n'est pas permanente
+          et peut diminuer avec le temps. Un entretien régulier est recommandé.
         </p>
       </div>
 
