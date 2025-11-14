@@ -270,7 +270,13 @@
   margin: 0.25rem 0;
   color: #cfcaca;
 }
-
+.montre-info p:last-child {
+    color: #f6f5f3;
+    font-weight: 100;
+    
+    
+    
+}
 .montre-actions {
   display: flex;
   justify-content: flex-end;
