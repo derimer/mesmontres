@@ -1,5 +1,5 @@
 /* eslint-disable no-alert */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { motion } from "framer-motion";
@@ -33,8 +33,12 @@ export default function Admin() {
   const [zoomedImage, setZoomedImage] = useState(null);
   const [contactMessages, setContactMessages] = useState([]);
   const [loadingMessages, setLoadingMessages] = useState(true);
-  const [editingMontre, setEditingMontre] = useState(null); // Nouvel état pour la montre en cours d'édition
-  const [existingImages, setExistingImages] = useState([]); // Pour gérer les images existantes lors de l'édition
+  const [editingMontre, setEditingMontre] = useState(null);
+  const [existingImages, setExistingImages] = useState([]);
+  const [searchReference, setSearchReference] = useState("");
+  
+  // Références pour le scroll
+  const montreCardsRef = useRef({});
 
   // Vérification de l'authentification
   useEffect(() => {
@@ -90,6 +94,43 @@ export default function Admin() {
     fetchMessages();
   }, []);
 
+  // Fonction de recherche
+  const handleSearch = (e) => {
+    const ref = e.target.value.replace(/\D/g, ''); // Garde seulement les chiffres
+    setSearchReference(ref);
+    
+    if (ref.length >= 3) {
+      // Recherche partielle à partir de 3 caractères
+      const foundMontre = montres.find(montre => 
+        montre.reference && montre.reference.includes(ref)
+      );
+      
+      if (foundMontre) {
+        scrollToMontre(foundMontre.id);
+      }
+    }
+  };
+
+  // Fonction pour scroller vers une montre
+  const scrollToMontre = (montreId) => {
+    const element = montreCardsRef.current[montreId];
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center',
+        inline: 'nearest'
+      });
+      
+      // Animation visuelle pour highlight
+      element.style.backgroundColor = '#fff3cd';
+      element.style.transition = 'background-color 0.5s ease';
+      
+      setTimeout(() => {
+        element.style.backgroundColor = '';
+      }, 2000);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "images") {
@@ -108,29 +149,29 @@ export default function Admin() {
     setFormData({ ...formData, images: newImages });
   };
 
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-  return result;
-};
+  const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
+  };
 
-// Fonction qui envoie la mise à jour au backend
-const updateImageOrder = async (newOrder) => {
-  try {
-    await fetch(`${import.meta.env.VITE_API_URL}/api/images/reorder`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ imagesOrder: newOrder }),
-    });
-    console.info("✅ Ordre mis à jour sur le serveur !");
-  } catch (err) {
-    console.error("❌ Erreur mise à jour ordre :", err);
-  }
-};
+  // Fonction qui envoie la mise à jour au backend
+  const updateImageOrder = async (newOrder) => {
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/images/reorder`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imagesOrder: newOrder }),
+      });
+      console.info("✅ Ordre mis à jour sur le serveur !");
+    } catch (err) {
+      console.error("❌ Erreur mise à jour ordre :", err);
+    }
+  };
+
   const handleDeleteImage = async (imageId, index) => {
     try {
-      // 🗑️ Supprimer dans la base via API
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/images/${imageId}`,
         {
@@ -140,7 +181,6 @@ const updateImageOrder = async (newOrder) => {
 
       if (response.ok) {
         console.info(`✅ Image ${imageId} supprimée du serveur`);
-        // 🧹 Supprimer aussi du state React local
         const newExistingImages = [...existingImages];
         newExistingImages.splice(index, 1);
         setExistingImages(newExistingImages);
@@ -151,28 +191,24 @@ const updateImageOrder = async (newOrder) => {
       console.error("Erreur réseau lors de la suppression :", err);
     }
   };
-const handleDragEnd = async (result) => {
-  if (!result.destination) return;
 
-  // Utilise la fonction utilitaire reorder pour éviter la duplication
-  const reordered = reorder(existingImages, result.source.index, result.destination.index);
+  const handleDragEnd = async (result) => {
+    if (!result.destination) return;
 
-  // 🔁 Met à jour localement l’ordre des images
-  setExistingImages(reordered);
+    const reordered = reorder(existingImages, result.source.index, result.destination.index);
+    setExistingImages(reordered);
 
-  // 🧩 Crée la payload à envoyer au backend
-  const imagesOrder = reordered.map((img, index) => ({
-    id: img.id,
-    position: index,
-  }));
+    const imagesOrder = reordered.map((img, index) => ({
+      id: img.id,
+      position: index,
+    }));
 
-  try {
-    // Utilise la fonction réutilisable pour envoyer la mise à jour au serveur
-    await updateImageOrder(imagesOrder);
-  } catch (err) {
-    console.error("❌ Erreur lors de la mise à jour de l’ordre :", err);
-  }
-};
+    try {
+      await updateImageOrder(imagesOrder);
+    } catch (err) {
+      console.error("❌ Erreur lors de la mise à jour de l'ordre :", err);
+    }
+  };
 
   const handleImageClick = (imageSrc) => {
     setZoomedImage(zoomedImage === imageSrc ? null : imageSrc);
@@ -254,15 +290,15 @@ const handleDragEnd = async (result) => {
     try {
       let res;
 
-if (editingMontre) {
-  // Mode édition - PUT
-  res = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/montres/${editingMontre.id}`,
-    {
-      method: "PUT",
-      body: formDataToSend,
-    }
-  );
+      if (editingMontre) {
+        // Mode édition - PUT
+        res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/montres/${editingMontre.id}`,
+          {
+            method: "PUT",
+            body: formDataToSend,
+          }
+        );
       } else {
         // Mode création - POST
         res = await fetch(`${import.meta.env.VITE_API_URL}/api/montres`, {
@@ -419,6 +455,30 @@ if (editingMontre) {
         </button>
       </div>
 
+      {/* Section de recherche - visible uniquement dans l'onglet Gérer */}
+      {activeTab === "manage" && (
+        <div className="search-section">
+          <div className="form-group search-group">
+            <label htmlFor="searchReference">
+              🔍 Rechercher une montre par référence :
+            </label>
+            <input
+              type="text"
+              id="searchReference"
+              name="searchReference"
+              value={searchReference}
+              onChange={handleSearch}
+              placeholder="Entre la référence de la montre"
+              maxLength={9}
+              className="search-input"
+            />
+            <small>
+              Tape au moins 3 chiffres de la référence pour scroll automatiquement vers la montre
+            </small>
+          </div>
+        </div>
+      )}
+
       {feedbackMessage && (
         <div
           className={`alert ${
@@ -430,7 +490,7 @@ if (editingMontre) {
       )}
 
       {activeTab === "upload" && (
-        <form className="upload-form" onSubmit={handleSubmit}  encType="multipart/form-data" >
+        <form className="upload-form" onSubmit={handleSubmit} encType="multipart/form-data">
           {editingMontre && (
             <div className="editing-notice">
               <p>
@@ -579,96 +639,96 @@ if (editingMontre) {
             />
           </div>
 
-    {/* Images existantes (uniquement en mode édition) */}
-    {editingMontre && existingImages.length > 0 && (
-      <div className="form-group">
-        <label htmlFor="images">Images existantes :</label>
-   
-<DragDropContext onDragEnd={handleDragEnd}>
-  <Droppable droppableId="images">
-    {(provided) => (
-      <div
-        className="image-grid"
-        ref={provided.innerRef}
-        {...provided.droppableProps} // ✅ ceci est nécessaire !
-      >
-        {existingImages.map((img, index) => (
-<Draggable
-  key={img.id}
-  draggableId={String(img.id)}
-  index={index}
->
-  {(dragProvided, snapshot) => (
-    <motion.div
-      ref={dragProvided.innerRef}
-      {...dragProvided.draggableProps}
-      {...dragProvided.dragHandleProps}
-      className="image-preview-container"
-      layout
-      animate={{
-        scale: snapshot.isDragging ? 1.05 : 1,
-        boxShadow: snapshot.isDragging
-          ? "0 8px 20px rgba(0,0,0,0.25)"
-          : "none",
-      }}
-      transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      style={{
-        userSelect: "none",
-        cursor: "grab",
-        position: "relative", // ✅ important pour le positionnement du numéro
-        ...dragProvided.draggableProps.style,
-      }}
-    >
-      {/* 🏷️ Numéro d'ordre */}
-      <span className="image-order-number">{index + 1}</span>
+          {/* Images existantes (uniquement en mode édition) */}
+          {editingMontre && existingImages.length > 0 && (
+            <div className="form-group">
+              <label htmlFor="images">Images existantes :</label>
+     
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <Droppable droppableId="images">
+              {(provided) => (
+                <div
+                  className="image-grid"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {existingImages.map((img, index) => (
+          <Draggable
+            key={img.id}
+            draggableId={String(img.id)}
+            index={index}
+          >
+            {(dragProvided, snapshot) => (
+              <motion.div
+                ref={dragProvided.innerRef}
+                {...dragProvided.draggableProps}
+                {...dragProvided.dragHandleProps}
+                className="image-preview-container"
+                layout
+                animate={{
+                  scale: snapshot.isDragging ? 1.05 : 1,
+                  boxShadow: snapshot.isDragging
+                    ? "0 8px 20px rgba(0,0,0,0.25)"
+                    : "none",
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                style={{
+                  userSelect: "none",
+                  cursor: "grab",
+                  position: "relative",
+                  ...dragProvided.draggableProps.style,
+                }}
+              >
+                {/* Numéro d'ordre */}
+                <span className="image-order-number">{index + 1}</span>
 
-      <img
-        src={`${import.meta.env.VITE_API_URL}/api/uploads/${img.filename}`}
-        alt={`Vue ${index + 1}`}
-        className="preview-image"
-        style={{ pointerEvents: "none" }}
-      />
-      <button
-        type="button"
-        className="btn-delete"
-        onClick={() => handleDeleteImage(img.id, index)}
-      >
-        ❌
-      </button>
-    </motion.div>
-  )}
-</Draggable>
-        ))}
-        {provided.placeholder}
-      </div>
-    )}
-  </Droppable>
-</DragDropContext>
+                <img
+                  src={`${import.meta.env.VITE_API_URL}/api/uploads/${img.filename}`}
+                  alt={`Vue ${index + 1}`}
+                  className="preview-image"
+                  style={{ pointerEvents: "none" }}
+                />
+                <button
+                  type="button"
+                  className="btn-delete"
+                  onClick={() => handleDeleteImage(img.id, index)}
+                >
+                  ❌
+                </button>
+              </motion.div>
+            )}
+          </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
 
-      </div>
-    )}
+            </div>
+          )}
 
           {/* Ajout de nouvelles images */}
-    <div className="form-group">
-      <label htmlFor="images">
-        {editingMontre
-          ? "Ajouter de nouvelles images :"
-          : "Sélectionnez des images :"}
-      </label>
-      <input
-        type="file"
-        id="images"
-        name="images"        
-        onChange={(e) =>
-          setFormData((prev) => ({
-            ...prev,
-            images: Array.from(e.target.files),
-          }))
-        }
-        multiple
-        accept="image/*"
-      />
-    </div>
+          <div className="form-group">
+            <label htmlFor="images">
+              {editingMontre
+                ? "Ajouter de nouvelles images :"
+                : "Sélectionnez des images :"}
+            </label>
+            <input
+              type="file"
+              id="images"
+              name="images"        
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  images: Array.from(e.target.files),
+                }))
+              }
+              multiple
+              accept="image/*"
+            />
+          </div>
 
           {/* Prévisualisation des nouvelles images */}
           {formData.images.length > 0 && (
@@ -724,6 +784,17 @@ if (editingMontre) {
       {activeTab === "manage" && (
         <div className="montres-list">
           <h2>Montres existantes</h2>
+          
+          {/* Compteur de résultats */}
+          <div className="montres-count">
+            {montres.length} montre{montres.length > 1 ? 's' : ''} au total
+            {searchReference && (
+              <span className="search-indicator">
+                • Recherche : "{searchReference}"
+              </span>
+            )}
+          </div>
+
           {loading && <div className="loading">Chargement...</div>}
 
           {!loading && montres.length === 0 && (
@@ -742,7 +813,12 @@ if (editingMontre) {
           {!loading && montres.length > 0 && (
             <div className="montres-grid">
               {montres.map((montre) => (
-                <div key={montre.id} className="montre-card">
+                <div 
+                  key={montre.id} 
+                  className="montre-card"
+                  ref={(el) => { montreCardsRef.current[montre.id] = el; }}
+                  id={`montre-${montre.reference}`}
+                >
                   <div className="montre-images">
                     {montre.images?.length > 0 ? (
                       <div className="image-grid">
@@ -753,9 +829,7 @@ if (editingMontre) {
                               className="image-button"
                               onClick={() =>
                                 handleImageClick(
-                                  `${
-                                    import.meta.env.VITE_API_URL
-                                  }/api/uploads/${img.filename}`
+                                  `${import.meta.env.VITE_API_URL}/api/uploads/${img.filename}`
                                 )
                               }
                               style={{
@@ -767,9 +841,7 @@ if (editingMontre) {
                               aria-label={`Agrandir l'image de la montre ${montre.name}`}
                             >
                               <img
-                                src={`${
-                                  import.meta.env.VITE_API_URL
-                                }/api/uploads/${img.filename}`}
+                                src={`${import.meta.env.VITE_API_URL}/api/uploads/${img.filename}`}
                                 alt={`Vue de la montre ${montre.name}`}
                                 className="preview-image"
                               />
@@ -786,7 +858,9 @@ if (editingMontre) {
                     <p className="name1" style={{ color: "gold" }}>
                       Marque : {montre.brand}
                     </p>
-                    <p>Référence : {montre.reference}</p>
+                    <p className="reference-highlight">
+                      <strong>Référence : {montre.reference}</strong>
+                    </p>
                     <p>Prix : {montre.price} €</p>
                     <p>Type : {montre.type}</p>
                     <p>Mouvement : {montre.mouvement}</p>

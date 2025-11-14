@@ -277,6 +277,71 @@
     
     
 }
+/* Styles pour la recherche */
+.search-section {
+  background:linear-gradient(90deg, #07070e 60%, #fbaf08 100%);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.search-group {
+  max-width: 400px;
+  margin: 0;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #dee2e6;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+.search-group small {
+  display: block;
+  margin-top: 0.5rem;
+  color: #e0e2e4;
+  font-size: 0.875rem;
+}
+
+/* Compteur de montres */
+.montres-count {
+  background:linear-gradient(90deg, #07070e 60%, #fbaf08 100%);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-weight: 500;
+  color: #e7eaee;
+  border-left: 4px solid #007bff;
+}
+
+.search-indicator {
+  color: #28a745;
+  font-weight: 600;
+}
+
+/* Highlight de la référence */
+.reference-highlight {
+  background:linear-gradient(90deg, #07070e 60%, #fbaf08 100%);
+  padding: 0.5rem;
+  border-radius: 4px;
+  border-left: 3px solid #ffc107;
+  margin: 0.5rem 0;
+}
+
+/* Animation pour le scroll */
+.montre-card {
+  transition: background-color 0.5s ease;
+}
 .montre-actions {
   display: flex;
   justify-content: flex-end;
