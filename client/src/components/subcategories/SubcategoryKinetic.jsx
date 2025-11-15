@@ -54,7 +54,7 @@ function SubcategoryKinetic() {
     <div className="subcategory-kinetic">
       <div className="imgmeca">
         <img 
-          src="/images/montrekineticfondnoir2.jpg" 
+          src="/images/montreKineticSimple.webp" 
           alt="Montre Kinetic - horlogerie traditionnelle" 
         />
       </div>
