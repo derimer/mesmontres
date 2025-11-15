@@ -52,6 +52,12 @@ function SubcategoryKinetic() {
 
   return (
     <div className="subcategory-kinetic">
+      <div className="imgmeca">
+        <img 
+          src="/images/montrekineticfondnoir2.jpg" 
+          alt="Montre Kinetic - horlogerie traditionnelle" 
+        />
+      </div>
       {/* En-tête Hero */}
       <div className="kinetic-hero">
         <div className="hero-content">

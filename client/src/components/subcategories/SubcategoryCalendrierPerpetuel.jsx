@@ -46,6 +46,12 @@ function SubcategoryCalendrierPerpetuel() {
 
   return (
     <div className="subcategory-calendrier-perpetuel">
+        <div className="imgmeca">
+        <img 
+          src="/images/montreCalendrierPerpetuel.jpg" 
+          alt="Montre calendrier perpétuel - horlogerie traditionnelle" 
+        />
+      </div>
       {/* En-tête Hero */}
       <div className="calendrier-hero">
         <div className="hero-content">

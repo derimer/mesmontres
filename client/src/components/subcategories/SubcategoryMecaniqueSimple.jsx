@@ -38,6 +38,12 @@ function SubcategoryMecaniqueSimple() {
 
   return (
     <div className="subcategory-mecanique-simple">
+      <div className="imgmeca">
+        <img 
+          src="/images/montreMecaniqueSimple.jpg" 
+          alt="Montre mécanique simple - horlogerie traditionnelle" 
+        />
+      </div>
       {/* En-tête Hero */}
       <div className="mecanique-hero">
         <div className="hero-content">

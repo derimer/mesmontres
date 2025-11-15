@@ -4,10 +4,16 @@
   min-height: 100vh;
   color: white;
 }
+.imgana{
+  display:flex;
+  justify-content:center;
+  margin-top:20px;
+  width: 100%;
 
+}
 /* Hero Section */
 .analogique-hero {
-  background-image: url(/images/montreAnalogiqueSimple.jpg);
+  background:#0f0f15;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

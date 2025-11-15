@@ -44,6 +44,12 @@ function SubcategoryAutomatique() {
 
   return (
     <div className="subcategory-automatique">
+       <div className="imgmeca">
+        <img 
+          src="/images/montreAutomatiqueSimple.webp" 
+          alt="Montre mécanique simple - horlogerie traditionnelle" 
+        />
+        </div>
       {/* En-tête Hero */}
       <div className="automatique-hero">
         <div className="hero-content">

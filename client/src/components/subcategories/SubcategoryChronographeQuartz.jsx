@@ -59,6 +59,12 @@ function SubcategoryChronographeQuartz() {
 
   return (
     <div className="subcategory-chronographe-quartz">
+       <div className="imgmeca">
+        <img 
+          src="/images/montreChronographeSimple.jpg" 
+          alt="Montre mécanique simple - horlogerie traditionnelle" 
+        />
+      </div>
       {/* En-tête Hero */}
       <div className="chrono-quartz-hero">
         <div className="hero-content">

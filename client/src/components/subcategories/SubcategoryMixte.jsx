@@ -61,6 +61,12 @@ function SubcategoryMixte() {
 
   return (
     <div className="subcategory-mixte">
+        <div className="imgmeca">
+        <img 
+          src="/images/mixte.jpg" 
+          alt="Montre mécanique simple - horlogerie traditionnelle" 
+        />
+      </div>
       {/* Hero Section */}
       <div className="mixte-hero">
         <div className="hero-content">

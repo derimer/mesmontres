@@ -4,10 +4,25 @@
   min-height: 100vh;
   color: white;
 }
+.imgmeca {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 20px;
+}
+
+.imgmeca img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
 
 /* Hero Section */
 .mecanique-hero {
-  background-image:url(/images/montreMecaniqueSimple.jpg);
+  background:#0f0f15;
   background-size: cover;
   background-position: center;
   background-repeat:no-repeat ; 
@@ -30,14 +45,7 @@
   font-weight: 500;
 }
 
-.hero-description {
-  color: black ;
-  font-size: 1.5rem;
-  font-weight:700;
-  max-width: 700px;
-  margin: 0 auto;
-  line-height: 1.7;
-}
+
 
 /* Characteristics Section */
 .characteristics-section {

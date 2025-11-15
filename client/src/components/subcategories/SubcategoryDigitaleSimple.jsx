@@ -68,6 +68,13 @@ function SubcategoryDigitaleSimple() {
 
   return (
     <div className="subcategory-digitale-simple">
+        <div className="imgmeca">
+        <img 
+          src="/images/montreDigitaleSimple.jpg" 
+          alt="Montre digitale simple - horlogerie moderne" 
+        />
+      </div>
+      
       {/* En-tête Hero */}
       <div className="digitale-hero">
         <div className="hero-content">

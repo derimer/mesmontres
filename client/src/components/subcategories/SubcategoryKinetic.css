@@ -4,11 +4,25 @@
   min-height: 100vh;
   color: white;
 }
+.imgmeca {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 20px;
+}
 
+.imgmeca img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
 /* Hero Section */
 /* SubcategoryKinetic.css (adapter la profondeur ../ selon l’emplacement du .css) */
 .kinetic-hero {
-  background-image: url(/images/montreKineticSimple.webp);
+  background-image:#0f0f15;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

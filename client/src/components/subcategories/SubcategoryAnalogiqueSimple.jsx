@@ -52,6 +52,7 @@ function SubcategoryAnalogiqueSimple() {
 
   return (
     <div className="subcategory-analogique-simple">
+     <span className="imgana"> <img src="/images/montrequartzanalogiquefondnoir.jpg" alt="Montre Analogique Simple Quartz" /></span>
       {/* En-tête Hero */}
       <div className="analogique-hero">
         <div className="hero-content">
