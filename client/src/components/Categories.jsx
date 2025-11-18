@@ -126,12 +126,14 @@ function Categories() {
       <div className="categories-header">
         <h1>Typologie de Montres</h1>
         <p className="categories-intro">
-          Le choix d'une montre peut s'avérer complexe.Aussi j ai créé cette
-          page de categories, afin de vous guider dans le choix d'une montre
-          adaptée à vos besoins.Chaque catégorie a une sous-catégorie N'hésitez
-          pas à cliquer sur les images de sous-catégories, car leur
-          definition,vous permettra de vous orienter vers la montre qui
-          correspond le mieux à votre personnalité et style de vie.
+          Mécanique, quartz, automatique, chronographe, calendrier perpétuel
+          ..... Pas toujours facile de différencier ou comprendre tous les types
+          de montres. Dans cet onglet, vous pourrez découvrir les catégories et
+          sous-catégories, leurs principales caractéristiques, et vous guider
+          dans vos choix. Vous ne trouverez pas tous les types dans mes offres,
+          les montres que je propose sur ce site, sont essentiellement des
+          modèles sur lesquels je peux exercer ma passion, remettre en état,
+          restaurer et ainsi redonner une seconde vie à ces objets du quotidien.
         </p>
       </div>
 

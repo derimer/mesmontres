@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import "./Montredetail.css";
 
 export default function MontreDetail() {
@@ -69,6 +69,11 @@ export default function MontreDetail() {
     };
   }, [zoomedImage]);
 
+  // Fonction pour retourner en arrière
+  const handleGoBack = () => {
+    navigate(-1); // Retour à la page précédente
+  };
+
   if (loading) return <p>Chargement...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
   if (!montre) return null;
@@ -76,26 +81,32 @@ export default function MontreDetail() {
   // Fonction utilitaire pour afficher les valeurs avec fallback
   const displayValue = (value, defaultValue = "Non spécifié") =>
     value && value !== "" ? value : defaultValue;
-// 🔄 Réorganiser les images pour que celle finissant par "1.jpg" soit en premier
-// 🖼️ Sélectionner uniquement la première image (position = 0)
-// 🔄 Réorganiser les images dans l’ordre voulu
-const orderedImages = montre.images
-  ? [...montre.images].sort((a, b) => a.position - b.position)
-  : [];
 
-// 🖼️ Sélectionner l’image actuelle dans le carousel
-const currentImageSrc = orderedImages?.[currentImageIndex]
-  ? `${import.meta.env.VITE_API_URL}/api/uploads/${orderedImages[currentImageIndex].filename}`
-  : "/placeholder.jpg";
+  // 🔄 Réorganiser les images pour que celle finissant par "1.jpg" soit en premier
+  const orderedImages = montre.images
+    ? [...montre.images].sort((a, b) => a.position - b.position)
+    : [];
 
-
-
-
+  // 🖼️ Sélectionner l'image actuelle dans le carousel
+  const currentImageSrc = orderedImages?.[currentImageIndex]
+    ? `${import.meta.env.VITE_API_URL}/api/uploads/${orderedImages[currentImageIndex].filename}`
+    : "/placeholder.jpg";
 
   return (
     <div className="montre-detail">
+      {/* 🔙 Bouton de retour */}
+      <div className="navigation-header">
+        <button 
+          type="button"
+          className="back-button"
+          onClick={handleGoBack}
+          aria-label="Retour à la liste des montres"
+        >
+          ← Retour 
+        </button>
+      </div>
+
       <div className="montre-detail-header">
-       
         <p className="montre-brand">{displayValue(montre.brand)}</p>
       </div>
 
@@ -160,10 +171,10 @@ const currentImageSrc = orderedImages?.[currentImageIndex]
           )}
 
           <div className="call-to-action-section">
-  <p className="cta-text">
-    Intéressé par cette montre ? <span className="cta-highlight">Cliquez sur "ACHETER MAINTENANT"</span> pour finaliser votre achat ou obtenir plus d'informations 
-  </p>
-              {/* 🛒 Bouton Acheter */}
+            <p className="cta-text">
+              Intéressé par cette montre ? <span className="cta-highlight">Cliquez sur "ACHETER MAINTENANT"</span> pour finaliser votre achat ou obtenir plus d'informations 
+            </p>
+            {/* 🛒 Bouton Acheter */}
             <button
               type="button"
               className="btn-buy"
@@ -171,7 +182,7 @@ const currentImageSrc = orderedImages?.[currentImageIndex]
             >
               Acheter Maintenant - {displayValue(montre.price, "0")} €
             </button>
-</div>
+          </div>
         </div>
 
         {/* 📜 Section Caractéristiques */}
@@ -195,15 +206,12 @@ const currentImageSrc = orderedImages?.[currentImageIndex]
               <h3>Description</h3>
               <p>{displayValue(montre.description, "Aucune description disponible.")}</p>
             </div>
-
-
-
           </div>
         </div>
       </div>
 
       {/* Modal plein écran pour le zoom */}
-           {zoomedImage && (
+      {zoomedImage && (
         <div
           className="image-modal"
           onClick={closeZoom}
