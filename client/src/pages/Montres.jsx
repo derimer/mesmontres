@@ -68,12 +68,17 @@ export default function Montres() {
 
   // Tri par nombre
   const marquesTriees = Object.entries(montresParMarque)
-    .sort(([, A], [, B]) => B.length - A.length)
-    .map(([marque, montresList]) => ({
-      marque,
-      montres: montresList,
-      count: montresList.length,
-    }));
+  .sort(([marqueA, montresA], [marqueB, montresB]) => {
+    if (marqueA === "Autres") return 1;   // "Autres" va à la fin
+    if (marqueB === "Autres") return -1;  // les autres passent avant
+    return montresB.length - montresA.length; // tri classique sinon
+  })
+  .map(([marque, montresList]) => ({
+    marque,
+    montres: montresList,
+    count: montresList.length
+  }));
+
 
   if (loading) return <p>Chargement des montres...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
