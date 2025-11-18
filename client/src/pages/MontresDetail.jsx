@@ -70,9 +70,9 @@ export default function MontreDetail() {
   }, [zoomedImage]);
 
   // Fonction pour retourner en arrière
-  const handleGoBack = () => {
-    navigate(-1); // Retour à la page précédente
-  };
+const handleGoBack = () => {
+  navigate("/montres", { state: { fromMontreId: id } });
+};
 
   if (loading) return <p>Chargement...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;

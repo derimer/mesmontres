@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./Montres.css";
 
 export default function Montres() {
@@ -9,7 +9,10 @@ export default function Montres() {
   const [zoomedImage, setZoomedImage] = useState(null);
   const [showInstructions, setShowInstructions] = useState(true);
 
-  // Fonctions pour le zoom des images
+  const location = useLocation();
+  const fromMontreId = location.state?.fromMontreId || null;
+
+  // Zoom image
   const handleImageClick = (e, imageSrc) => {
     e.preventDefault();
     e.stopPropagation();
@@ -20,7 +23,7 @@ export default function Montres() {
     setZoomedImage(null);
   };
 
-  // Fermer les instructions après 8 secondes
+  // Cache le message d’instructions après 8 sec
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowInstructions(false);
@@ -28,6 +31,7 @@ export default function Montres() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Récupération des montres
   useEffect(() => {
     async function fetchMontres() {
       try {
@@ -44,23 +48,31 @@ export default function Montres() {
     fetchMontres();
   }, []);
 
-  // Regrouper les montres par marque et trier par nombre décroissant
+  // 👉 Scroll automatique vers la montre d’où l’on revient
+  useEffect(() => {
+    if (fromMontreId && montres.length > 0) {
+      const element = document.getElementById(`montre-${fromMontreId}`);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  }, [fromMontreId, montres]);
+
+  // Regroupement par marque
   const montresParMarque = montres.reduce((acc, montre) => {
     const marque = montre.brand || "Autre";
-    if (!acc[marque]) {
-      acc[marque] = [];
-    }
+    if (!acc[marque]) acc[marque] = [];
     acc[marque].push(montre);
     return acc;
   }, {});
 
-  // Trier les marques par nombre de montres décroissant
+  // Tri par nombre
   const marquesTriees = Object.entries(montresParMarque)
-    .sort(([, montresA], [, montresB]) => montresB.length - montresA.length)
+    .sort(([, A], [, B]) => B.length - A.length)
     .map(([marque, montresList]) => ({
       marque,
       montres: montresList,
-      count: montresList.length
+      count: montresList.length,
     }));
 
   if (loading) return <p>Chargement des montres...</p>;
@@ -76,7 +88,7 @@ export default function Montres() {
         fonctionnement.
       </p>
 
-      {/* Message d'instructions */}
+      {/* Bannière d'instructions */}
       {showInstructions && (
         <div className="instructions-banner">
           <div className="instructions-content">
@@ -92,7 +104,6 @@ export default function Montres() {
               type="button"
               className="close-instructions"
               onClick={() => setShowInstructions(false)}
-              aria-label="Fermer les instructions"
             >
               ×
             </button>
@@ -100,16 +111,19 @@ export default function Montres() {
         </div>
       )}
 
-      {/* Affichage par marque triée par nombre décroissant */}
+      {/* Affichage des montres */}
       {marquesTriees.map(({ marque, montres: montresList, count }) => (
         <div key={marque} className="marque-section">
           <div className="marque-wrapper">
             <h2 className="marque-title">
-              {marque} <span className="montre-count">({count} modèle{count > 1 ? 's' : ''})</span>
+              {marque}{" "}
+              <span className="montre-count">
+                ({count} modèle{count > 1 ? "s" : ""})
+              </span>
             </h2>
+
             <div className="montres-grid">
               {montresList.map((montre) => {
-                // 🖼️ Sélectionner la première image
                 const mainImage =
                   montre.images?.find((img) => img.position === 0) ||
                   montre.images?.[0];
@@ -118,7 +132,11 @@ export default function Montres() {
                   : "/placeholder.jpg";
 
                 return (
-                  <div key={montre.id} className="montre-card">
+                  <div
+                    key={montre.id}
+                    id={`montre-${montre.id}`} // ⭐ ID ajouté ici
+                    className="montre-card"
+                  >
                     <div className="montre-image-container">
                       <button
                         type="button"
@@ -130,7 +148,6 @@ export default function Montres() {
                           background: "none",
                           cursor: "pointer",
                         }}
-                        aria-label={`Agrandir l'image de ${montre.brand}`}
                       >
                         <img
                           src={imageSrc}
@@ -139,12 +156,16 @@ export default function Montres() {
                           draggable={false}
                         />
                         <div className="image-overlay">
-                          <span className="zoom-hint">📸 Cliquez pour agrandir</span>
+                          <span className="zoom-hint">
+                            📸 Cliquez pour agrandir
+                          </span>
                         </div>
                       </button>
                     </div>
+
                     <Link
                       to={`/montres/${montre.id}`}
+                      state={{ fromMontreId: montre.id }}
                       className="montre-info-link"
                     >
                       <div className="montre-info">
@@ -161,7 +182,7 @@ export default function Montres() {
         </div>
       ))}
 
-      {/* Modal pour l'image agrandie */}
+      {/* Modal zoom */}
       {zoomedImage && (
         <div
           className="image-modal"
@@ -169,7 +190,17 @@ export default function Montres() {
           role="button"
           tabIndex={0}
           onKeyDown={(e) => {
-            if (e.key === "Escape") closeZoom();
+            // Allow keyboard users to close the modal with Enter, Space or Escape
+            if (
+              e.key === "Enter" ||
+              e.key === " " ||
+              e.key === "Spacebar" ||
+              e.key === "Escape"
+            ) {
+              e.preventDefault();
+              e.stopPropagation();
+              closeZoom();
+            }
           }}
         >
           <div
@@ -178,23 +209,23 @@ export default function Montres() {
             tabIndex={0}
             onClick={(e) => e.stopPropagation()}
             onKeyDown={(e) => {
-              e.stopPropagation();
+              // Allow keyboard users to stop propagation (Enter or Space)
+              if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+                e.preventDefault();
+                e.stopPropagation();
+              }
             }}
           >
             <button
               type="button"
               className="zoomed-image-button"
               onClick={closeZoom}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") closeZoom();
-              }}
               style={{
                 padding: 0,
                 border: "none",
                 background: "none",
                 cursor: "pointer",
               }}
-              aria-label="Fermer l'image agrandie"
             >
               <img
                 src={zoomedImage}
