@@ -67,16 +67,23 @@ export default function Montres() {
   }, {});
 
   // Tri par nombre
-  const marquesTriees = Object.entries(montresParMarque)
+const marquesTriees = Object.entries(montresParMarque)
   .sort(([marqueA, montresA], [marqueB, montresB]) => {
-    if (marqueA === "Autres") return 1;   // "Autres" va à la fin
-    if (marqueB === "Autres") return -1;  // les autres passent avant
-    return montresB.length - montresA.length; // tri classique sinon
+    // "Autres" toujours à la fin
+    if (marqueA === "Autres") return 1;
+    if (marqueB === "Autres") return -1;
+
+    // "JUNIOR" en avant-dernière position (juste avant "Autres")
+    if (marqueA === "JUNIOR") return 1;
+    if (marqueB === "JUNIOR") return -1;
+
+    // Sinon tri par nombre décroissant
+    return montresB.length - montresA.length;
   })
   .map(([marque, montresList]) => ({
     marque,
     montres: montresList,
-    count: montresList.length
+    count: montresList.length,
   }));
 
 
