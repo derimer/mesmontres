@@ -67,17 +67,25 @@ export default function Montres() {
   }, {});
 
   // Tri par nombre
+// Fonction qui donne un ordre spécial à chaque marque
+const getOrder = (marque) => {
+  const m = marque.trim().toLowerCase();
+
+  if (m === "autres" || m === "autre") return 3; // dernière position
+  if (m === "junior") return 2;                  // avant-dernière
+  return 1;                                      // toutes les autres en premier
+};
+
+// Tri final : ordre > puis nombre de montres
 const marquesTriees = Object.entries(montresParMarque)
   .sort(([marqueA, montresA], [marqueB, montresB]) => {
-    // "Autres" toujours à la fin
-    if (marqueA === "Autres") return 1;
-    if (marqueB === "Autres") return -1;
+    const orderA = getOrder(marqueA);
+    const orderB = getOrder(marqueB);
 
-    // "JUNIOR" en avant-dernière position (juste avant "Autres")
-    if (marqueA === "JUNIOR") return 1;
-    if (marqueB === "JUNIOR") return -1;
+    // D'abord trier selon l'ordre spécial
+    if (orderA !== orderB) return orderA - orderB;
 
-    // Sinon tri par nombre décroissant
+    // Sinon trier par nombre de montres décroissant
     return montresB.length - montresA.length;
   })
   .map(([marque, montresList]) => ({
