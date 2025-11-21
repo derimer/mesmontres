@@ -1,22 +1,38 @@
 // server/app/auth.js
+
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+const AdminRepository = require("../database/models/adminrepository");
+const db = require("../database/client");
+
+const adminRepo = new AdminRepository(db);
 const router = express.Router();
 
-// Mot de passe admin en clair
-const { ADMIN_PASSWORD } = process.env;
+// Secret JWT
+const JWT_SECRET = process.env.JWT_SECRET || "secret";
 
-// Génération d'un hash au démarrage
-const ADMIN_PASSWORD_HASH = bcrypt.hashSync(ADMIN_PASSWORD, 10);
 
-// Secret pour JWT (à mettre dans ton .env)
-const JWT_SECRET = process.env.JWT_SECRET || "secret_super_sécurisé";
+// ==============================
+// Vérifier si un admin existe
+// ==============================
+router.get("/exists", async (req, res) => {
+  try {
+    const admin = await adminRepo.findAdmin();
+    res.json({ exists: !!admin });
+  } catch (err) {
+    console.error("Erreur /exists :", err);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
 
-// POST /api/login
-router.post("/", async (req, res) => {
+
+// ==============================
+// Créer un admin (1 seule fois)
+// ==============================
+router.post("/register", async (req, res) => {
   try {
     const { password } = req.body;
 
@@ -24,18 +40,54 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: "Mot de passe requis" });
     }
 
-    const match = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
+    const existing = await adminRepo.findAdmin();
 
-    if (!match) {
+    if (existing) {
+      return res.status(400).json({ error: "Un administrateur existe déjà" });
+    }
+
+    const hash = await bcrypt.hash(password, 10);
+
+    await adminRepo.createAdmin(hash);
+
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("Erreur /register :", err);
+    return res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
+
+// ==============================
+// Login admin
+// ==============================
+router.post("/login", async (req, res) => {
+  try {
+    const { password } = req.body;
+
+    if (!password) {
+      return res.status(400).json({ error: "Mot de passe requis" });
+    }
+
+    const admin = await adminRepo.findAdmin();
+
+    if (!admin) {
+      return res.status(400).json({ error: "Aucun administrateur enregistré" });
+    }
+
+    const valid = await bcrypt.compare(password, admin.password_hash);
+
+    if (!valid) {
       return res.status(401).json({ error: "Mot de passe incorrect" });
     }
 
-    // Génération du token
-    const token = jwt.sign({ role: "admin" }, JWT_SECRET, { expiresIn: "2h" });
+    const token = jwt.sign({ role: "admin" }, JWT_SECRET, {
+      expiresIn: "2h",
+    });
 
     return res.json({ token });
   } catch (err) {
-    console.error(err);
+    console.error("Erreur /login :", err);
     return res.status(500).json({ error: "Erreur serveur" });
   }
 });

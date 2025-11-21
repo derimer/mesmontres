@@ -13,7 +13,11 @@ const allowedOrigins = [
   "https://les-garde-temps-rieutord.com",
   "https://www.les-garde-temps-rieutord.com",
   "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  "http://localhost",
+  "http://127.0.0.1"
 ];
+
 
 app.use(
   cors({
@@ -41,7 +45,7 @@ const uploadsPath =
     ? path.join(__dirname, "app/public/uploads") // VPS
     : path.join(__dirname, "public/uploads");    // local
 
-console.log("📁 Static files served from:", uploadsPath);
+console.info("📁 Static files served from:", uploadsPath);
 app.use("/api/uploads", express.static(uploadsPath));
 
 
@@ -57,7 +61,7 @@ const contactRouter = require("./app/routers/api/contact/router");
 const loginRouter = require("./app/auth");
 
 // Routes publiques
-app.use("/api/login", loginRouter);
+app.use("/api/admin", loginRouter);
 app.use("/api/images", imageRoutes);
 
 // Routes protégées par JWT
@@ -82,8 +86,9 @@ app.use((error, req, res) => {
 });
 
 const PORT = process.env.PORT || 3312;
-app.listen(PORT, () => {
-  db.checkConnection(); // Vérifie la connexion DB au démarrage
+
+app.listen(PORT, "0.0.0.0", () => {
+  db.checkConnection();
   console.info(`✅ Server listening on port ${PORT}`);
 });
 
