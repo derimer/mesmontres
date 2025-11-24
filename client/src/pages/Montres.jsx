@@ -8,6 +8,7 @@ export default function Montres() {
   const [error, setError] = useState(null);
   const [zoomedImage, setZoomedImage] = useState(null);
   const [showInstructions, setShowInstructions] = useState(true);
+  const [filterType, setFilterType] = useState("all");
 
   const location = useLocation();
   const fromMontreId = location.state?.fromMontreId || null;
@@ -57,14 +58,20 @@ export default function Montres() {
       }
     }
   }, [fromMontreId, montres]);
+// 👉 Filtrage par type
+const montresFiltrees = montres.filter((m) => {
+  if (filterType === "all") return true;
+  return m.type === filterType;
+});
 
   // Regroupement par marque
-  const montresParMarque = montres.reduce((acc, montre) => {
-    const marque = montre.brand || "Autre";
-    if (!acc[marque]) acc[marque] = [];
-    acc[marque].push(montre);
-    return acc;
-  }, {});
+  const montresParMarque = montresFiltrees.reduce((acc, montre) => {
+  const marque = montre.brand || "Autre";
+  if (!acc[marque]) acc[marque] = [];
+  acc[marque].push(montre);
+  return acc;
+}, {});
+
 
   // Tri par nombre
 // Fonction qui donne un ordre spécial à chaque marque
@@ -107,29 +114,35 @@ const marquesTriees = Object.entries(montresParMarque)
         vous proposer un garde-temps en parfait état d'aspect et de
         fonctionnement.
       </p>
+<div className="filter-bar">
+  <label htmlFor="typeFilter">Vous pouvez aussi filtrer par type :</label>
+  <select
+    id="typeFilter"
+    value={filterType}
+    onChange={(e) => setFilterType(e.target.value)}
+    className="filter-select"
+  >
+    <option value="all">Tous les types</option>
+    <option value="Analogique">Analogique</option>
+    <option value="Calendrier perpétuel">Calendrier perpétuel</option>
+    <option value="Chronographe">Chronographe</option>
+    <option value="Rétrograde">Rétrograde</option>
+  </select>
+</div>
 
       {/* Bannière d'instructions */}
-      {showInstructions && (
-        <div className="instructions-banner">
-          <div className="instructions-content">
-            <span className="instructions-icon">💡</span>
-            <div className="instructions-text">
-              <strong>Comment naviguer :</strong>
-              <span>
-                Cliquez sur l'image pour l'agrandir • Cliquez sur le prix pour
-                voir les détails
-              </span>
-            </div>
-            <button
-              type="button"
-              className="close-instructions"
-              onClick={() => setShowInstructions(false)}
-            >
-              ×
-            </button>
-          </div>
-        </div>
-      )}
+    {/* Info-bulle permanente */}
+<div className="permanent-instructions">
+  <div className="instructions-content">
+    <span className="instructions-icon">💡</span>
+    <div className="instructions-text">
+      <strong>Comment naviguer :</strong>
+      <span>
+        Cliquez sur l'image pour l'agrandir • Cliquez sur le prix pour voir les détails
+      </span>
+    </div>
+  </div>
+</div>
 
       {/* Affichage des montres */}
       {marquesTriees.map(({ marque, montres: montresList, count }) => (
